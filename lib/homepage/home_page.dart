@@ -108,24 +108,25 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                        color: Colors.blue,
-                        borderRadius: BorderRadius.circular(100)
-                      ),
-                      width: 60,
-                      height: 60,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                       IconButton(onPressed:(){
-                        Navigator.push(context, MaterialPageRoute(builder: (context) => Prescription_page(),));
-                       }, icon: Icon(Icons.add))
-                        ],
-                      ),
+                    padding: const EdgeInsets.all(8.0),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        CircleAvatar(
+                          backgroundImage: AssetImage("image/q.jpg"),
+                          radius: 50,
+                        )
+                      ],
                     ),
+                  ),
+                  SizedBox(width: 50,),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text("کلینیک تخصصی موفق",style: TextStyle(fontSize: 30),),
+                    ],
                   ),
                   SizedBox(width: 30),
                   Column(
@@ -165,14 +166,6 @@ class _HomePageState extends State<HomePage> {
                       Text("${"1000"}"),
                       Text("${"1000"}"),
                       Text("${"1000"}"),
-                    ],
-                  ),
-                  SizedBox(width: 50,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      Text("کلینیک تخصصی موفق",style: TextStyle(fontSize: 30),),
                     ],
                   ),
                   SizedBox(width: 100,),
@@ -230,7 +223,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.light_mode),
+                          Icon(Icons.light_mode,color: Colors.yellow,),
                           Switch(
                               activeColor: Colors.white,
                               inactiveThumbColor: Colors.black,
@@ -246,15 +239,25 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   SizedBox(width: 80,),
-                  Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    children: [
-                      CircleAvatar(
-                        backgroundImage: AssetImage("image/q.jpg"),
-                        radius: 50,
-                      )
-                    ],
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                          color: Colors.blue,
+                          borderRadius: BorderRadius.circular(100)
+                      ),
+                      width: 60,
+                      height: 60,
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          IconButton(onPressed:(){
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => Prescription_page(),));
+                          }, icon: Icon(Icons.add))
+                        ],
+                      ),
+                    ),
                   ),
                 ],
               ),
