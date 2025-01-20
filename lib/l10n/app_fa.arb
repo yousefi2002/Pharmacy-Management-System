@@ -106,5 +106,10 @@
              "role": "نقس کاربر",
             "password": "رمز",
                "seller": "فروشنده",
+             "expenses": "مصارف",
+             "visit_list": "لیست ویزیت ها",
+          "visits": "ویزیت ها",
+          "visit": "ویزیت ",
+             "sale": "فروش",
   "@@locale": "fa"
 }

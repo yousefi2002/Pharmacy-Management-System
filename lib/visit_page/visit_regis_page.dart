@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Patients_regis_page extends StatefulWidget {
-  const Patients_regis_page({super.key});
+class Visit_regis_page extends StatefulWidget {
+  const Visit_regis_page({super.key});
 
   @override
-  State<Patients_regis_page> createState() => _Patients_regis_pageState();
+  State<Visit_regis_page> createState() => _Visit_regis_pageState();
 }
 
-class _Patients_regis_pageState extends State<Patients_regis_page> {
+class _Visit_regis_pageState extends State<Visit_regis_page> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
@@ -32,7 +32,7 @@ class _Patients_regis_pageState extends State<Patients_regis_page> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Center(child: Text(AppLocalizations.of(context)!.register_patient,style: TextStyle(fontSize: 35),)),
+                    Center(child: Text(AppLocalizations.of(context)!.register_patient,style: TextStyle(),)),
                     TextFormField(
                       onFieldSubmitted: (value) {
                         FocusScope.of(context).requestFocus(focs1);
@@ -79,7 +79,14 @@ class _Patients_regis_pageState extends State<Patients_regis_page> {
                         FocusScope.of(context).requestFocus(focs5);
                       },
                       decoration: InputDecoration(
-                          labelText:AppLocalizations.of(context)!.address ,
+                          labelText:AppLocalizations.of(context)!.doctor_name ,
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
+                      ),
+                    ),
+                    TextFormField(
+                      focusNode: focs5,
+                      decoration: InputDecoration(
+                          labelText:AppLocalizations.of(context)!.amount ,
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
                       ),
                     ),
@@ -88,7 +95,7 @@ class _Patients_regis_pageState extends State<Patients_regis_page> {
                         ElevatedButton(onPressed:(){
                           Navigator.pop(context);
                         }, child:Text(AppLocalizations.of(context)!.save,style: TextStyle(color: Colors.black),),style:ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent
+                            backgroundColor: Colors.lightGreen
                         ),),
                       ],
                     ),
