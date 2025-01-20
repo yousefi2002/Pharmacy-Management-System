@@ -1,3 +1,6 @@
+import 'package:fargard_pharmacy_management_system/customer/customer_List_page.dart';
+import 'package:fargard_pharmacy_management_system/expenses_page/expenses_List_page.dart';
+import 'package:fargard_pharmacy_management_system/expenses_page/expenses_page.dart';
 import 'package:fargard_pharmacy_management_system/medicines%20List/medicines%20List.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/patient_regis_page.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/patients_List_page.dart';
@@ -8,6 +11,8 @@ import 'package:fargard_pharmacy_management_system/reports/reports_page.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/prescription.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
 import 'package:fargard_pharmacy_management_system/users_page/users_List_page.dart';
+import 'package:fargard_pharmacy_management_system/visit_page/visit_List_page.dart';
+import 'package:fargard_pharmacy_management_system/visit_page/visit_regis_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:neumorphic_button/neumorphic_button.dart';
@@ -48,9 +53,19 @@ class _HomePageState extends State<HomePage> {
       "navigate": Sales_List_page(),
     },
     {
+      "name": AppLocalizations.of(context)!.visits,
+      "icon": Icon(Icons.volunteer_activism_sharp,),
+      "navigate": Visit_List_page(),
+    },
+    {
+      "name": AppLocalizations.of(context)!.expenses,
+      "icon": Icon(Icons.filter_list_off_sharp,),
+      "navigate": Expenses_List_page(),
+    },
+    {
       "name": AppLocalizations.of(context)!.customers,
       "icon": Icon(Icons.perm_contact_calendar_outlined,),
-      "navigate": Doctors_register_page(),
+      "navigate": Customer_List_page(),
     },
     {
       "name": AppLocalizations.of(context)!.patients,
@@ -67,6 +82,7 @@ class _HomePageState extends State<HomePage> {
       "icon": Icon(Icons.people_alt,),
       "navigate": Users_List_page(),
     },
+
     {
       "name": AppLocalizations.of(context)!.reports,
       "icon": Icon(Icons.repeat_outlined,),
@@ -87,8 +103,6 @@ class _HomePageState extends State<HomePage> {
       "icon": Icon(Icons.report_gmailerrorred,),
       "navigate": Patients_regis_page(),
     },
-
-
   ];
 
   var fontsize=20.0;
@@ -239,25 +253,56 @@ class _HomePageState extends State<HomePage> {
                     ],
                   ),
                   SizedBox(width: 80,),
-                  Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          color: Colors.blue,
-                          borderRadius: BorderRadius.circular(100)
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.lightGreenAccent,
+                              borderRadius: BorderRadius.circular(100)
+                          ),
+                          width: 60,
+                          height: 60,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(onPressed:(){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Prescription_page(),));
+                              }, icon: Icon(Icons.add))
+                            ],
+                          ),
+                        ),
                       ),
-                      width: 60,
-                      height: 60,
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                          IconButton(onPressed:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Prescription_page(),));
-                          }, icon: Icon(Icons.add))
-                        ],
+                      Text(AppLocalizations.of(context)!.sale)
+                    ],
+                  ),
+                  SizedBox(width: 30,),
+                  Column(
+                    children: [
+                      Padding(
+                        padding: const EdgeInsets.all(16.0),
+                        child: Container(
+                          decoration: BoxDecoration(
+                              color: Colors.lightGreenAccent,
+                              borderRadius: BorderRadius.circular(100)
+                          ),
+                          width: 60,
+                          height: 60,
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              IconButton(onPressed:(){
+                                Navigator.push(context, MaterialPageRoute(builder: (context) => Visit_regis_page(),));
+                              }, icon: Icon(Icons.add))
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                      Text(AppLocalizations.of(context)!.visit)
+                    ],
                   ),
                 ],
               ),
@@ -270,7 +315,7 @@ class _HomePageState extends State<HomePage> {
               child: Container(
                 child: LayoutBuilder(
                   builder: (context, constraints) {
-                    int crossAxisCount = constraints.maxWidth > 600 ? 6 : 2;
+                    int crossAxisCount = constraints.maxWidth > 600 ? 7 : 2;
                     return GridView.builder(
                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                         crossAxisSpacing: 0,

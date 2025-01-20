@@ -106,5 +106,10 @@
           "role": "Role",
           "password": "Password",
           "seller": "Seller",
+          "expenses": "Expenses",
+          "visit_list": "Visit List",
+          "visits": "Visits",
+          "visit": "Visit",
+          "sale": "Sale",
   "@@locale": "en"
 }
