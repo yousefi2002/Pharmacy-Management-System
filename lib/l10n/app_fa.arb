@@ -1,4 +1,5 @@
 {
+    "pharmacy_name": "سیستم مدیریت داروخانه کلینیک موفق",
    "discount": "تخفیف",
       "prescription_date": "تاریخ نسخه",
       "sale_date": "تاریخ فروش",
@@ -106,5 +107,11 @@
              "role": "نقس کاربر",
             "password": "رمز",
                "seller": "فروشنده",
+             "expenses": "مصارف",
+             "visit_list": "لیست ویزیت ها",
+          "visits": "ویزیت ها",
+          "visit": "ویزیت ",
+             "sale": "فروش",
+             "language": "زبان",
   "@@locale": "fa"
 }

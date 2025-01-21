@@ -1,4 +1,5 @@
 {
+    "pharmacy_name": "Moaffagh Pharmacy Management System",
    "discount": "Discount",
     "prescription_date": "Prescription Date",
     "sale_date": "Sale Date",
@@ -106,5 +107,11 @@
           "role": "Role",
           "password": "Password",
           "seller": "Seller",
+          "expenses": "Expenses",
+          "visit_list": "Visit List",
+          "visits": "Visits",
+          "visit": "Visit",
+          "sale": "Sale",
+          "language": "Lang",
   "@@locale": "en"
 }
