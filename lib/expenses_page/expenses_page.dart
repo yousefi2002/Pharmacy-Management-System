@@ -1,14 +1,13 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Expenses_page extends StatefulWidget {
-  const Expenses_page({super.key});
+class ExpensesPage extends StatefulWidget {
+  const ExpensesPage({super.key});
 
   @override
-  State<Expenses_page> createState() => _Expenses_pageState();
+  State<ExpensesPage> createState() => _ExpensesPageState();
 }
 
-class _Expenses_pageState extends State<Expenses_page> {
+class _ExpensesPageState extends State<ExpensesPage> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
@@ -69,7 +68,7 @@ class _Expenses_pageState extends State<Expenses_page> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 20,),
+                        const SizedBox(width: 20,),
                         Expanded(
                           child: TextFormField(
                             decoration: InputDecoration(
@@ -82,9 +81,9 @@ class _Expenses_pageState extends State<Expenses_page> {
                     ),
                     Row(
                       children: [
-                        ElevatedButton(onPressed:(){}, child:Text(AppLocalizations.of(context)!.save),style:ElevatedButton.styleFrom(
+                        ElevatedButton(onPressed:(){},style:ElevatedButton.styleFrom(
                             backgroundColor: Colors.yellowAccent
-                        ),),
+                        ), child:Text(AppLocalizations.of(context)!.save),),
                       ],
                     ),
                   ],

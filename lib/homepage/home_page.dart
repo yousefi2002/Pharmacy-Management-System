@@ -16,7 +16,7 @@ import 'package:provider/provider.dart';
 import '../LanguageChange/LanguageChange.dart';
 import '../doctors_page/doctor_register_page.dart';
 import '../provider/theme_provider.dart';
-enum Language { English, Farsi, Pashto }
+enum Language { english, farsi, pashto }
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -25,7 +25,7 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  var iconcolora=Colors.red;
+  var iconColor=Colors.red;
   List<Map<String, dynamic>> pages(BuildContext context) => [
     {
       "name": AppLocalizations.of(context)!.medicines,
@@ -50,7 +50,7 @@ class _HomePageState extends State<HomePage> {
     {
       "name": AppLocalizations.of(context)!.customers,
       "icon": Icon(Icons.perm_contact_calendar_outlined,),
-      "navigate": Doctors_register_page(),
+      "navigate": DoctorsRegisterPage(),
     },
     {
       "name": AppLocalizations.of(context)!.patients,
@@ -91,15 +91,15 @@ class _HomePageState extends State<HomePage> {
 
   ];
 
-  var fontsize=20.0;
+  var fontSize=20.0;
   @override
   Widget build(BuildContext context) {
     final pagesList = pages(context);
-    final themprovider = Provider.of<ThemeProvider>(context);
+    final themProvider = Provider.of<ThemeProvider>(context);
     return Scaffold(
       body: Column(
         children: [
-          Container(
+          SizedBox(
             width: double.infinity,
             height: 130,
             child: SingleChildScrollView(
@@ -107,8 +107,8 @@ class _HomePageState extends State<HomePage> {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
-                  Padding(
-                    padding: const EdgeInsets.all(8.0),
+                  const Padding(
+                    padding: EdgeInsets.all(8.0),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       crossAxisAlignment: CrossAxisAlignment.end,
@@ -120,77 +120,77 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                   ),
-                  SizedBox(width: 50,),
-                  Column(
+                  const SizedBox(width: 50,),
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
                       Text("کلینیک تخصصی موفق",style: TextStyle(fontSize: 30),),
                     ],
                   ),
-                  SizedBox(width: 30),
+                  const SizedBox(width: 30),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                     Text(AppLocalizations.of(context)!.daily_sales,style:TextStyle(fontSize: fontsize),),
-                     Text(AppLocalizations.of(context)!.daily_purchases,style:TextStyle(fontSize: fontsize)),
-                     Text(AppLocalizations.of(context)!.daily_expenses,style:TextStyle(fontSize: fontsize)),
+                     Text(AppLocalizations.of(context)!.daily_sales,style:TextStyle(fontSize: fontSize),),
+                     Text(AppLocalizations.of(context)!.daily_purchases,style:TextStyle(fontSize: fontSize)),
+                     Text(AppLocalizations.of(context)!.daily_expenses,style:TextStyle(fontSize: fontSize)),
                     ],
                   ),
-                  SizedBox(width: 30,),
-                  Column(
+                  const SizedBox(width: 30,),
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text("${"100"}"),
-                      Text("${"100"}"),
-                      Text("${"1000"}"),
+                      Text("100"),
+                      Text("100"),
+                      Text("1000"),
                     ],
                   ),
-                  SizedBox(width: 50,),
+                  const SizedBox(width: 50,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(AppLocalizations.of(context)!.number_of_patients,style:TextStyle(fontSize: fontsize)),
-                      Text(AppLocalizations.of(context)!.doctor_accounts,style:TextStyle(fontSize: fontsize)),
-                      Text(AppLocalizations.of(context)!.cash_inventory,style:TextStyle(fontSize: fontsize)),
+                      Text(AppLocalizations.of(context)!.number_of_patients,style:TextStyle(fontSize: fontSize)),
+                      Text(AppLocalizations.of(context)!.doctor_accounts,style:TextStyle(fontSize: fontSize)),
+                      Text(AppLocalizations.of(context)!.cash_inventory,style:TextStyle(fontSize: fontSize)),
                     ],
                   ),
-                  SizedBox(width: 50,),
-                  Column(
+                  const SizedBox(width: 50,),
+                  const Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.end,
                     children: [
-                      Text("${"1000"}"),
-                      Text("${"1000"}"),
-                      Text("${"1000"}"),
+                      Text("1000"),
+                      Text("1000"),
+                      Text("1000"),
                     ],
                   ),
-                  SizedBox(width: 100,),
+                  const SizedBox(width: 100,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                     Row(
                       children: [
-                        Text("زبان",style: TextStyle(fontSize: 20),),
+                        const Text("زبان",style: TextStyle(fontSize: 20),),
                           Consumer<LanguageChange>(builder: (context, provider, child) {
                             return PopupMenuButton(
-                              icon: Icon(Icons.language,),
+                              icon: const Icon(Icons.language,),
                               onSelected: (Language item) {
-                                if (Language.English.name == item.name) {
-                                  provider.changeLanguage(Locale("en"));
-                                } else if (Language.Farsi.name == item.name) {
-                                  provider.changeLanguage(Locale("fa"));
-                                } else if (Language.Pashto.name == item.name) {
-                                  provider.changeLanguage(Locale("ps"));
+                                if (Language.english.name == item.name) {
+                                  provider.changeLanguage(const Locale("en"));
+                                } else if (Language.farsi.name == item.name) {
+                                  provider.changeLanguage(const Locale("fa"));
+                                } else if (Language.pashto.name == item.name) {
+                                  provider.changeLanguage(const Locale("ps"));
                                 }
                               },
                               itemBuilder: (context) => <PopupMenuEntry<Language>>[
                                 const PopupMenuItem(
-                                  value: Language.Farsi,
+                                  value: Language.farsi,
                                   child: Row(
                                     children: [
                                       Text("فارسی"),
@@ -200,7 +200,7 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ),
                                 const PopupMenuItem(
-                                  value: Language.English,
+                                  value: Language.english,
                                   child: Row(
                                     children: [
                                       Text("English"),
@@ -216,29 +216,29 @@ class _HomePageState extends State<HomePage> {
                     ),
                     ],
                   ),
-                  SizedBox(width: 80,),
+                  const SizedBox(width: 80,),
                   Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Row(
                         children: [
-                          Icon(Icons.light_mode,color: Colors.yellow,),
+                          const Icon(Icons.light_mode,color: Colors.yellow,),
                           Switch(
                               activeColor: Colors.white,
                               inactiveThumbColor: Colors.black,
-                              activeThumbImage: AssetImage("image/d.jpg"),
-                              inactiveThumbImage: AssetImage("image/l.jpg"),
-                              value: themprovider.themeMode == ThemeMode.dark,
+                              activeThumbImage: const AssetImage("image/d.jpg"),
+                              inactiveThumbImage: const AssetImage("image/l.jpg"),
+                              value: themProvider.themeMode == ThemeMode.dark,
                               onChanged: (value) {
-                                themprovider.toggleTheme(value);
+                                themProvider.toggleTheme(value);
                               }),
-                          Icon(Icons.dark_mode),
+                          const Icon(Icons.dark_mode),
                         ],
                       )
                     ],
                   ),
-                  SizedBox(width: 80,),
+                  const SizedBox(width: 80,),
                   Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Container(
@@ -253,8 +253,8 @@ class _HomePageState extends State<HomePage> {
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           IconButton(onPressed:(){
-                            Navigator.push(context, MaterialPageRoute(builder: (context) => Prescription_page(),));
-                          }, icon: Icon(Icons.add))
+                            Navigator.push(context, MaterialPageRoute(builder: (context) => const Prescription_page(),));
+                          }, icon: const Icon(Icons.add))
                         ],
                       ),
                     ),
@@ -263,58 +263,56 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
           ),
-          Divider(color: Colors.black,),
+          const Divider(color: Colors.black,),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.all(50.0),
-              child: Container(
-                child: LayoutBuilder(
-                  builder: (context, constraints) {
-                    int crossAxisCount = constraints.maxWidth > 600 ? 6 : 2;
-                    return GridView.builder(
-                      gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                        crossAxisSpacing: 0,
-                        mainAxisSpacing: 30,
-                        crossAxisCount: crossAxisCount,
-                      ),
-                      itemCount: pagesList.length,
-                      itemBuilder: (context, index) {
-                        double screenWidth = MediaQuery.of(context).size.width;
-                        double buttonSize = screenWidth / 11;
-                        double iconSize = screenWidth / 15;
-                        double fontsize = screenWidth / 70;
-                        return SingleChildScrollView(
-                          child: Column(
-                            children: [
-                              NeumorphicButton(
-                                width: buttonSize,
-                                height: buttonSize,
-                                borderRadius: 12,
-                                borderWidth: 1,
-                                backgroundColor: Colors.white10,
-                                topLeftShadowColor: Colors.white10,
-                                bottomRightShadowColor: Colors.white10,
-                                bottomRightOffset: const Offset(-1, -1),
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(builder: (context) => pagesList[index]["navigate"]),
-                                  );
-                                },
-                                child: Center(
-                                  child: Icon(
-                                    pagesList[index]["icon"].icon,size: iconSize,color: iconcolora,
-                                    ),
-                                ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  int crossAxisCount = constraints.maxWidth > 600 ? 6 : 2;
+                  return GridView.builder(
+                    gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisSpacing: 0,
+                      mainAxisSpacing: 30,
+                      crossAxisCount: crossAxisCount,
+                    ),
+                    itemCount: pagesList.length,
+                    itemBuilder: (context, index) {
+                      double screenWidth = MediaQuery.of(context).size.width;
+                      double buttonSize = screenWidth / 11;
+                      double iconSize = screenWidth / 15;
+                      double fontSize = screenWidth / 70;
+                      return SingleChildScrollView(
+                        child: Column(
+                          children: [
+                            NeumorphicButton(
+                              width: buttonSize,
+                              height: buttonSize,
+                              borderRadius: 12,
+                              borderWidth: 1,
+                              backgroundColor: Colors.white10,
+                              topLeftShadowColor: Colors.white10,
+                              bottomRightShadowColor: Colors.white10,
+                              bottomRightOffset: const Offset(-1, -1),
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(builder: (context) => pagesList[index]["navigate"]),
+                                );
+                              },
+                              child: Center(
+                                child: Icon(
+                                  pagesList[index]["icon"].icon,size: iconSize,color: iconColor,
+                                  ),
                               ),
-                              Text(pagesList[index]["name"],style: TextStyle(fontSize: fontsize),),
-                            ],
-                          ),
-                        );
-                      },
-                    );
-                  },
-                ),
+                            ),
+                            Text(pagesList[index]["name"],style: TextStyle(fontSize: fontSize),),
+                          ],
+                        ),
+                      );
+                    },
+                  );
+                },
               ),
             ),
           ),
