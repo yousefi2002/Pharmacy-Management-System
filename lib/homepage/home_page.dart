@@ -21,7 +21,7 @@ import 'package:provider/provider.dart';
 import '../LanguageChange/LanguageChange.dart';
 import '../doctors_page/doctor_register_page.dart';
 import '../provider/theme_provider.dart';
-enum Language { English, Farsi, Pashto }
+enum Language { english, farsi, pashto }
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -73,6 +73,7 @@ class _HomePageState extends State<HomePage> {
       "name": AppLocalizations.of(context)!.customers,
       "icon": Icons.person_2_outlined,
       "navigate": Customer_List_page(),
+
     },
     {
       "name": AppLocalizations.of(context)!.patients,
@@ -117,6 +118,7 @@ class _HomePageState extends State<HomePage> {
     final themProvider = Provider.of<ThemeProvider>(context);
     final spaceBettweenHeaderButtons = 10.0;
     mediaQueries(context);
+    
     return Scaffold(
       body: Column(
         children: [
@@ -294,65 +296,6 @@ class _HomePageState extends State<HomePage> {
                 ),).toList(),
             ),
           ),
-          // Expanded(
-          //   child: Padding(
-          //     padding: const EdgeInsets.all(50.0),
-          //     child: Container(
-          //       child: LayoutBuilder(
-          //         builder: (context, constraints) {
-          //           int crossAxisCount = constraints.maxWidth > 600 ? 7 : 2;
-          //           return GridView.builder(
-          //             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-          //               crossAxisSpacing: 0,
-          //               mainAxisSpacing: 30,
-          //               crossAxisCount: crossAxisCount,
-          //             ),
-          //             itemCount: pagesList.length,
-          //             itemBuilder: (context, index) {
-          //               double screenWidth = MediaQuery.of(context).size.width;
-          //               double buttonSize = screenWidth / 11;
-          //               double iconSize = screenWidth / 15;
-          //               double fontsize = screenWidth / 70;
-          //               return SingleChildScrollView(
-          //                 child: Column(
-          //                   children: [
-          //                     NeumorphicButton(
-          //                       width: buttonSize,
-          //                       height: buttonSize,
-          //                       borderRadius: 12,
-          //                       borderWidth: 1,
-          //                       backgroundColor: Colors.white10,
-          //                       topLeftShadowColor: Colors.white10,
-          //                       bottomRightShadowColor: Colors.white10,
-          //                       bottomRightOffset: const Offset(-1, -1),
-          //                       onTap: () {
-          //                         Navigator.push(
-          //                           context,
-          //                           MaterialPageRoute(builder: (context) => pagesList[index]["navigate"]),
-          //                         );
-          //                       },
-          //                       child: Center(
-          //                         child: Icon(
-          //                           pagesList[index]["icon"].icon,size: iconSize,color: iconColor,
-          //                           ),
-          //                       ),
-          //                     ),
-          //                     Text(pagesList[index]["name"],style: TextStyle(fontSize: fontsize),),
-          //                   ],
-          //                 ),
-          //               );
-          //             },
-          //           );
-          //         },
-          //       ),
-          //     ),
-          //   ),
-          // ),
-        ],
-      ),
-    );
-  }
-
   mediaQueries(context){
     // Get the screen size
     var screenSize = MediaQuery.of(context).size;
