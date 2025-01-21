@@ -39,14 +39,27 @@ class MyApp extends StatelessWidget {
             debugShowCheckedModeBanner: false,
             themeMode: themeProvider.themeMode,
             theme: ThemeData(
-              primarySwatch: Colors.blue,
+              primaryColor: Colors.green[200],
+              primarySwatch: Colors.green,
               brightness: Brightness.light,
+              scaffoldBackgroundColor: Colors.grey[100],
+              colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.green,
+                accentColor: Colors.white,
+                brightness: Brightness.light, // Light or dark mode
+              ),
             ),
             darkTheme: ThemeData(
-              primarySwatch: Colors.blue,
+              primaryColor: Colors.green[400],
+              primarySwatch: Colors.green,
               brightness: Brightness.dark,
+              colorScheme: ColorScheme.fromSwatch(
+                primarySwatch: Colors.green,
+                accentColor: Colors.white,
+                brightness: Brightness.dark, // Light or dark mode
+              ),
             ),
-            locale: provider.applocale??Locale(local),
+            locale: provider.applocale ?? Locale(local),
             localizationsDelegates: [
               AppLocalizations.delegate, // Add this line
               GlobalMaterialLocalizations.delegate,

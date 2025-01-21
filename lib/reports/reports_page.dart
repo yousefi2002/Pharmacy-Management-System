@@ -1,6 +1,6 @@
 import 'package:fargard_pharmacy_management_system/Stock_page_of_medicine/Stock_page_of_medicine.dart';
 import 'package:fargard_pharmacy_management_system/doctors_page/doctprs_List_page.dart';
-import 'package:fargard_pharmacy_management_system/reports/employee_reports_page.dart';
+// import 'package:fargard_pharmacy_management_system/reports/employee_reports_page.dart';
 import 'package:fargard_pharmacy_management_system/purches_page/purchese_List_page.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
 import 'package:flutter/cupertino.dart';
@@ -33,7 +33,7 @@ class _All_reports_pageState extends State<All_reports_page> {
     {
       "name": AppLocalizations.of(context)!.employee_reports,
       "icon": Icon(Icons.add_reaction),
-      "navigate": Employee_reports_page(),
+      // "navigate": Employee_reports_page(),
     },
     {
       "name": AppLocalizations.of(context)!.doctor_reports,
