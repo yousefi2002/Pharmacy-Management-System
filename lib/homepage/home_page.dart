@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.expenses,
           "icon": Icons.event_busy,
-          "navigate": Expenses_List_page(),
+          "navigate": ExpensesListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.customers,
@@ -75,7 +75,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.patients,
           "icon": Icons.person_add_alt,
-          "navigate": Patients_List_page(),
+          "navigate": PatientsListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.doctors,
@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.employees,
           "icon": Icons.person_pin,
-          "navigate": Users_List_page(),
+          "navigate": UsersListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.reports,
@@ -95,17 +95,17 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.backup,
           "icon": Icons.backup,
-          "navigate": Patients_regis_page(),
+          // "navigate": AddPatientPage(),
         },
         {
           "name": AppLocalizations.of(context)!.settings,
           "icon": Icons.settings,
-          "navigate": Patients_regis_page(),
+          // "navigate": AddPatientPage(),
         },
         {
           "name": AppLocalizations.of(context)!.about,
           "icon": Icons.info_outline,
-          "navigate": Patients_regis_page(),
+          // "navigate": AddPatientPage(),
         },
       ];
 

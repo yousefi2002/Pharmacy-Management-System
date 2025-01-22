@@ -37,18 +37,22 @@ class DatabaseService {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('doctors_appointments_fee');
     return maps.map((map) => DoctorAppointmentFee.fromMapObject(map)).toList();
   }
+
   Future<List<Expenses>> fetchExpenses() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('expenses');
     return maps.map((map) => Expenses.fromMapObject(map)).toList();
   }
+
   Future<List<GenericName>> fetchGenericNames() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('generic_names');
     return maps.map((map) => GenericName.fromMapObject(map)).toList();
   }
+
   Future<List<Medicine>> fetchMedicines() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('medicines');
     return maps.map((map) => Medicine.fromMapObject(map)).toList();
   }
+
   Future<List<Patient>> fetchPatients() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('patients');
     return maps.map((map) => Patient.fromMapObject(map)).toList();
@@ -58,26 +62,32 @@ class DatabaseService {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('purchase_details');
     return maps.map((map) => PurchaseDetails.fromMapObject(map)).toList();
   }
+
   Future<List<Purchase>> fetchPurchase() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('purchases');
     return maps.map((map) => Purchase.fromMapObject(map)).toList();
   }
+
   Future<List<Sales>> fetchSales() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('sales');
     return maps.map((map) => Sales.fromMapObject(map)).toList();
   }
+
   Future<List<SalesDetails>> fetchSalesDetails() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('sales_details');
     return maps.map((map) => SalesDetails.fromMapObject(map)).toList();
   }
+
   Future<List<Stock>> fetchStocks() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('stocks');
     return maps.map((map) => Stock.fromMapObject(map)).toList();
   }
+
   Future<List<Supplier>> fetchSuppliers() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('suppliers');
     return maps.map((map) => Supplier.fromMapObject(map)).toList();
   }
+
   Future<List<User>> fetchUsers() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('users');
     return maps.map((map) => User.fromMapObject(map)).toList();

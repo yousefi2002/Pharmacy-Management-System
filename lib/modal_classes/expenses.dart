@@ -1,31 +1,30 @@
 class Expenses {
   int? _id;
   String? _description;
-  String? _amount;
+  double? _amount;
   String? _date;
   String? _userId;
   String? _createdAt;
   String? _updatedAt;
 
   Expenses(
+      this._id,
       this._description,
       this._amount,
       this._date,
-      this._userId,
-      this._createdAt,
-      this._updatedAt,
-  );
+      this._userId
+    );
 
   int? get id => _id;
   String get description => _description ?? '';
-  String get amount => _amount ?? '';
+  double get amount => _amount ?? 0.0;
   String get date => _date ?? '';
   String get userId => _userId ?? '';
   String get createdAt => _createdAt ?? '';
   String get updatedAt => _updatedAt ?? '';
 
   set description (String newValue) => _description = newValue;
-  set amount (String newValue) => _amount = newValue;
+  set amount (double newValue) => _amount = newValue;
   set date (String newValue) => _date = newValue;
   set userId (String newValue) => _userId = newValue;
   set createdAt(String newValue) => _createdAt = newValue;
@@ -48,9 +47,14 @@ class Expenses {
     _id = map["expense_id"];
     _description = map["expense_description"];
     _amount = map["expense_amount"];
-    _date = map["expense_date"];
-    _userId = map["expense_user_id"];
+    _date = map["expense_date"].toString();
+    _userId = map["expense_user_id"].toString();
     _createdAt = map["created_at"];
     _updatedAt = map["updated_at"];
+  }
+
+  @override
+  String toString() {
+    return '$_id === \n $_description ===  \n $_amount';
   }
 }

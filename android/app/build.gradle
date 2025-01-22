@@ -27,7 +27,8 @@ android {
     namespace = "com.example.fargard_pharmacy_management_system"
     compileSdk = flutter.compileSdkVersion
     ndkVersion = flutter.ndkVersion
-
+    minSdkVersion 19
+    targetSdkVersion 33
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
         targetCompatibility = JavaVersion.VERSION_1_8

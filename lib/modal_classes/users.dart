@@ -8,12 +8,11 @@ class User {
   String? _updatedAt;
 
   User(
+      this._id,
       this._name,
       this._role,
       this._contactNumber,
       this._email,
-      this._createdAt,
-      this._updatedAt,
       );
 
   int? get id => _id;
@@ -52,5 +51,9 @@ class User {
     _email = map["user_email"];
     _createdAt = map["created_at"];
     _updatedAt = map["updated_at"];
+  }
+  @override
+  String toString() {
+    return '$_id === \n $_name === \n $_email';
   }
 }

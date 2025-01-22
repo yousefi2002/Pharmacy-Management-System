@@ -1,6 +1,10 @@
 import 'dart:io';
+import 'package:fargard_pharmacy_management_system/modal_classes/expenses.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+
+import '../modal_classes/patients.dart';
+import '../modal_classes/users.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper; // singleton database helper
@@ -177,7 +181,7 @@ class DatabaseHelper {
         $comAddress TEXT,
         $contactNumber varchar(15) DEFAULT NULL,
         $genCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $genUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        $genUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
         ) ''');
 
     await db.execute('''
@@ -185,8 +189,8 @@ class DatabaseHelper {
         ($genId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $genName varchar(255) NOT NULL, 
         $genCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $genUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP)
-        ''');
+        $genUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+        )''');
 
     await db.execute('''
         CREATE TABLE $medicinesTable
@@ -196,14 +200,14 @@ class DatabaseHelper {
         $medDescription text,
         $medPricePerUnit decimal(10,2) DEFAULT NULL,
         $medCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $medUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+        $medUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         $medGenId int NOT NULL,
         $medComId int NOT NULL,
-        KEY $medGenId ($medGenId),
-        KEY $medComId ($medComId),
         CONSTRAINT $medComId FOREIGN KEY ($medComId) REFERENCES $companyTable ($comId),
         CONSTRAINT $medGenId FOREIGN KEY ($medGenId) REFERENCES $genericNameTable ($genId)
   )''');
+    await db.execute('CREATE INDEX medicine_generic_id ON medicines(medicine_generic_id);');
+    await db.execute('CREATE INDEX medicine_company_id ON medicines(medicine_company_id);');
 
     await db.execute('''
         CREATE TABLE $purchaseTable
@@ -215,153 +219,174 @@ class DatabaseHelper {
         $purDate date DEFAULT NULL,
         $purBatchNumber varchar(255) DEFAULT NULL,
         $purCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $purUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        KEY $purMedId ($purMedId),
-        KEY $purSupplierId ($purSupplierId),
+        $purUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT $purMedId FOREIGN KEY ($purMedId) REFERENCES $medicinesTable($medId),
         CONSTRAINT $purSupplierId FOREIGN KEY ($purSupplierId) REFERENCES $supplierTable ($supId)
         )''');
+    await db.execute('CREATE INDEX purchase_medicine_id ON purchases(purchase_medicine_id);');
+    await db.execute('CREATE INDEX purchase_supplier_id ON purchases(purchase_supplier_id)');
 
     await db.execute('''
-        CREATE TABLE $supplierTable
-        ($supId INTEGER PRIMARY KEY AUTOINCREMENT, 
+    CREATE TABLE $supplierTable (
+        $supId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $supName varchar(255) NOT NULL,
         $supContactNumber varchar(15) DEFAULT NULL,
         $supEmail varchar(255) DEFAULT NULL,
         $supAddress text,
         $supCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $supUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        )''');
+        $supUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $salesTable
-        ($salId INTEGER PRIMARY KEY AUTOINCREMENT, 
+    CREATE TABLE $salesTable (
+        $salId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $salCustomerId int NOT NULL,
         $salMedId int NOT NULL,
         $salUserID int NOT NULL,
         $salQuantity int DEFAULT NULL,
         $salDate date DEFAULT NULL,
-        $salTotalPrice decimal(10,2) DEFAULT NULL,
+        $salTotalPrice REAL DEFAULT NULL,
         $salCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $salUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        KEY $salMedId ($salMedId),
-        KEY $salCustomerId ($salCustomerId),
-        KEY $salUserID ($salUserID),
+        $salUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT $salMedId FOREIGN KEY ($salMedId) REFERENCES $medicinesTable ($medId),
         CONSTRAINT $salCustomerId FOREIGN KEY ($salCustomerId) REFERENCES $customersTable ($cusId),
         CONSTRAINT $salUserID FOREIGN KEY ($salUserID) REFERENCES $usersTable ($userId)
-        ) ''');
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $usersTable
-        ($userId INTEGER PRIMARY KEY AUTOINCREMENT, 
+    CREATE INDEX IF NOT EXISTS idx_$salMedId ON $salesTable ($salMedId);
+    CREATE INDEX IF NOT EXISTS idx_$salCustomerId ON $salesTable ($salCustomerId);
+    CREATE INDEX IF NOT EXISTS idx_$salUserID ON $salesTable ($salUserID);
+''');
+
+    await db.execute('''
+    CREATE TABLE $usersTable (
+        $userId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $userName varchar(255) NOT NULL,
         $userRole varchar(15) DEFAULT NULL,
         $userContactNumber varchar(15) DEFAULT NULL,
         $userEmail varchar(255) DEFAULT NULL,
         $supCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $supUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        )''');
+        $supUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $customersTable
-        ($cusId INTEGER PRIMARY KEY AUTOINCREMENT, 
+    CREATE TABLE $customersTable (
+        $cusId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $cusName varchar(255) NOT NULL,
         $cusContactNumber varchar(15) DEFAULT NULL,
         $cusEmail varchar(255) DEFAULT NULL,
         $cusCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $cusUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        )''');
+        $cusUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $expensesTable
-        ($expId INTEGER PRIMARY KEY AUTOINCREMENT, 
+    CREATE TABLE $expensesTable (
+        $expId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $expDescription text,
-        $expAmount decimal(10,2) DEFAULT NULL,
-        $expDate date DEFAULT NULL,
-        $expUserId int NOT NULL,
+        $expAmount Real DEFAULT NULL,
+        $expDate TEXT DEFAULT NULL,
+        $expUserId INTEGER null,
         $expCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $expUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        KEY $expUserId ($expUserId),
+        $expUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT $expUserId FOREIGN KEY ($expUserId) REFERENCES $usersTable ($userId)
-        )''');
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $purchaseDetailsTable
-        ($purchaseId int NOT NULL,
+    CREATE INDEX IF NOT EXISTS idx_$expUserId ON $expensesTable ($expUserId);
+''');
+
+    await db.execute('''
+    CREATE TABLE $purchaseDetailsTable (
+        $purchaseId int NOT NULL,
         $medicineId int NOT NULL,
         $purchaseQuantity int NOT NULL,
-        $purchasePricePerUnit decimal(10,2) DEFAULT NULL,
+        $purchasePricePerUnit REAL DEFAULT NULL,
         $purchaseBatchNumber varchar(255) DEFAULT NULL,
         PRIMARY KEY ($purchaseId,$medicineId),
-        KEY $medicineId ($medicineId),
         CONSTRAINT $purchaseId FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
         CONSTRAINT $medicineId FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
-        )''');
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $salesDetailsTable
-        ($salesId int NOT NULL,
-         $salesMedicineId int NOT NULL,
-         $salesQuantity int NOT NULL,
-         $salesPricePerUnite decimal(10,2) DEFAULT NULL,
-         PRIMARY KEY ($salesId, $salesMedicineId),
-         KEY $salesMedicineId ($salesMedicineId),
-         CONSTRAINT $salesId FOREIGN KEY ($salesId) REFERENCES $salesTable($salId),
-         CONSTRAINT $salesMedicineId FOREIGN KEY ($salesMedicineId) REFERENCES $medicinesTable ($medId)
-         )''');
+    CREATE TABLE $salesDetailsTable (
+        $salesId int NOT NULL,
+        $salesMedicineId int NOT NULL,
+        $salesQuantity int NOT NULL,
+        $salesPricePerUnite REAL DEFAULT NULL,
+        PRIMARY KEY ($salesId, $salesMedicineId),
+        CONSTRAINT $salesId FOREIGN KEY ($salesId) REFERENCES $salesTable($salId),
+        CONSTRAINT $salesMedicineId FOREIGN KEY ($salesMedicineId) REFERENCES $medicinesTable ($medId)
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $stockTable (
-        $stoId  INTEGER PRIMARY KEY AUTOINCREMENT,
+    CREATE TABLE $stockTable (
+        $stoId INTEGER PRIMARY KEY AUTOINCREMENT,
         $stoMedicineId int NOT NULL,
         $stoBatchNumber varchar(255) DEFAULT NULL,
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
         $stoCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $stoUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-        KEY $stoMedicineId ($stoMedicineId),
-        CONSTRAINT $stoMedicineId FOREIGN KEY ($stoMedicineId ) REFERENCES $medicinesTable ($medId)
-        )''');
+        $stoUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        CONSTRAINT $stoMedicineId FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $doctorTables
-        ($docId INTEGER PRIMARY KEY AUTOINCREMENT, 
-         $docName varchar(255) NOT NULL,
-         $docSpecialization varchar(255) DEFAULT NULL,
-         $docContactNumber varchar(15) DEFAULT NULL,
-         $docCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-         $docUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-         )''');
+    CREATE INDEX IF NOT EXISTS $stoMedicineId ON $stockTable ($stoMedicineId);
+''');
 
     await db.execute('''
-        CREATE TABLE $patientsTable
-        ($patId INTEGER PRIMARY KEY AUTOINCREMENT, 
-         $patName varchar(255) NOT NULL,
-         $patContactNumber varchar(15) DEFAULT NULL,
-         $patAddress text,
-         $patCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-         $patUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-         )''');
+    CREATE TABLE $doctorTables (
+        $docId INTEGER PRIMARY KEY AUTOINCREMENT, 
+        $docName varchar(255) NOT NULL,
+        $docSpecialization varchar(255) DEFAULT NULL,
+        $docContactNumber varchar(15) DEFAULT NULL,
+        $docCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        $docUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+    )
+''');
 
     await db.execute('''
-        CREATE TABLE $doctorAppointmentFeesTable 
-        ($appointmentId INTEGER PRIMARY KEY AUTOINCREMENT,
-         $appointmentPatientId int NOT NULL,
-         $appointmentDoctorId int NOT NULL,
-         $appointmentDate date DEFAULT NULL,
-         $appointmentFee decimal(10,2) DEFAULT NULL,
-         $appointmentCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-         $appointmentUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-         $appointmentUserId int NOT NULL,
-         KEY $appointmentPatientId ($appointmentPatientId),
-         KEY $appointmentDoctorId ($appointmentDoctorId),
-         KEY $appointmentUserId ($appointmentUserId),
-         CONSTRAINT $appointmentPatientId FOREIGN KEY ($appointmentPatientId) REFERENCES $patientsTable ($patId),
-         CONSTRAINT $appointmentDoctorId FOREIGN KEY ($appointmentDoctorId) REFERENCES $doctorTables ($docId),
-         CONSTRAINT $appointmentUserId FOREIGN KEY ($appointmentUserId) REFERENCES $usersTable ($userId)
-         )''');
+    CREATE TABLE $patientsTable (
+        $patId INTEGER PRIMARY KEY AUTOINCREMENT, 
+        $patName varchar(255) NOT NULL,
+        $patContactNumber varchar(15) DEFAULT NULL,
+        $patAddress text,
+        $patCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        $patUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+    )
+''');
+
+    await db.execute('''
+    CREATE TABLE $doctorAppointmentFeesTable (
+        $appointmentId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $appointmentPatientId int NOT NULL,
+        $appointmentDoctorId int NOT NULL,
+        $appointmentDate date DEFAULT NULL,
+        $appointmentFee REAL DEFAULT NULL,
+        $appointmentCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        $appointmentUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        $appointmentUserId int NOT NULL,
+        CONSTRAINT $appointmentPatientId FOREIGN KEY ($appointmentPatientId) REFERENCES $patientsTable ($patId),
+        CONSTRAINT $appointmentDoctorId FOREIGN KEY ($appointmentDoctorId) REFERENCES $doctorTables ($docId),
+        CONSTRAINT $appointmentUserId FOREIGN KEY ($appointmentUserId) REFERENCES $usersTable ($userId)
+    )
+''');
+
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $appointmentPatientId ON $doctorAppointmentFeesTable ($appointmentPatientId);
+    CREATE INDEX IF NOT EXISTS $appointmentDoctorId ON $doctorAppointmentFeesTable ($appointmentDoctorId);
+    CREATE INDEX IF NOT EXISTS $appointmentUserId ON $doctorAppointmentFeesTable ($appointmentUserId);
+''');
   }
 
   // get data  --------------------------------------------------------
@@ -369,4 +394,55 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(tableName);
   }
+  // patient crud -----------------------------------------------------
+  Future<int> addPatients(Patient patient) async {
+    final db = await database;
+    return db.insert(patientsTable, patient.toMap());
+  }
+
+  Future<int> updatePatients(Patient patient) async {
+    final db = await database;
+    return db.update(patientsTable, patient.toMap(), where: '$patId = ?', whereArgs: [patient.id],
+    );
+  }
+
+  Future<int> deletePatients(int id) async {
+    final db = await database;
+    return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
+  }
+  // patient crud -----------------------------------------------------
+  Future<int> addUsers(User user) async {
+    final db = await database;
+    return db.insert(usersTable, user.toMap());
+  }
+
+  Future<int> updateUsers(User user) async {
+    final db = await database;
+    return db.update(usersTable, user.toMap(), where: '$userId = ?', whereArgs: [user.id],
+    );
+  }
+
+  Future<int> deleteUsers(int id) async {
+    final db = await database;
+    return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
+  }
+
+  // patient crud -----------------------------------------------------
+
+  Future<int> addExpenses(Expenses expenses) async {
+    final db = await database;
+    return db.insert(expensesTable, expenses.toMap());
+  }
+
+  Future<int> updateExpenses(Expenses expenses) async {
+    final db = await database;
+    return db.update(expensesTable, expenses.toMap(), where: '$expId = ?', whereArgs: [expenses.id],
+    );
+  }
+
+  Future<int> deleteExpenses(int id) async {
+    final db = await database;
+    return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
+  }
+
 }
