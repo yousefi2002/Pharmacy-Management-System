@@ -1,3 +1,4 @@
+import 'package:fargard_pharmacy_management_system/expenses_page/crud_for_expenses.dart';
 import 'package:fargard_pharmacy_management_system/medicines%20List/medicine_register_page.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/crud_for_patients.dart';
 import 'package:fargard_pharmacy_management_system/provider/theme_provider.dart';
@@ -24,6 +25,7 @@ void main() async {
       ChangeNotifierProvider(create: (_) => ThemeProvider(),),
       ChangeNotifierProvider(create: (_) => PatientProvider(),),
       ChangeNotifierProvider(create: (_) => UserProvider(),),
+      ChangeNotifierProvider(create: (_) => ExpensesProvider(),),
     ],
     child: MyApp(
       local: languageCode,

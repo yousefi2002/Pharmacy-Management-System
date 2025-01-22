@@ -65,7 +65,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.expenses,
           "icon": Icons.event_busy,
-          "navigate": Expenses_List_page(),
+          "navigate": ExpensesListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.customers,

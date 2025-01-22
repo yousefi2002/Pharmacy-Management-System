@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'package:fargard_pharmacy_management_system/modal_classes/expenses.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -287,9 +288,9 @@ class DatabaseHelper {
     CREATE TABLE $expensesTable (
         $expId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $expDescription text,
-        $expAmount REAL DEFAULT NULL,
-        $expDate date DEFAULT NULL,
-        $expUserId int NOT NULL,
+        $expAmount Real DEFAULT NULL,
+        $expDate TEXT DEFAULT NULL,
+        $expUserId INTEGER null,
         $expCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         $expUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT $expUserId FOREIGN KEY ($expUserId) REFERENCES $usersTable ($userId)
@@ -426,5 +427,22 @@ class DatabaseHelper {
     return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
   }
 
+  // patient crud -----------------------------------------------------
+
+  Future<int> addExpenses(Expenses expenses) async {
+    final db = await database;
+    return db.insert(expensesTable, expenses.toMap());
+  }
+
+  Future<int> updateExpenses(Expenses expenses) async {
+    final db = await database;
+    return db.update(expensesTable, expenses.toMap(), where: '$expId = ?', whereArgs: [expenses.id],
+    );
+  }
+
+  Future<int> deleteExpenses(int id) async {
+    final db = await database;
+    return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
+  }
 
 }
