@@ -97,12 +97,12 @@ class _UsersListPageState extends State<UsersListPage> {
 
                       source: MyData(data, context),
                       columns: [
-                        DataColumn(label: Container(width:20,child: Text("Id"))),
+                        const DataColumn(label: Text("Id")),
                         DataColumn(label: Text(AppLocalizations.of(context)!.username)),
                         DataColumn(label: Text(AppLocalizations.of(context)!.role)),
-                        DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.contact_number))),
-                        DataColumn(label: Container(width:80,child: Text('email'))),
-                        DataColumn(label: Container(width:80,child: Text(""))),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                        const DataColumn(label: Text('email')),
+                        const DataColumn(label: Text("")),
                       ],
                       header: Center(child: Text(AppLocalizations.of(context)!.employee_list)),
                       columnSpacing: 150,
@@ -120,7 +120,7 @@ class _UsersListPageState extends State<UsersListPage> {
 }
 
 class MyData extends DataTableSource {
-   var value;
+  var value;
   final BuildContext context;
   MyData(this.value, this.context);
 
