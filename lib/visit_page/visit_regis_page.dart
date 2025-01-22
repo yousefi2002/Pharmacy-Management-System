@@ -1,17 +1,19 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Users_register_page extends StatefulWidget {
-  const Users_register_page({super.key});
+class Visit_regis_page extends StatefulWidget {
+  const Visit_regis_page({super.key});
 
   @override
-  State<Users_register_page> createState() => _Users_register_pageState();
+  State<Visit_regis_page> createState() => _Visit_regis_pageState();
 }
 
-class _Users_register_pageState extends State<Users_register_page> {
+class _Visit_regis_pageState extends State<Visit_regis_page> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
+  final FocusNode focs4 = FocusNode();
+  final FocusNode focs5 = FocusNode();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -30,15 +32,15 @@ class _Users_register_pageState extends State<Users_register_page> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Center(child: Text(AppLocalizations.of(context)!.employees,style: TextStyle(fontSize: 35),)),
+                    Center(child: Text(AppLocalizations.of(context)!.register_patient,style: TextStyle(),)),
                     TextFormField(
                       onFieldSubmitted: (value) {
                         FocusScope.of(context).requestFocus(focs1);
                       },
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.username,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4))
+                          labelText: AppLocalizations.of(context)!.patient_name,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4))
                       ),
                     ),
                     TextFormField(
@@ -47,7 +49,7 @@ class _Users_register_pageState extends State<Users_register_page> {
                         FocusScope.of(context).requestFocus(focs2);
                       },
                       decoration: InputDecoration(
-                        labelText:AppLocalizations.of(context)!.gender ,
+                          labelText: AppLocalizations.of(context)!.age,
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
                       ),
                     ),
@@ -57,21 +59,43 @@ class _Users_register_pageState extends State<Users_register_page> {
                         FocusScope.of(context).requestFocus(focs3);
                       },
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.password,
+                          labelText:AppLocalizations.of(context)!.gender,
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
                       ),
                     ),
                     TextFormField(
                       focusNode: focs3,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(context).requestFocus(focs4);
+                      },
                       decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.role,
+                          labelText:AppLocalizations.of(context)!.contact_number ,
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
+                      ),
+                    ),
+                    TextFormField(
+                      focusNode: focs4,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(context).requestFocus(focs5);
+                      },
+                      decoration: InputDecoration(
+                          labelText:AppLocalizations.of(context)!.doctor_name ,
+                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
+                      ),
+                    ),
+                    TextFormField(
+                      focusNode: focs5,
+                      decoration: InputDecoration(
+                          labelText:AppLocalizations.of(context)!.amount ,
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
                       ),
                     ),
                     Row(
                       children: [
-                        ElevatedButton(onPressed:(){}, child:Text(AppLocalizations.of(context)!.save,style: TextStyle(color: Colors.black),),style:ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent
+                        ElevatedButton(onPressed:(){
+                          Navigator.pop(context);
+                        }, child:Text(AppLocalizations.of(context)!.save,style: TextStyle(color: Colors.black),),style:ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightGreen
                         ),),
                       ],
                     ),

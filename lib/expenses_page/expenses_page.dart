@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Expenses_page extends StatefulWidget {
-  const Expenses_page({super.key});
+class ExpensesPage extends StatefulWidget {
+  const ExpensesPage({super.key});
 
   @override
-  State<Expenses_page> createState() => _Expenses_pageState();
+  State<ExpensesPage> createState() => _ExpensesPageState();
 }
 
-class _Expenses_pageState extends State<Expenses_page> {
+class _ExpensesPageState extends State<ExpensesPage> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
@@ -16,21 +16,22 @@ class _Expenses_pageState extends State<Expenses_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey.shade100,
       body:SingleChildScrollView(
         child: Center(
           child: Padding(
             padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
             child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: CupertinoColors.white)
+              ),
               width: 600,
               height:600,
-              color: Colors.white,
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(100, 40, 100, 10),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Center(child: Text(AppLocalizations.of(context)!.record_expenses)),
+                    Center(child: Text(AppLocalizations.of(context)!.record_expenses,style: TextStyle(fontSize: 35),)),
                     TextFormField(
                       onFieldSubmitted: (value) {
                         FocusScope.of(context).requestFocus(focs1);
@@ -69,7 +70,7 @@ class _Expenses_pageState extends State<Expenses_page> {
                             ),
                           ),
                         ),
-                        SizedBox(width: 20,),
+                        const SizedBox(width: 20,),
                         Expanded(
                           child: TextFormField(
                             decoration: InputDecoration(
@@ -82,9 +83,10 @@ class _Expenses_pageState extends State<Expenses_page> {
                     ),
                     Row(
                       children: [
-                        ElevatedButton(onPressed:(){}, child:Text(AppLocalizations.of(context)!.save),style:ElevatedButton.styleFrom(
+                        ElevatedButton(onPressed:(){},style:ElevatedButton.styleFrom(
                             backgroundColor: Colors.yellowAccent
-                        ),),
+                        ), child:Text(AppLocalizations.of(context)!.save),),
+
                       ],
                     ),
                   ],
