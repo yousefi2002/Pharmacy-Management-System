@@ -1,6 +1,8 @@
 import 'package:fargard_pharmacy_management_system/expenses_page/crud_for_expenses.dart';
 import 'package:fargard_pharmacy_management_system/medicines%20List/medicine_register_page.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/crud_for_patients.dart';
+import 'package:fargard_pharmacy_management_system/homepage/home_page.dart';
+import 'package:fargard_pharmacy_management_system/license_page/license_page.dart';
 import 'package:fargard_pharmacy_management_system/provider/theme_provider.dart';
 import 'package:fargard_pharmacy_management_system/users_page/crud_for_users.dart';
 import 'package:flutter/foundation.dart';
@@ -12,7 +14,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'LanguageChange/LanguageChange.dart';
-import 'homepage/home_page.dart';
 
 void main() async {
   SharedPreferences sp = await SharedPreferences.getInstance();
@@ -83,7 +84,7 @@ class MyApp extends StatelessWidget {
               Locale('en'), // English
               Locale('fa'), // Spanish
             ],
-            home: HomePage(),
+            home: LicenseValidationScreen(),
           );
         },
       ),
