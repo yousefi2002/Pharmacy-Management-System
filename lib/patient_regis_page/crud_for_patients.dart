@@ -16,17 +16,17 @@ class PatientProvider extends ChangeNotifier {
   }
 
   Future<void> addPatient(Patient patient) async {
-    await _dbHelper.addPatient(patient);
+    await _dbHelper.addPatients(patient);
     await fetchPatient();
   }
 
-  Future<void> updatePatients(Patient patient) async {
-    await _dbHelper.updatePatient(patient);
+  Future<void> updatePatient(Patient patient) async {
+    await _dbHelper.updatePatients(patient);
     await fetchPatient();
   }
 
   Future<void> deletePatient(int id) async {
-    await _dbHelper.deletePatient(id);
+    await _dbHelper.deletePatients(id);
     await fetchPatient();
   }
 }
