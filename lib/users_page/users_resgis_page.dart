@@ -1,79 +1,168 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Users_register_page extends StatefulWidget {
-  const Users_register_page({super.key});
+import 'package:provider/provider.dart';
+import '../modal_classes/users.dart';
+import 'crud_for_users.dart';
+
+class UsersRegisterPage extends StatefulWidget {
+  final User user;
+  const UsersRegisterPage(this.user, {super.key});
 
   @override
-  State<Users_register_page> createState() => _Users_register_pageState();
+  State<UsersRegisterPage> createState() => _UsersRegisterPageState(this.user);
 }
 
-class _Users_register_pageState extends State<Users_register_page> {
-  final FocusNode focs1 = FocusNode();
-  final FocusNode focs2 = FocusNode();
-  final FocusNode focs3 = FocusNode();
+class _UsersRegisterPageState extends State<UsersRegisterPage> {
+  final _formKey = GlobalKey<FormState>();
+
+  final TextEditingController _nameController = TextEditingController();
+  final TextEditingController _roleController = TextEditingController();
+  final TextEditingController _contactController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+
+  User user;
+
+  _UsersRegisterPageState(this.user);
+
+  @override
+  void initState() {
+    super.initState();
+    _nameController.text = user.name;
+    _roleController.text = user.role;
+    _contactController.text = user.contactNumber;
+    _emailController.text = user.email;
+  }
+
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _roleController.dispose();
+    _contactController.dispose();
+    _emailController.dispose();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body:SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
-            child: Container(
-              decoration: BoxDecoration(
-                  border: Border.all(color: CupertinoColors.white)
-              ),
-              width: 600,
-              height:600,
-              child: Padding(
-                padding: const EdgeInsets.fromLTRB(100, 40, 100, 10),
+      backgroundColor: Colors.grey.shade100,
+      appBar: AppBar(
+        title: const Text('Edit Patient'),
+      ),
+      body: Center(
+        child: Padding(
+          padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
+          child: Container(
+            decoration:
+                BoxDecoration(border: Border.all(color: CupertinoColors.white)),
+            width: 600,
+            height: 600,
+            child: Padding(
+              padding: const EdgeInsets.fromLTRB(100, 40, 100, 10),
+              child: Form(
+                key: _formKey,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Center(child: Text(AppLocalizations.of(context)!.employees,style: TextStyle(fontSize: 35),)),
+                    Center(
+                        child: Text(
+                      AppLocalizations.of(context)!.employees,
+                      style: const TextStyle(fontSize: 35),
+                    )),
                     TextFormField(
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context).requestFocus(focs1);
-                      },
+                      controller: _nameController,
                       decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.username,
-                        border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(4))
-                      ),
+                          labelText: AppLocalizations.of(context)!.username,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4))),
                     ),
                     TextFormField(
-                      focusNode: focs1,
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context).requestFocus(focs2);
-                      },
-                      decoration: InputDecoration(
-                        labelText:AppLocalizations.of(context)!.gender ,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
-                      ),
-                    ),
-                    TextFormField(
-                      focusNode: focs2,
-                      onFieldSubmitted: (value) {
-                        FocusScope.of(context).requestFocus(focs3);
-                      },
-                      decoration: InputDecoration(
-                        labelText: AppLocalizations.of(context)!.password,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
-                      ),
-                    ),
-                    TextFormField(
-                      focusNode: focs3,
+                      controller: _roleController,
                       decoration: InputDecoration(
                           labelText: AppLocalizations.of(context)!.role,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
-                      ),
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the patient\'s name';
+                        }
+                        return null;
+                      },
                     ),
-                    Row(
-                      children: [
-                        ElevatedButton(onPressed:(){}, child:Text(AppLocalizations.of(context)!.save,style: TextStyle(color: Colors.black),),style:ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent
-                        ),),
-                      ],
+                    TextFormField(
+                      controller: _contactController,
+                      decoration: InputDecoration(
+                          labelText:
+                              AppLocalizations.of(context)!.contact_number,
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the patient\'s name';
+                        }
+                        return null;
+                      },
+                    ),
+                    TextFormField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                          labelText: 'email',
+                          border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(4))),
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the patient\'s name';
+                        }
+                        return null;
+                      },
+                    ),
+                    ElevatedButton(
+                      onPressed: () async{
+                        if (_formKey.currentState!.validate()) {
+
+                          if (user.id != null) {
+                            final updatedUser = User(
+                                user.id,
+                                _nameController.text,
+                                _roleController.text,
+                                _contactController.text,
+                                _emailController.text);
+                            await Provider.of<UserProvider>(context, listen: false)
+                                .updateUser(updatedUser);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('User updated successfully!')),
+                            );
+                          } else {
+                            final addPatient = User(
+                              user.id,
+                              _nameController.text,
+                              _roleController.text,
+                              _contactController.text,
+                              _emailController.text,
+                            );
+                            await Provider.of<UserProvider>(context, listen: false)
+                                .addUser(addPatient);
+                            ScaffoldMessenger.of(context).showSnackBar(
+                              const SnackBar(content: Text('User added successfully!')),
+                            );
+                          }
+
+                          _formKey.currentState!.reset();
+                          _nameController.clear();
+                          _roleController.clear();
+                          _contactController.clear();
+                          _emailController.clear();
+
+                          Navigator.pop(context);
+                        }
+                      },
+                      style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.lightGreenAccent),
+                      child: Text(
+                        AppLocalizations.of(context)!.save,
+                        style: TextStyle(color: Colors.black),
+                      ),
                     ),
                   ],
                 ),
@@ -81,7 +170,7 @@ class _Users_register_pageState extends State<Users_register_page> {
             ),
           ),
         ),
-      ) ,
+      ),
     );
   }
 }

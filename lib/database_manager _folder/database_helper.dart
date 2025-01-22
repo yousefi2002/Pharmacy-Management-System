@@ -3,6 +3,7 @@ import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../modal_classes/patients.dart';
+import '../modal_classes/users.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper; // singleton database helper
@@ -392,20 +393,38 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(tableName);
   }
-
-  Future<int> addPatient(Patient patient) async {
+  // patient crud -----------------------------------------------------
+  Future<int> addPatients(Patient patient) async {
     final db = await database;
     return db.insert(patientsTable, patient.toMap());
   }
 
-  Future<int> updatePatient(Patient patient) async {
+  Future<int> updatePatients(Patient patient) async {
     final db = await database;
     return db.update(patientsTable, patient.toMap(), where: '$patId = ?', whereArgs: [patient.id],
     );
   }
 
-  Future<int> deletePatient(int id) async {
+  Future<int> deletePatients(int id) async {
     final db = await database;
     return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
   }
+  // patient crud -----------------------------------------------------
+  Future<int> addUsers(User user) async {
+    final db = await database;
+    return db.insert(usersTable, user.toMap());
+  }
+
+  Future<int> updateUsers(User user) async {
+    final db = await database;
+    return db.update(usersTable, user.toMap(), where: '$userId = ?', whereArgs: [user.id],
+    );
+  }
+
+  Future<int> deleteUsers(int id) async {
+    final db = await database;
+    return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
+  }
+
+
 }

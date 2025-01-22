@@ -1,6 +1,7 @@
 import 'package:fargard_pharmacy_management_system/medicines%20List/medicine_register_page.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/crud_for_patients.dart';
 import 'package:fargard_pharmacy_management_system/provider/theme_provider.dart';
+import 'package:fargard_pharmacy_management_system/users_page/crud_for_users.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -22,6 +23,7 @@ void main() async {
     providers: [
       ChangeNotifierProvider(create: (_) => ThemeProvider(),),
       ChangeNotifierProvider(create: (_) => PatientProvider(),),
+      ChangeNotifierProvider(create: (_) => UserProvider(),),
     ],
     child: MyApp(
       local: languageCode,

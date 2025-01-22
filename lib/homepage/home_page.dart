@@ -85,7 +85,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.employees,
           "icon": Icons.person_pin,
-          "navigate": Users_List_page(),
+          "navigate": UsersListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.reports,
