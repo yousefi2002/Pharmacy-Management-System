@@ -49,6 +49,10 @@ dependencies:
   animated_text_kit: ^4.2.2
   neumorphic_button: ^0.0.1+2
   sqflite: ^2.4.1
+  crypto: ^3.0.6
+  device_info_plus: ^11.2.1
+  file_picker: ^8.1.7
+
 dev_dependencies:
   flutter_test:
     sdk: flutter
