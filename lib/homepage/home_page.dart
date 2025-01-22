@@ -1,6 +1,5 @@
 import 'package:fargard_pharmacy_management_system/customer/customer_List_page.dart';
 import 'package:fargard_pharmacy_management_system/expenses_page/expenses_List_page.dart';
-import 'package:fargard_pharmacy_management_system/expenses_page/expenses_page.dart';
 import 'package:fargard_pharmacy_management_system/medicines%20List/medicines%20List.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/patient_regis_page.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/patients_List_page.dart';
@@ -10,6 +9,7 @@ import 'package:fargard_pharmacy_management_system/doctors_page/doctprs_List_pag
 import 'package:fargard_pharmacy_management_system/reports/reports_page.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/prescription.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
+import 'package:fargard_pharmacy_management_system/setting_page/Setting_page.dart';
 import 'package:fargard_pharmacy_management_system/users_page/users_List_page.dart';
 import 'package:fargard_pharmacy_management_system/visit_page/visit_List_page.dart';
 import 'package:fargard_pharmacy_management_system/visit_page/visit_regis_page.dart';
@@ -19,8 +19,8 @@ import 'package:neumorphic_button/neumorphic_button.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../LanguageChange/LanguageChange.dart';
-import '../doctors_page/doctor_register_page.dart';
-import '../provider/theme_provider.dart';
+
+import '../provider/provider_setting.dart';
 enum Language { English, Farsi, Pashto }
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -82,7 +82,6 @@ class _HomePageState extends State<HomePage> {
       "icon": Icon(Icons.people_alt,),
       "navigate": Users_List_page(),
     },
-
     {
       "name": AppLocalizations.of(context)!.reports,
       "icon": Icon(Icons.repeat_outlined,),
@@ -96,7 +95,7 @@ class _HomePageState extends State<HomePage> {
     {
       "name": AppLocalizations.of(context)!.settings,
       "icon": Icon(Icons.settings,),
-      "navigate": Patients_regis_page(),
+      "navigate": Setting_page(),
     },
     {
       "name": AppLocalizations.of(context)!.about,

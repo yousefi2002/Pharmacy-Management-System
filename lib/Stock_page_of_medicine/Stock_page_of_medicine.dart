@@ -1,5 +1,9 @@
+import 'package:fargard_pharmacy_management_system/provider/provider_setting.dart';
+import 'package:fargard_pharmacy_management_system/setting_page/Setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Stock_page_of_medicine extends StatefulWidget {
   @override
@@ -32,6 +36,7 @@ class _Stock_page_of_medicineState extends State<Stock_page_of_medicine> {
     super.dispose();
   }
 
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,7 +48,11 @@ class _Stock_page_of_medicineState extends State<Stock_page_of_medicine> {
               child: SingleChildScrollView(
                 child: PaginatedDataTable(
                   actions: [
-
+                    Consumer<ThemeProvider>(
+                      builder: (context,settingprovider,child){
+                        return ElevatedButton(onPressed:settingprovider.isbuttonenable?(){print("saved");}:null, child:Text(AppLocalizations.of(context)!.nnew));
+                      },
+                    ),
                     SizedBox(width: 10,),
                     ElevatedButton(
                         style: ElevatedButton.styleFrom(

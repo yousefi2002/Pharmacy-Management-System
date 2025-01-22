@@ -1,5 +1,4 @@
-import 'package:fargard_pharmacy_management_system/medicines%20List/medicine_register_page.dart';
-import 'package:fargard_pharmacy_management_system/provider/theme_provider.dart';
+import 'package:fargard_pharmacy_management_system/provider/provider_setting.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -7,7 +6,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'LanguageChange/LanguageChange.dart';
 import 'homepage/home_page.dart';
-
 void main() async {
   SharedPreferences sp = await SharedPreferences.getInstance();
   final String languageCode = sp.getString("language_code") ?? "en";
