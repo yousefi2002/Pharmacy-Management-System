@@ -20,10 +20,10 @@ class _UsersListPageState extends State<UsersListPage> {
   @override
   Widget build(BuildContext context) {
     Future.microtask(() {
-      Provider.of<UserProvider>(context, listen: false).fetchUsers();
+      Provider.of<UserProvider>(context, listen: false).fetchUser();
     });
     return Scaffold(
-      appBar: AppBar(title: const Text('Employees List'),),
+      appBar: AppBar(),
       body: Consumer<UserProvider>(
         builder: (context,  value, child) {
           final data = value.users;
@@ -95,6 +95,7 @@ class _UsersListPageState extends State<UsersListPage> {
                           ),
                         ),
                       ],
+
                       source: MyData(data, context),
                       columns: [
                         const DataColumn(label: Text("Id")),

@@ -18,6 +18,7 @@ class _Medicine_register_pageState extends State<Medicine_register_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body:SingleChildScrollView(
         child: Center(
           child: Padding(

@@ -11,23 +11,23 @@ class UserProvider extends ChangeNotifier {
 
   List<User> get users => _users;
 
-  Future<void> fetchUsers() async {
+  Future<void> fetchUser() async {
     _users = await _databaseService.fetchUsers();
     notifyListeners();
   }
 
   Future<void> addUser(User user) async {
     await _dbHelper.addUser(user);
-    await fetchUsers();
+    await fetchUser();
   }
 
   Future<void> updateUser(User user) async {
     await _dbHelper.updateUser(user);
-    await fetchUsers();
+    await fetchUser();
   }
 
   Future<void> deleteUser(int id) async {
     await _dbHelper.deleteUser(id);
-    await fetchUsers();
+    await fetchUser();
   }
 }
