@@ -40,7 +40,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.medicines,
           "icon": Icons.medication_outlined,
-          "navigate": Medicines_List(),
+          "navigate": MedicinesList(),
         },
         {
           "name": AppLocalizations.of(context)!.warehouse,

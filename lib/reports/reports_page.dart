@@ -1,15 +1,10 @@
-// import 'package:fargard_pharmacy_management_system/Stock_page_of_medicine/Stock_page_of_medicine.dart';
 import 'package:fargard_pharmacy_management_system/doctors_page/doctprs_List_page.dart';
 // import 'package:fargard_pharmacy_management_system/reports/employee_reports_page.dart';
 import 'package:fargard_pharmacy_management_system/purches_page/purchese_List_page.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../medicines List/medicine_register_page.dart';
-// import '../patient_regis_page/patient_regis_page.dart';
-// import '../purches_page/Purchase_page.dart';
-// import '../salse_page/prescription.dart';
 
 class All_reports_page extends StatefulWidget {
   const All_reports_page({super.key});
@@ -43,12 +38,12 @@ class _All_reports_pageState extends State<All_reports_page> {
     {
       "name": AppLocalizations.of(context)!.expense_reports,
       "icon": Icon(Icons.add_card_outlined),
-      "navigate": Medicine_register_page(),
+      // "navigate": MedicineRegisterPage(),
     },
     {
       "name": AppLocalizations.of(context)!.total_income_expenses,
       "icon": Icon(Icons.add_card_outlined),
-      "navigate": Medicine_register_page(),
+      // "navigate": MedicineRegisterPage(),
     },
   ];
   @override

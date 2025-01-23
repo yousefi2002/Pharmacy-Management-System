@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:fargard_pharmacy_management_system/modal_classes/expenses.dart';
+import 'package:fargard_pharmacy_management_system/modal_classes/medicines.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -193,21 +194,21 @@ class DatabaseHelper {
         )''');
 
     await db.execute('''
-        CREATE TABLE $medicinesTable
-        ($medId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $medName varchar(255) NOT NULL,
-        $medType varchar(255) DEFAULT NULL,
-        $medDescription text,
-        $medPricePerUnit decimal(10,2) DEFAULT NULL,
-        $medCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $medUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $medGenId int NOT NULL,
-        $medComId int NOT NULL,
-        CONSTRAINT $medComId FOREIGN KEY ($medComId) REFERENCES $companyTable ($comId),
-        CONSTRAINT $medGenId FOREIGN KEY ($medGenId) REFERENCES $genericNameTable ($genId)
-  )''');
-    await db.execute('CREATE INDEX medicine_generic_id ON medicines(medicine_generic_id);');
-    await db.execute('CREATE INDEX medicine_company_id ON medicines(medicine_company_id);');
+        CREATE TABLE $medicinesTable (
+  $medId INTEGER PRIMARY KEY AUTOINCREMENT, 
+  $medName VARCHAR(255) NOT NULL,
+  $medType VARCHAR(255) DEFAULT NULL,
+  $medDescription TEXT,
+  $medPricePerUnit DECIMAL(10,2) DEFAULT NULL,
+  $medGenId TEXT DEFAULT NULL,
+  $medComId TEXT DEFAULT NULL,
+  $medCreatedAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  $medUpdatedAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT $medComId FOREIGN KEY ($medComId) REFERENCES $companyTable ($comId),
+  CONSTRAINT $medGenId FOREIGN KEY ($medGenId) REFERENCES $genericNameTable ($genId)
+);''');
+    await db.execute('CREATE INDEX $medGenId ON medicines($medGenId);');
+    await db.execute('CREATE INDEX $medComId ON medicines($medComId);');
 
     await db.execute('''
         CREATE TABLE $purchaseTable
@@ -223,8 +224,8 @@ class DatabaseHelper {
         CONSTRAINT $purMedId FOREIGN KEY ($purMedId) REFERENCES $medicinesTable($medId),
         CONSTRAINT $purSupplierId FOREIGN KEY ($purSupplierId) REFERENCES $supplierTable ($supId)
         )''');
-    await db.execute('CREATE INDEX purchase_medicine_id ON purchases(purchase_medicine_id);');
-    await db.execute('CREATE INDEX purchase_supplier_id ON purchases(purchase_supplier_id)');
+    await db.execute('CREATE INDEX $purMedId ON purchases($purMedId);');
+    await db.execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId)');
 
     await db.execute('''
     CREATE TABLE $supplierTable (
@@ -256,9 +257,9 @@ class DatabaseHelper {
 ''');
 
     await db.execute('''
-    CREATE INDEX IF NOT EXISTS idx_$salMedId ON $salesTable ($salMedId);
-    CREATE INDEX IF NOT EXISTS idx_$salCustomerId ON $salesTable ($salCustomerId);
-    CREATE INDEX IF NOT EXISTS idx_$salUserID ON $salesTable ($salUserID);
+    CREATE INDEX IF NOT EXISTS $salMedId ON $salesTable ($salMedId);
+    CREATE INDEX IF NOT EXISTS $salCustomerId ON $salesTable ($salCustomerId);
+    CREATE INDEX IF NOT EXISTS $salUserID ON $salesTable ($salUserID);
 ''');
 
     await db.execute('''
@@ -298,7 +299,7 @@ class DatabaseHelper {
 ''');
 
     await db.execute('''
-    CREATE INDEX IF NOT EXISTS idx_$expUserId ON $expensesTable ($expUserId);
+    CREATE INDEX IF NOT EXISTS $expUserId ON $expensesTable ($expUserId);
 ''');
 
     await db.execute('''
@@ -445,4 +446,20 @@ class DatabaseHelper {
     return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
   }
 
+  // patient crud -----------------------------------------------------
+  Future<int> addMedicines(Medicine medicine) async {
+    final db = await database;
+    return db.insert(medicinesTable, medicine.toMap());
+  }
+
+  Future<int> updateMedicines(Medicine medicine) async {
+    final db = await database;
+    return db.update(medicinesTable, medicine.toMap(), where: '$medId = ?', whereArgs: [medicine.id],
+    );
+  }
+
+  Future<int> deleteMedicines(int id) async {
+    final db = await database;
+    return db.delete(medicinesTable, where: '$medId = ?', whereArgs: [id]);
+  }
 }
