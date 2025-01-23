@@ -7,11 +7,10 @@ class Patient {
   String? _updatedAt;
 
   Patient(
+      this._id,
       this._name,
       this._address,
       this._contactNumber,
-      this._createdAt,
-      this._updatedAt,
       );
 
   int? get id => _id;
@@ -46,5 +45,9 @@ class Patient {
     _contactNumber = map["patient_address"];
     _createdAt = map["created_at"];
     _updatedAt = map["updated_at"];
+  }
+  @override
+  String toString() {
+    return " $id \n ====== $_name \n ====== $_address \n ====== $_contactNumber";
   }
 }

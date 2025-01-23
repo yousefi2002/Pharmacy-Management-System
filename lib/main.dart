@@ -1,20 +1,35 @@
 import 'package:fargard_pharmacy_management_system/homepage/home_page.dart';
 import 'package:fargard_pharmacy_management_system/login_page/login_page.dart';
 import 'package:fargard_pharmacy_management_system/provider/provider_setting.dart';
+import 'package:fargard_pharmacy_management_system/expenses_page/crud_for_expenses.dart';
+import 'package:fargard_pharmacy_management_system/medicines%20List/medicine_register_page.dart';
+import 'package:fargard_pharmacy_management_system/patient_regis_page/crud_for_patients.dart';
+import 'package:fargard_pharmacy_management_system/license_page/license_page.dart';
+import 'package:fargard_pharmacy_management_system/provider/theme_provider.dart';
+import 'package:fargard_pharmacy_management_system/users_page/crud_for_users.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:sqflite/sqflite.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'LanguageChange/LanguageChange.dart';
-
 
 void main() async {
   SharedPreferences sp = await SharedPreferences.getInstance();
   final String languageCode = sp.getString("language_code") ?? "en";
-
-  runApp(ChangeNotifierProvider(
-    create: (_) => ThemeProvider(),
+  // WidgetsFlutterBinding.ensureInitialized();
+  sqfliteFfiInit();
+  databaseFactory = databaseFactoryFfi;
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider(create: (_) => ThemeProvider(),),
+      ChangeNotifierProvider(create: (_) => PatientProvider(),),
+      ChangeNotifierProvider(create: (_) => UserProvider(),),
+      ChangeNotifierProvider(create: (_) => ExpensesProvider(),),
+    ],
     child: MyApp(
       local: languageCode,
     ),
@@ -71,7 +86,7 @@ class MyApp extends StatelessWidget {
               Locale('en'), // English
               Locale('fa'), // Spanish
             ],
-            home: HomePage(),
+            home: LicenseValidationScreen(),
           );
         },
       ),

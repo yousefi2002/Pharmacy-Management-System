@@ -1,11 +1,11 @@
 
 
 import 'dart:io';
-
+import 'package:fargard_pharmacy_management_system/modal_classes/expenses.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../modal_classes/patients.dart';
+import '../modal_classes/users.dart';
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper; // singleton database helper
@@ -209,8 +209,6 @@ class DatabaseHelper {
   )''');
     await db.execute('CREATE INDEX medicine_generic_id ON medicines(medicine_generic_id);');
     await db.execute('CREATE INDEX medicine_company_id ON medicines(medicine_company_id);');
-
-
     await db.execute('''
         CREATE TABLE $purchaseTable
         ($purId INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -290,6 +288,7 @@ class DatabaseHelper {
     CREATE TABLE $expensesTable (
         $expId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $expDescription text,
+
         $expAmount REAL DEFAULT NULL,
         $expDate date DEFAULT NULL,
         $expUserId int NOT NULL,
@@ -302,7 +301,6 @@ class DatabaseHelper {
     await db.execute('''
     CREATE INDEX IF NOT EXISTS idx_$expUserId ON $expensesTable ($expUserId);
 ''');
-
 
     await db.execute('''
     CREATE TABLE $purchaseDetailsTable (
@@ -398,23 +396,50 @@ class DatabaseHelper {
     return await db.query(tableName);
   }
 
-  Future<int> addPatient(Patient patient) async {
-    final db = await database;
-    return db.insert('patients', patient.toMap());
-  }
 
-  Future<int> updatePatient(Patient patient) async {
+  // patient crud -----------------------------------------------------
+  Future<int> addPatients(Patient patient) async {
     final db = await database;
-    return db.update(
-      'patients',
-      patient.toMap(),
-      where: 'id = ?',
-      whereArgs: [patient.id],
+    return db.insert(patientsTable, patient.toMap());
+  }
+  Future<int> updatePatients(Patient patient) async {
+    final db = await database;
+    return db.update(patientsTable, patient.toMap(), where: '$patId = ?', whereArgs: [patient.id],
     );
   }
-
-  Future<int> deletePatient(int id) async {
+  Future<int> deletePatients(int id) async {
     final db = await database;
-    return db.delete('patients', where: 'id = ?', whereArgs: [id]);
+    return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
   }
+
+  // User crud -----------------------------------------------------
+  Future<int> addUser(User user) async {
+    final db = await database;
+    return db.insert(usersTable, user.toMap());
+  }
+  Future<int> updateUser(User user) async {
+    final db = await database;
+    return db.update(usersTable, user.toMap(), where: '$userId = ?', whereArgs: [user.id],
+    );
+  }
+  Future<int> deleteUser(int id) async {
+    final db = await database;
+    return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
+  }
+
+  // Expenses crud -----------------------------------------------------
+  Future<int> addExpense(Expenses expenses) async {
+    final db = await database;
+    return db.insert(expensesTable, expenses.toMap());
+  }
+  Future<int> updateExpense(Expenses expenses) async {
+    final db = await database;
+    return db.update(expensesTable, expenses.toMap(), where: '$expId = ?', whereArgs: [expenses.id],
+    );
+  }
+  Future<int> deleteExpense(int id) async {
+    final db = await database;
+    return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
+  }
+
 }

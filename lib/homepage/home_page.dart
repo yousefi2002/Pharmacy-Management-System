@@ -38,79 +38,77 @@ class _HomePageState extends State<HomePage> {
   bool status_bar_visibility = true;
 
   List<Map<String, dynamic>> pages(BuildContext context) => [
-    {
-      "name": AppLocalizations.of(context)!.medicines,
-      "icon": Icons.medication_outlined,
-      "navigate": Medicines_List(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.warehouse,
-      "icon": Icons.inventory_2_outlined,
-      "navigate": Stock_page_of_medicine(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.purchase_invoices,
-      "icon": Icons.inventory_outlined,
-      "navigate": Purchese_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.sales_invoices,
-      "icon": Icons.sell_outlined,
-      "navigate": Sales_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.visits,
-      "icon": Icons.meeting_room_outlined,
-      "navigate": Visit_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.expenses,
-      "icon": Icons.event_busy,
-      "navigate": Expenses_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.customers,
-      "icon": Icons.person_2_outlined,
-      "navigate": Customer_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.patients,
-      "icon": Icons.person_add_alt,
-      "navigate": Patients_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.doctors,
-      "icon": Icons.person_pin_rounded,
-      "navigate": Doctors_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.employees,
-      "icon": Icons.person_pin,
-      "navigate": Users_List_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.reports,
-      "icon": Icons.report,
-      "navigate": All_reports_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.backup,
-      "icon": Icons.backup,
-      "navigate": Patients_regis_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.settings,
-      "icon": Icons.settings,
-      "navigate": Patients_regis_page(),
-    },
-    {
-      "name": AppLocalizations.of(context)!.about,
-      "icon": Icons.info_outline,
-      "navigate": Patients_regis_page(),
-    },
-  ];
-
-  var fontsize=20.0;
+        {
+          "name": AppLocalizations.of(context)!.medicines,
+          "icon": Icons.medication_outlined,
+          "navigate": Medicines_List(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.warehouse,
+          "icon": Icons.inventory_2_outlined,
+          "navigate": Stock_page_of_medicine(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.purchase_invoices,
+          "icon": Icons.inventory_outlined,
+          "navigate": Purchese_List_page(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.sales_invoices,
+          "icon": Icons.sell_outlined,
+          "navigate": Sales_List_page(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.visits,
+          "icon": Icons.meeting_room_outlined,
+          "navigate": Visit_List_page(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.expenses,
+          "icon": Icons.event_busy,
+          "navigate": ExpensesListPage(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.customers,
+          "icon": Icons.person_2_outlined,
+          "navigate": Customer_List_page(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.patients,
+          "icon": Icons.person_add_alt,
+          "navigate": PatientsListPage(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.doctors,
+          "icon": Icons.person_pin_rounded,
+          "navigate": Doctors_List_page(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.employees,
+          "icon": Icons.person_pin,
+          "navigate": UsersListPage(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.reports,
+          "icon": Icons.report,
+          "navigate": All_reports_page(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.backup,
+          "icon": Icons.backup,
+          // "navigate": AddPatientPage(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.settings,
+          "icon": Icons.settings,
+          // "navigate": AddPatientPage(),
+        },
+        {
+          "name": AppLocalizations.of(context)!.about,
+          "icon": Icons.info_outline,
+          // "navigate": AddPatientPage(),
+        },
+      ];
 
   @override
   Widget build(BuildContext context) {
