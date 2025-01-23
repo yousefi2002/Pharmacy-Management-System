@@ -394,53 +394,48 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(tableName);
   }
+
   // patient crud -----------------------------------------------------
   Future<int> addPatients(Patient patient) async {
     final db = await database;
     return db.insert(patientsTable, patient.toMap());
   }
-
   Future<int> updatePatients(Patient patient) async {
     final db = await database;
     return db.update(patientsTable, patient.toMap(), where: '$patId = ?', whereArgs: [patient.id],
     );
   }
-
   Future<int> deletePatients(int id) async {
     final db = await database;
     return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
   }
-  // patient crud -----------------------------------------------------
-  Future<int> addUsers(User user) async {
+
+  // User crud -----------------------------------------------------
+  Future<int> addUser(User user) async {
     final db = await database;
     return db.insert(usersTable, user.toMap());
   }
-
-  Future<int> updateUsers(User user) async {
+  Future<int> updateUser(User user) async {
     final db = await database;
     return db.update(usersTable, user.toMap(), where: '$userId = ?', whereArgs: [user.id],
     );
   }
-
-  Future<int> deleteUsers(int id) async {
+  Future<int> deleteUser(int id) async {
     final db = await database;
     return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
   }
 
-  // patient crud -----------------------------------------------------
-
-  Future<int> addExpenses(Expenses expenses) async {
+  // Expenses crud -----------------------------------------------------
+  Future<int> addExpense(Expenses expenses) async {
     final db = await database;
     return db.insert(expensesTable, expenses.toMap());
   }
-
-  Future<int> updateExpenses(Expenses expenses) async {
+  Future<int> updateExpense(Expenses expenses) async {
     final db = await database;
     return db.update(expensesTable, expenses.toMap(), where: '$expId = ?', whereArgs: [expenses.id],
     );
   }
-
-  Future<int> deleteExpenses(int id) async {
+  Future<int> deleteExpense(int id) async {
     final db = await database;
     return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
   }

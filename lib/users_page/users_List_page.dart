@@ -20,7 +20,7 @@ class _UsersListPageState extends State<UsersListPage> {
   @override
   Widget build(BuildContext context) {
     Future.microtask(() {
-      Provider.of<UserProvider>(context, listen: false).fetchUser();
+      Provider.of<UserProvider>(context, listen: false).fetchUsers();
     });
     return Scaffold(
       appBar: AppBar(title: const Text('Employees List'),),
