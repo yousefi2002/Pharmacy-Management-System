@@ -12,7 +12,6 @@ class _Customer_List_pageState extends State<Customer_List_page> {
   final mydata _mydata = mydata();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-
   void _filterData(String query) {
     setState(() {
       _searchQuery = query.toLowerCase();
@@ -136,25 +135,8 @@ class _Customer_List_pageState extends State<Customer_List_page> {
 
 class mydata extends DataTableSource {
   List<Map<String, String>> _prescriptions = [
-    {"number": "1", "patient_name": "Patient A", "contact_number": "1234567890", "prescription_number": "RX001", "total_amount": "1000", "paid_amount": "900"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-  ];
 
+  ];
   List<Map<String, String>> _filteredPrescriptions = [];
 
   void filterData(String query) {
@@ -171,12 +153,12 @@ class mydata extends DataTableSource {
   DataRow getRow(int index) {
     final prescription = _filteredPrescriptions[index];
     return DataRow(cells: [
-      DataCell(Text(prescription["number"] ?? '')),
-      DataCell(Text(prescription["patient_name"] ?? '')),
-      DataCell(Text(prescription["patient_name"] ?? '')),
-      DataCell(Text(prescription["contact_number"] ?? '')),
-      DataCell(Text(prescription["prescription_number"] ?? '')),
-      DataCell(Text(prescription["total_amount"] ?? '')),
+      DataCell(Text(prescription["customer_id"] ?? '')),
+      DataCell(Text(prescription["customer_name"] ?? '')),
+      DataCell(Text(prescription["customer_contact_number"] ?? '')),
+      DataCell(Text(prescription["customer_age"] ?? '')),
+      DataCell(Text(prescription["customer_gender"] ?? '')),
+      DataCell(Text(prescription["customer_address"] ?? '')),
       DataCell(Row(
         children: [
           IconButton(onPressed:(){}, icon:Icon(Icons.delete,color: Colors.red,),),

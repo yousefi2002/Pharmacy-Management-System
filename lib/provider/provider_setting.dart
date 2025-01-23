@@ -3,8 +3,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 class ThemeProvider with ChangeNotifier {
   ThemeMode _themeMode = ThemeMode.light;
-
   ThemeMode get themeMode => _themeMode;
+
 
   ThemeProvider() {
     _loadThemeFromPrefs();
@@ -27,4 +27,26 @@ class ThemeProvider with ChangeNotifier {
     final prefs = await SharedPreferences.getInstance();
     prefs.setBool('isDarkMode', isDark);
   }
+
+  /////////////////////////////////////////////////////////////
+
+   bool _isbuttonenabled=false;
+  bool get isbuttonenable=>_isbuttonenabled;
+
+  setting_provider(){
+    loadswitchstate();
+  }
+
+  void loadswitchstate()async{
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    _isbuttonenabled=prefs.getBool("isbuttonenabled")?? false;notifyListeners();
+  }
+
+  void toggleswitche(bool value)async{
+    _isbuttonenabled=value;
+    SharedPreferences prefs=await SharedPreferences.getInstance();
+    prefs.setBool("isbuttonenabled", value);
+    notifyListeners();
+  }
+
 }

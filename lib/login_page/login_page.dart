@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fargard_pharmacy_management_system/homepage/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -11,6 +12,8 @@ class Login_page extends StatefulWidget {
 }
 
 class _Login_pageState extends State<Login_page> {
+  final List<String> name=["Admin","Pharmacist","Pharmacist Assistant"];
+  String? selectvalue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(

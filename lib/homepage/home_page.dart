@@ -9,6 +9,7 @@ import 'package:fargard_pharmacy_management_system/doctors_page/doctprs_List_pag
 import 'package:fargard_pharmacy_management_system/reports/reports_page.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/prescription.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
+import 'package:fargard_pharmacy_management_system/setting_page/Setting_page.dart';
 import 'package:fargard_pharmacy_management_system/users_page/users_List_page.dart';
 import 'package:fargard_pharmacy_management_system/visit_page/visit_List_page.dart';
 import 'package:fargard_pharmacy_management_system/visit_page/visit_regis_page.dart';
@@ -17,8 +18,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../LanguageChange/LanguageChange.dart';
-import '../provider/theme_provider.dart';
 
+import '../provider/provider_setting.dart';
 enum Language { english, farsi, pashto }
 
 class HomePage extends StatefulWidget {
@@ -119,7 +120,6 @@ class _HomePageState extends State<HomePage> {
     return Scaffold(
         body: Column(
       children: [
-        //Section #1: header
         Container(
           width: double.infinity,
           color: Theme.of(context).primaryColor,

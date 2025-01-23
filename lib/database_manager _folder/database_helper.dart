@@ -1,8 +1,9 @@
+
+
 import 'dart:io';
 import 'package:fargard_pharmacy_management_system/modal_classes/expenses.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../modal_classes/patients.dart';
 import '../modal_classes/users.dart';
 
@@ -208,7 +209,6 @@ class DatabaseHelper {
   )''');
     await db.execute('CREATE INDEX medicine_generic_id ON medicines(medicine_generic_id);');
     await db.execute('CREATE INDEX medicine_company_id ON medicines(medicine_company_id);');
-
     await db.execute('''
         CREATE TABLE $purchaseTable
         ($purId INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -288,9 +288,10 @@ class DatabaseHelper {
     CREATE TABLE $expensesTable (
         $expId INTEGER PRIMARY KEY AUTOINCREMENT, 
         $expDescription text,
-        $expAmount Real DEFAULT NULL,
-        $expDate TEXT DEFAULT NULL,
-        $expUserId INTEGER null,
+
+        $expAmount REAL DEFAULT NULL,
+        $expDate date DEFAULT NULL,
+        $expUserId int NOT NULL,
         $expCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         $expUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         CONSTRAINT $expUserId FOREIGN KEY ($expUserId) REFERENCES $usersTable ($userId)
@@ -394,6 +395,7 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(tableName);
   }
+
 
   // patient crud -----------------------------------------------------
   Future<int> addPatients(Patient patient) async {
