@@ -1,3 +1,4 @@
+import 'package:fargard_pharmacy_management_system/homepage/home_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -99,7 +100,10 @@ class _Login_pageState extends State<Login_page> {
                   ),
                 ),
               ),
-              ElevatedButton(onPressed:(){}, child:Text("Login",style: TextStyle(color: Colors.green),)),
+              ElevatedButton(onPressed:(){
+                Navigator.pushReplacement(
+                    context, MaterialPageRoute(builder: (b) => HomePage()));
+              }, child:Text("Login",style: TextStyle(color: Colors.green),)),
               SizedBox(height: 20,)
             ],
           ),

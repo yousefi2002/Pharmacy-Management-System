@@ -23,6 +23,7 @@ class _UsersListPageState extends State<UsersListPage> {
       Provider.of<UserProvider>(context, listen: false).fetchUser();
     });
     return Scaffold(
+      appBar: AppBar(title: const Text('Employees List'),),
       body: Consumer<UserProvider>(
         builder: (context,  value, child) {
           final data = value.users;
@@ -94,7 +95,6 @@ class _UsersListPageState extends State<UsersListPage> {
                           ),
                         ),
                       ],
-
                       source: MyData(data, context),
                       columns: [
                         const DataColumn(label: Text("Id")),
