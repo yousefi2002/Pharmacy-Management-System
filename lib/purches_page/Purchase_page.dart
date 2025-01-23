@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Purchase_page extends StatefulWidget {
-  const Purchase_page({super.key});
+class PurchasePage extends StatefulWidget {
+  const PurchasePage({super.key});
 
   @override
-  State<Purchase_page> createState() => _Purchase_pageState();
+  State<PurchasePage> createState() => _PurchasePageState();
 }
 
-class _Purchase_pageState extends State<Purchase_page> {
+class _PurchasePageState extends State<PurchasePage> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
@@ -146,7 +146,7 @@ class _Purchase_pageState extends State<Purchase_page> {
                   ),
                 ),
               ),
-              SizedBox(height: 20,),
+              const SizedBox(height: 20,),
               Container(
                 decoration: BoxDecoration(
                   border: Border.all(color: Colors.black),

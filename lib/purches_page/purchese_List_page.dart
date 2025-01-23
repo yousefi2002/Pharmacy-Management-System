@@ -47,7 +47,7 @@ class _Purchese_List_pageState extends State<Purchese_List_page> {
                     ElevatedButton(style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent),
                         onPressed:(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Purchase_page(),));
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => PurchasePage(),));
                         },
                         child:Text(AppLocalizations.of(context)!.nnew,style: TextStyle(color: Colors.black),)),
                     SizedBox(width: 100,),
@@ -110,10 +110,10 @@ class _Purchese_List_pageState extends State<Purchese_List_page> {
                   ],
                   source: _mydata,
                   columns: [
-                    DataColumn(label: Container(width:20,child: Text("#"))),
+                    DataColumn(label: Text("#")),
                     DataColumn(label: Text(AppLocalizations.of(context)!.account)),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.contact_number))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.date))),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.date)),
                     DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.invoice_number))),
                     DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.total_price))),
                     DataColumn(label: Container(width:80,child: Text(""))),
@@ -132,25 +132,7 @@ class _Purchese_List_pageState extends State<Purchese_List_page> {
 }
 
 class mydata extends DataTableSource {
-  List<Map<String, String>> _prescriptions = [
-    {"number": "1", "patient_name": "Patient A", "contact_number": "1234567890", "prescription_number": "RX001", "total_amount": "1000", "paid_amount": "900"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-  ];
+  List<Map<String, String>> _prescriptions = [];
 
   List<Map<String, String>> _filteredPrescriptions = [];
 
