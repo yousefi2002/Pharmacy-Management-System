@@ -55,6 +55,7 @@ class MyApp extends StatelessWidget {
               primarySwatch: Colors.green,
               brightness: Brightness.light,
               scaffoldBackgroundColor: Colors.grey[100],
+              appBarTheme: AppBarTheme(color: Colors.green[200], toolbarHeight: 80),
               colorScheme: ColorScheme.fromSwatch(
                 primarySwatch: Colors.green,
                 accentColor: Colors.white,

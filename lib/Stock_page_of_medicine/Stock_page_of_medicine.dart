@@ -40,6 +40,7 @@ class _Stock_page_of_medicineState extends State<Stock_page_of_medicine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
