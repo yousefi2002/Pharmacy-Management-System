@@ -1,3 +1,4 @@
+import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -12,6 +13,8 @@ class _Users_register_pageState extends State<Users_register_page> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
+  final List<String> name=["Admin","Pharmacist","Pharmacist Assistant"];
+  String? selectvalue;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -61,11 +64,39 @@ class _Users_register_pageState extends State<Users_register_page> {
                           border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
                       ),
                     ),
-                    TextFormField(
-                      focusNode: focs3,
-                      decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.role,
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(4))
+                    SizedBox(
+                      child: DropdownButton2(
+                        isExpanded: true,
+                        hint: Row(
+                          children: [
+                            Icon(Icons.list,size: 16,color: Colors.lightGreenAccent,),
+                            SizedBox(width: 4,),
+                            Expanded(child: Text("Select Item",style:
+                            TextStyle(fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.lightGreenAccent),
+                              overflow: TextOverflow.ellipsis,))
+                          ],
+                        ),
+                        items: name.map((String names)=>DropdownMenuItem<String>(
+                          value: names,
+                          child: Text(
+                            names,style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.lightGreenAccent,
+                          ),
+                            overflow: TextOverflow.ellipsis,
+                          ),
+                        ),
+                        ).toList(),
+                        value: selectvalue,
+                        onChanged:(String? value){
+                          setState(() {
+                            selectvalue=value;
+                          });
+                        },
+
                       ),
                     ),
                     Row(

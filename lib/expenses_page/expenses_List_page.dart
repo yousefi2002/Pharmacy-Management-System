@@ -1,6 +1,4 @@
-import 'package:fargard_pharmacy_management_system/customer/customer_regis_page.dart';
 import 'package:fargard_pharmacy_management_system/expenses_page/expenses_page.dart';
-import 'package:fargard_pharmacy_management_system/patient_regis_page/patient_regis_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -49,7 +47,7 @@ class _Expenses_List_pageState extends State<Expenses_List_page> {
                     ElevatedButton(style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.blueAccent),
                         onPressed:(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Expenses_page(
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => ExpensesPage(
                           ),));
                         },
                         child:Text(AppLocalizations.of(context )!.nnew,style: TextStyle(color: Colors.black),)),

@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Doctors_register_page extends StatefulWidget {
-  const Doctors_register_page({super.key});
+class DoctorsRegisterPage extends StatefulWidget {
+  const DoctorsRegisterPage({super.key});
 
   @override
-  State<Doctors_register_page> createState() => _Doctors_register_pageState();
+  State<DoctorsRegisterPage> createState() => _DoctorsRegisterPageState();
 }
 
-class _Doctors_register_pageState extends State<Doctors_register_page> {
+class _DoctorsRegisterPageState extends State<DoctorsRegisterPage> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
@@ -70,9 +70,11 @@ class _Doctors_register_pageState extends State<Doctors_register_page> {
                     ),
                     Row(
                       children: [
-                        ElevatedButton(onPressed:(){}, child:Text(AppLocalizations.of(context)!.save,style: TextStyle(color: Colors.black),),style:ElevatedButton.styleFrom(
+
+                        ElevatedButton(onPressed:(){},style:ElevatedButton.styleFrom(
+
                             backgroundColor: Colors.yellowAccent
-                        ),),
+                        ), child:Text(AppLocalizations.of(context)!.save),),
                       ],
                     ),
                   ],

@@ -36,6 +36,77 @@ class _Medicines_ListState extends State<Medicines_List> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        actions: [
+          Row(
+            children: [
+              ElevatedButton(style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.blueAccent),
+                  onPressed:(){
+                    Navigator.push(context, MaterialPageRoute(builder: (context) => Medicine_register_page(),));
+                  },
+                  child:Text(AppLocalizations.of(context)!.nnew,style: TextStyle(color: Colors.black),)),
+              SizedBox(width: 100,),
+              Text(AppLocalizations.of(context)!.start_date,style: TextStyle(fontSize: 18),),
+              SizedBox(
+                width: 120,
+                height: 30,
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10,),
+              Text(AppLocalizations.of(context)!.end_date,style: TextStyle(fontSize: 18)),
+              SizedBox(
+                width: 120,
+                height: 30,
+                child: TextFormField(
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(width: 10,),
+              ElevatedButton(
+                  style: ElevatedButton.styleFrom(
+                      backgroundColor: Colors.lightGreenAccent
+                  ),
+                  onPressed:(){
+                    setState(() {
+                      _filterData(_searchQuery);
+                    });
+                  },
+                  child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18,color: Colors.black))),
+              SizedBox(width: 10,),
+              Text(AppLocalizations.of(context)!.search_by),
+              SizedBox(
+                width: 120,
+                height: 30,
+                child: TextFormField(
+                  controller: _searchController,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                    contentPadding: EdgeInsets.symmetric(vertical: 8.0),
+                    border: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(2),
+                    ),
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: Column(
@@ -44,69 +115,7 @@ class _Medicines_ListState extends State<Medicines_List> {
               child: SingleChildScrollView(
                 child: PaginatedDataTable(
                   actions: [
-                    ElevatedButton(style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.blueAccent),
-                        onPressed:(){
-                      Navigator.push(context, MaterialPageRoute(builder: (context) => Medicine_register_page(),));
-                        },
-                        child:Text(AppLocalizations.of(context)!.nnew,style: TextStyle(color: Colors.black),)),
-                    SizedBox(width: 100,),
-                    Text(AppLocalizations.of(context)!.start_date,style: TextStyle(fontSize: 18),),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.end_date,style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent
-                        ),
-                        onPressed:(){
-                          setState(() {
-                            _filterData(_searchQuery);
-                          });
-                        },
-                        child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18,color: Colors.black))),
-                    SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.search_by),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        controller: _searchController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
+
                   ],
 
                   source: _mydata,
