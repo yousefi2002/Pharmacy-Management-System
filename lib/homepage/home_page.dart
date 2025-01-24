@@ -7,7 +7,7 @@ import 'package:fargard_pharmacy_management_system/Stock_page_of_medicine/Stock_
 import 'package:fargard_pharmacy_management_system/purches_page/purchese_List_page.dart';
 import 'package:fargard_pharmacy_management_system/doctors_page/doctprs_List_page.dart';
 import 'package:fargard_pharmacy_management_system/reports/reports_page.dart';
-import 'package:fargard_pharmacy_management_system/salse_page/prescription.dart';
+import 'package:fargard_pharmacy_management_system/salse_page/SalesPage.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
 import 'package:fargard_pharmacy_management_system/setting_page/Setting_page.dart';
 import 'package:fargard_pharmacy_management_system/users_page/users_List_page.dart';
@@ -61,7 +61,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.visits,
           "icon": Icons.meeting_room_outlined,
-          "navigate": Visit_List_page(),
+          "navigate": VisitListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.expenses,
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.customers,
           "icon": Icons.person_2_outlined,
-          "navigate": Customer_List_page(),
+          "navigate": CustomerListpage(),
         },
         {
           "name": AppLocalizations.of(context)!.patients,
@@ -238,7 +238,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Prescription_page(),
+                                builder: (context) => SalesPage(),
                               ));
                         },
                         child: Icon(Icons.add),
@@ -265,7 +265,7 @@ class _HomePageState extends State<HomePage> {
                           Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Visit_regis_page(),
+                                builder: (context) => VisitPage(),
                               ));
                         },
                         child: Icon(Icons.add),

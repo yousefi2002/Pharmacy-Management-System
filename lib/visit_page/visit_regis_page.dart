@@ -1,14 +1,14 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-class Visit_regis_page extends StatefulWidget {
-  const Visit_regis_page({super.key});
+class VisitPage extends StatefulWidget {
+  const VisitPage({super.key});
 
   @override
-  State<Visit_regis_page> createState() => _Visit_regis_pageState();
+  State<VisitPage> createState() => _VisitPageState();
 }
 
-class _Visit_regis_pageState extends State<Visit_regis_page> {
+class _VisitPageState extends State<VisitPage> {
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();

@@ -9,7 +9,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../medicines List/medicine_register_page.dart';
 // import '../patient_regis_page/patient_regis_page.dart';
 // import '../purches_page/Purchase_page.dart';
-// import '../salse_page/prescription.dart';
+// import '../salse_page/SalesPage.dart';
 
 class All_reports_page extends StatefulWidget {
   const All_reports_page({super.key});

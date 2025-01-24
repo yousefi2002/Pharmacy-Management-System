@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../modal_classes/patients.dart';
 import 'crud_for_patients.dart';
-
+import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 class AddPatientPage extends StatefulWidget {
   final Patient patient;
   const AddPatientPage(this.patient, {super.key});
@@ -14,7 +14,9 @@ class AddPatientPage extends StatefulWidget {
 
 class _AddPatientPageState extends State<AddPatientPage> {
   final _formKey = GlobalKey<FormState>();
-
+  final FocusNode focs1 = FocusNode();
+  final FocusNode focs2 = FocusNode();
+  final FocusNode focs3 = FocusNode();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _addressController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
@@ -50,14 +52,13 @@ class _AddPatientPageState extends State<AddPatientPage> {
           padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
           child: Container(
             height: 600,
-            width: 600,
+            width: 800,
             decoration: BoxDecoration(
-              color: Colors.grey.shade100,
-              border: Border.all(color: CupertinoColors.white, width: 2),
-              borderRadius: BorderRadius.circular(5),
+                border: Border.all(color: CupertinoColors.activeGreen),
+                color: Colors.white
             ),
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(100, 40, 100, 10),
+              padding: const EdgeInsets.fromLTRB(40, 20, 40, 10),
               child: Form(
                 key: _formKey,
                 child: Column(
@@ -65,48 +66,180 @@ class _AddPatientPageState extends State<AddPatientPage> {
                   children: [
                     const Center(child: Text('Patient', style: TextStyle(fontSize: 25),)),
                     TextFormField(
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Please enter the Patient\'s name';
+                        }
+                        return null;
+                      },
                       controller: _nameController,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(context).requestFocus(focs1);
+                      },
                       decoration: InputDecoration(
-                          labelText: 'name',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4),
-                          borderSide: BorderSide(color: Colors.white)),
+                        labelText: AppLocalizations.of(context)!.patient_name,
+                        labelStyle: const TextStyle(
+                          color: Colors.green, // Label text color
+                          fontSize: 16,
+                        ),
+                        hintText: 'Full Name like Ahmad Ahmadi',
+                        hintStyle: const TextStyle(color: Colors.grey), // Hint text color
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5), // Rounded border
+                          borderSide: const BorderSide(
+                            color: Colors.greenAccent, // Border color when not focused
+                            width: 1,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5), // Rounded border
+                          borderSide: const BorderSide(
+                            color: Colors.green, // Border color when focused
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.red, // Border color on error
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.redAccent, // Border color on focused error
+                            width: 2,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 12.0,
+                        ), // Inner padding
+                        filled: true,
+                        fillColor: Colors.green.shade50, // Background color
                       ),
+                      style: const TextStyle(
+                        color: Colors.black, // Input text color
+                        fontSize: 18,
+                      ),
+                    ),
+                    TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the patient\'s name';
+                          return 'Please enter the Patient\'s Address';
                         }
                         return null;
                       },
-                    ),
-                    TextFormField(
                       controller: _addressController,
-                      decoration: InputDecoration(
-                          labelText: 'address',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4))
-                      ),
-                      validator: (value) {
-                        if (value == null || value.isEmpty) {
-                          return 'Please enter the patient\'s address';
-                        }
-                        return null;
+                      focusNode: focs1,
+                      onFieldSubmitted: (value) {
+                        FocusScope.of(context).requestFocus(focs2);
                       },
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.address,
+                        labelStyle: const TextStyle(
+                          color: Colors.green, // Label text color
+                          fontSize: 16,
+                        ),
+                        hintText: 'Address like 7th Area',
+                        hintStyle: const TextStyle(color: Colors.grey), // Hint text color
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5), // Rounded border
+                          borderSide: const BorderSide(
+                            color: Colors.greenAccent, // Border color when not focused
+                            width: 1,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5), // Rounded border
+                          borderSide: const BorderSide(
+                            color: Colors.green, // Border color when focused
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.red, // Border color on error
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.redAccent, // Border color on focused error
+                            width: 2,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 12.0,
+                        ), // Inner padding
+                        filled: true,
+                        fillColor: Colors.green.shade50, // Background color
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black, // Input text color
+                        fontSize: 18,
+                      ),
                     ),
                     TextFormField(
-                      controller: _contactController,
-                      decoration: InputDecoration(
-                          labelText: 'contact',
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(4))
-                      ),
-                      keyboardType: TextInputType.phone,
                       validator: (value) {
                         if (value == null || value.isEmpty) {
-                          return 'Please enter the patient\'s contact number';
+                          return 'Please enter the Patient\'s Phone number';
                         }
                         return null;
                       },
+                      controller: _contactController,
+                      focusNode: focs3,
+                      decoration: InputDecoration(
+                        labelText: AppLocalizations.of(context)!.contact_number,
+                        labelStyle: const TextStyle(
+                          color: Colors.green, // Label text color
+                          fontSize: 16,
+                        ),
+                        hintText: 'Contact like 0799887766',
+                        hintStyle: const TextStyle(color: Colors.grey), // Hint text color
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5), // Rounded border
+                          borderSide: const BorderSide(
+                            color: Colors.greenAccent, // Border color when not focused
+                            width: 1,
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5), // Rounded border
+                          borderSide: const BorderSide(
+                            color: Colors.green, // Border color when focused
+                            width: 2,
+                          ),
+                        ),
+                        errorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(5),
+                          borderSide: const BorderSide(
+                            color: Colors.red, // Border color on error
+                            width: 2,
+                          ),
+                        ),
+                        focusedErrorBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.redAccent, // Border color on focused error
+                            width: 2,
+                          ),
+                        ),
+                        contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 16.0,
+                          vertical: 12.0,
+                        ), // Inner padding
+                        filled: true,
+                        fillColor: Colors.green.shade50, // Background color
+                      ),
+                      style: const TextStyle(
+                        color: Colors.black, // Input text color
+                        fontSize: 18,
+                      ),
                     ),
                     const SizedBox(height: 20),
 
@@ -148,10 +281,9 @@ class _AddPatientPageState extends State<AddPatientPage> {
                           Navigator.pop(context);
                         }
                       },
-                      style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.lightGreenAccent),
-                      child: Text('save', style: TextStyle(color: Colors.black),),
-                     ),
+                      style: ElevatedButton.styleFrom(backgroundColor: Colors.lightGreen),
+                      child: Text(AppLocalizations.of(context)!.save, style: TextStyle(color: Colors.white)),
+                     )
                   ],
                 ),
               ),

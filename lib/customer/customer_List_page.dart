@@ -1,37 +1,21 @@
 import 'dart:math';
 
+import 'package:fargard_pharmacy_management_system/customer/crud_for_customer.dart';
 import 'package:fargard_pharmacy_management_system/customer/customer_regis_page.dart';
+import 'package:fargard_pharmacy_management_system/modal_classes/customers.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
-class Customer_List_page extends StatefulWidget {
+class CustomerListpage extends StatefulWidget {
   @override
-  _Customer_List_pageState createState() => _Customer_List_pageState();
+  _CustomerListpageState createState() => _CustomerListpageState();
 }
 
-class _Customer_List_pageState extends State<Customer_List_page> {
-  final CustomersDataTableSource _mydata = CustomersDataTableSource();
+class _CustomerListpageState extends State<CustomerListpage> {
   final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-  void _filterData(String query) {
-    setState(() {
-      _searchQuery = query.toLowerCase();
-      _mydata.filterData(_searchQuery);
-    });
-  }
   @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(() {
-      _filterData(_searchController.text);
-    });
-  }
 
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +30,7 @@ class _Customer_List_pageState extends State<Customer_List_page> {
               child: TextFormField(
                 controller: _searchController,
                 decoration: InputDecoration(
-                  hintText: 'Search...',
+                  hintText: AppLocalizations.of(context)!.search,
                   hintStyle: const TextStyle(color: Colors.white70),
                   border: OutlineInputBorder(
                     borderRadius: BorderRadius.circular(10.0),
@@ -70,112 +54,94 @@ class _Customer_List_pageState extends State<Customer_List_page> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => Customer_regis_page(),
+                        builder: (context) => CustomerPage(Customer(null, '', null, '', null)),
                       ));
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: Text(
-                    "Add Customer",
-                  ),
+                  child: Text(AppLocalizations.of(context)!.register_customer),
                 )),
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Expanded(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: double.infinity,
-              child: PaginatedDataTable(
-                showCheckboxColumn: true,
-                showEmptyRows: true,
-                source: _mydata,
-                columns: [
-                  DataColumn(label: Container(width: 10, child: Text("#",))),
-                  DataColumn(
-                      label:
-                          Text(AppLocalizations.of(context)!.customer_name)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.age)),
-                  DataColumn(
-                      label: Container(
-                          width: 80,
-                          child: Text(AppLocalizations.of(context)!.gender))),
-                  DataColumn(
-                      label: Container(
-                          width: 80,
-                          child: Text(
-                              AppLocalizations.of(context)!.contact_number))),
-                  DataColumn(
-                      label: Container(
-                          width: 80,
-                          child:
-                              Text(AppLocalizations.of(context)!.address))),
-                  DataColumn(label: Container(width: 80, child: Text(""))),
-                ],
-                columnSpacing: 50,
-                horizontalMargin: 40,
-                showFirstLastButtons: true,
+      body: Consumer<CustomerProvider>(
+        builder: (context,value,child) {
+          final date = value.customer;
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Expanded(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: PaginatedDataTable(
+                    showCheckboxColumn: true,
+                    showEmptyRows: true,
+                    source: MyDate(date, context),
+                    columns: [
+                      DataColumn(label: Container(width: 10, child: Text("ID",))),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
+                      DataColumn(label: Container(width: 80, child: Text(AppLocalizations.of(context)!.contact_number))),
+                      DataColumn(label: Container(width: 80, child: Text("Email"))),
+                      DataColumn(label: Container(width: 80, child: Text(""))),
+                    ],
+                    columnSpacing: 50,
+                    horizontalMargin: 40,
+                    showFirstLastButtons: true,
 
+                  ),
+                ),
               ),
             ),
-          ),
+          );
+        }
         ),
-      ),
     );
   }
 }
 
-class CustomersDataTableSource extends DataTableSource {
-
-  // List<Map<String, String>> _filteredPrescriptions = [];
-  List<Map<String, String>> _prescriptions = [];
-  List<Map<String, String>> _filteredPrescriptions = List.generate(50, (index) {
-    final random = Random();
-    return {
-      "customer_id": (index + 1).toString(),
-      "customer_name": "Customer ${index + 1}",
-      "customer_contact_number": "123-456-78${random.nextInt(10)}${random.nextInt(10)}",
-      "customer_age": (20 + random.nextInt(40)).toString(),
-      "customer_gender": random.nextBool() ? "Male" : "Female",
-      "customer_address": "Address ${index + 1}, City ${random.nextInt(100)}",
-    };
-  });
-
-  void filterData(String query) {
-    if (query.isEmpty) {
-      _filteredPrescriptions = List.from(_prescriptions);
-    } else {
-      _filteredPrescriptions = _prescriptions.where((item) {
-        return item.values.any((value) => value.toLowerCase().contains(query));
-      }).toList();
-    }
-    notifyListeners();
-  }
+class MyDate extends DataTableSource {
+  var value;
+  final BuildContext context;
+  MyDate(this.value,this.context);
 
   @override
   DataRow getRow(int index) {
-    final prescription = _filteredPrescriptions[index];
+    final customer = value[index];
     return DataRow(cells: [
-      DataCell(Text(prescription["customer_id"] ?? '',), onTap: (){}),
-      DataCell(Text(prescription["customer_name"] ?? '')),
-      DataCell(Text(prescription["customer_contact_number"] ?? '')),
-      DataCell(Text(prescription["customer_age"] ?? '')),
-      DataCell(Text(prescription["customer_gender"] ?? '')),
-      DataCell(Text(prescription["customer_address"] ?? '')),
+      DataCell(Text(customer.id.toString())),
+      DataCell(Text(customer.name)),
+      DataCell(Text(customer.contactNumber)),
+      DataCell(Text(customer.email)),
       DataCell(Row(
         children: [
           IconButton(
-            onPressed: () {},
-            icon: Icon(
-              Icons.delete,
-              color: Colors.red,
-            ),
-          ),
+            onPressed: () {
+              showDialog(
+                  context:context,
+                  builder: (BuildContext context){
+                    return AlertDialog(
+                      title: const Text("Delete"),
+                      content: const Text("are you sure?"),
+                      actions: [
+                        TextButton(onPressed:(){
+                          Navigator.of(context).pop();
+                        }, child: const Text("cancel")),
+                        TextButton(onPressed: (){
+                          Provider.of<CustomerProvider>(context,listen: false).
+                          deleteCustomer(customer.id??0);
+                          Navigator.of(context).pop();
+                        }, child:const Text("Delete"))
+                      ],
+                    );
+                  });
+            },
+            icon: const Icon(Icons.delete, color: Colors.red,),),
           IconButton(
-            onPressed: () {},
-            icon: Icon(
+            onPressed: () async{
+              await Navigator.push(context, MaterialPageRoute(
+                  builder:(context) =>CustomerPage(customer),));
+            },
+            icon: const Icon(
               Icons.edit_note_outlined,
               color: Colors.blue,
             ),
@@ -191,7 +157,7 @@ class CustomersDataTableSource extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _filteredPrescriptions.length;
+  int get rowCount => value.length;
 
   @override
   int get selectedRowCount => 0;

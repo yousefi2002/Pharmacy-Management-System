@@ -84,7 +84,7 @@ class _Employee_reports_pageState extends State<Employee_reports_page> {
                         },
                         child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18))),
                     SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.search_by),
+                    Text(AppLocalizations.of(context)!.search),
                     SizedBox(
                       width: 120,
                       height: 30,

@@ -1,9 +1,7 @@
 import 'package:fargard_pharmacy_management_system/provider/provider_setting.dart';
-import 'package:fargard_pharmacy_management_system/setting_page/Setting_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class Stock_page_of_medicine extends StatefulWidget {
   @override
@@ -40,65 +38,56 @@ class _Stock_page_of_medicineState extends State<Stock_page_of_medicine> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
+      appBar: AppBar(
+        title: Row(
           children: [
+            Text(AppLocalizations.of(context)!.warehouse, style: const TextStyle(fontSize: 30),),
+            const Expanded(child: SizedBox()),
+            // Text Search Bar
             Expanded(
-              child: SingleChildScrollView(
-                child: PaginatedDataTable(
-                  actions: [
-                    Consumer<ThemeProvider>(
-                      builder: (context,settingprovider,child){
-                        return ElevatedButton(onPressed:settingprovider.isbuttonenable?(){print("saved");}:null, child:Text(AppLocalizations.of(context)!.nnew));
-                      },
-                    ),
-                    SizedBox(width: 10,),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent
-                        ),
-                        onPressed:(){
-                          setState(() {
-                            _filterData(_searchQuery);
-                          });
-                        },
-                        child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18))),
-                    SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.search_by),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        controller: _searchController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-
-                  source: _mydata,
-                  columns: [
-                    DataColumn(label: Container(width:20,child: Text("#"))),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.medicine_name)),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.inventory))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.unit_price))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.total_price))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.category))),
-                  ],
-                  header: Center(child: Text(AppLocalizations.of(context)!.warehouse)),
-                  columnSpacing: 140,
-                  horizontalMargin: 80,
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText:  AppLocalizations.of(context)!.search,
+                  hintStyle: const TextStyle(color: Colors.white70),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white30, // Semi-transparent background
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
           ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Expanded(
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: double.infinity,
+              child: PaginatedDataTable(
+                showCheckboxColumn: true,
+                showEmptyRows: true,
+                source: _mydata,
+                columns: [
+                  DataColumn(label: Container(width:20,child: Text("#"))),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.medicine_name)),
+                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.inventory))),
+                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.unit_price))),
+                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.total_price))),
+                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.category))),
+                ],
+                columnSpacing: 50,
+                horizontalMargin: 40,
+                showFirstLastButtons: true,
+              ),
+            ),
+          ),
         ),
       ),
     );

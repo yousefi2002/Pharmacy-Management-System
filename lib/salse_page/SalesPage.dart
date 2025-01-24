@@ -3,20 +3,21 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Prescription_page extends StatefulWidget {
-  const Prescription_page({super.key});
+class SalesPage extends StatefulWidget {
+  const SalesPage({super.key});
 
   @override
-  State<Prescription_page> createState() => _Prescription_pageState();
+  State<SalesPage> createState() => _SalesPageState();
 }
 
-class _Prescription_pageState extends State<Prescription_page> {
+class _SalesPageState extends State<SalesPage> {
 
   List<TextEditingController> medicine_name_controller = [];
   List<TextEditingController> quantity_controller = [];
   List<TextEditingController> fee_price_controller = [];
   List<TextEditingController> discount_controller = [];
   List<TextEditingController> total_price_controller = [];
+
   void addrow(){
     setState(() {
       TextEditingController orderlar1=TextEditingController();
