@@ -1,9 +1,12 @@
 
 
 import 'dart:io';
+import 'package:fargard_pharmacy_management_system/modal_classes/doctors.dart';
 import 'package:fargard_pharmacy_management_system/modal_classes/expenses.dart';
+import 'package:fargard_pharmacy_management_system/modal_classes/sales.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
+import '../modal_classes/customers.dart';
 import '../modal_classes/patients.dart';
 import '../modal_classes/users.dart';
 
@@ -440,6 +443,48 @@ class DatabaseHelper {
   Future<int> deleteExpense(int id) async {
     final db = await database;
     return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
+  }
+  // Customer crud -----------------------------------------------------
+  Future<int> addCustomer(Customer customer) async {
+    final db = await database;
+    return db.insert(customersTable, customer.toMap());
+  }
+  Future<int> updateCustomer(Customer customer) async {
+    final db = await database;
+    return db.update(customersTable, customer.toMap(), where: '$cusId = ?', whereArgs: [customer.id],
+    );
+  }
+  Future<int> deleteCustomer(int id) async {
+    final db = await database;
+    return db.delete(customersTable, where: '$cusId = ?', whereArgs: [id]);
+  }
+// Doctor crud -----------------------------------------------------
+  Future<int> addDoctor(Doctor doctor) async {
+    final db = await database;
+    return db.insert(doctorTables, doctor.toMap());
+  }
+  Future<int> updateDoctor(Doctor doctor) async {
+    final db = await database;
+    return db.update(doctorTables, doctor.toMap(), where: '$docId = ?', whereArgs: [doctor.id],
+    );
+  }
+  Future<int> deleteDoctor(int id) async {
+    final db = await database;
+    return db.delete(doctorTables, where: '$docId = ?', whereArgs: [id]);
+  }
+  // Doctor crud -----------------------------------------------------
+  Future<int> addSales(Sales sales) async {
+    final db = await database;
+    return db.insert(salesDetailsTable, sales.toMap());
+  }
+  Future<int> updateSales(Sales sales) async {
+    final db = await database;
+    return db.update(salesDetailsTable, sales.toMap(), where: '$salesId = ?', whereArgs: [sales.id],
+    );
+  }
+  Future<int> deleteSales(int id) async {
+    final db = await database;
+    return db.delete(salesDetailsTable, where: '$salesId = ?', whereArgs: [id]);
   }
 
 }

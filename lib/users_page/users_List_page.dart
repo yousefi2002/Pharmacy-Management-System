@@ -23,95 +23,77 @@ class _UsersListPageState extends State<UsersListPage> {
       Provider.of<UserProvider>(context, listen: false).fetchUser();
     });
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text(AppLocalizations.of(context)!.employee_list, style: const TextStyle(fontSize: 30),),
+            const Expanded(child: SizedBox()),
+            // Text Search Bar
+            Expanded(
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText:  AppLocalizations.of(context)!.search,
+                  hintStyle: const TextStyle(color: Colors.white70),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white30, // Semi-transparent background
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(width: 8),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    )
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => UsersRegisterPage(User(null, '', null, '', null)),
+                      ));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Text("new user"),
+                )),
+          ],
+        ),
+      ),
       body: Consumer<UserProvider>(
         builder: (context,  value, child) {
           final data = value.users;
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: PaginatedDataTable(
-                      actions: [
-                        ElevatedButton(style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueAccent),
-                            onPressed:(){
-                              Navigator.push(context, MaterialPageRoute(builder: (context) => UsersRegisterPage(User(null, '', '', '', '')),));
-                            },
-                            child:Text(AppLocalizations.of(context)!.nnew,style: TextStyle(color: Colors.black),)),
-                        Text(AppLocalizations.of(context)!.start_date,style: TextStyle(fontSize: 18),),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        Text(AppLocalizations.of(context)!.end_date,style: TextStyle(fontSize: 18)),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.lightGreenAccent
-                            ),
-                            onPressed:(){
-                            },
-                            child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18))),
-                        SizedBox(width: 10,),
-                        Text(AppLocalizations.of(context)!.search_by),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            controller: _searchController,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-
-                      source: MyData(data, context),
-                      columns: [
-                        const DataColumn(label: Text("Id")),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.username)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.role)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
-                        const DataColumn(label: Text('email')),
-                        const DataColumn(label: Text("")),
-                      ],
-                      header: Center(child: Text(AppLocalizations.of(context)!.employee_list)),
-                      columnSpacing: 150,
-                      horizontalMargin: 100,
-                    ),
+            child: Expanded(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: PaginatedDataTable(
+                    showCheckboxColumn: true,
+                    showEmptyRows: true,
+                    source: MyData(data, context),
+                    columns: [
+                      const DataColumn(label: Text("Id")),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.username)),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.role)),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                      DataColumn(label: Text("email")),
+                      const DataColumn(label: Text("")),
+                    ],
+                    columnSpacing: 50,
+                    horizontalMargin: 40,
+                    showFirstLastButtons: true,
                   ),
                 ),
-              ],
+              ),
             ),
           );
         },

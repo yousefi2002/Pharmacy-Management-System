@@ -22,125 +22,82 @@ class _PatientsListPageState extends State<PatientsListPage> {
       Provider.of<PatientProvider>(context, listen: false).fetchPatient();
     });
     return Scaffold(
-      appBar: AppBar(title: Text("Patients List"),),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text(AppLocalizations.of(context)!.patient_list, style: const TextStyle(fontSize: 30),),
+            const Expanded(child: SizedBox()),
+            // Text Search Bar
+            Expanded(
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.search,
+                  hintStyle: const TextStyle(color: Colors.white70),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white30, // Semi-transparent background
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(width: 8),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    )
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => AddPatientPage(Patient(null, '', null, '',)),
+                      ));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Text(AppLocalizations.of(context)!.register_patient),
+                ),
+            ),
+          ],
+        ),
+      ),
       body: Consumer<PatientProvider>(
         builder: (context, value, child) {
           final data = value.patients;
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: PaginatedDataTable(
-
-                      actions: [
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.blueAccent),
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => AddPatientPage(Patient(null ,'', '', ''),),
-                                  ));
-                            },
-                            child: Text(
-                              AppLocalizations.of(context)!.nnew,
-                              style: const TextStyle(color: Colors.black),
-                            )),
-                        const SizedBox(
-                          width: 100,
-                        ),
-                        Text(
-                          AppLocalizations.of(context)!.start_date,
-                          style: const TextStyle(fontSize: 18),
-                        ),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(AppLocalizations.of(context)!.end_date,
-                            style: const TextStyle(fontSize: 18)),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.lightGreenAccent),
-                            onPressed: () {
-                            },
-                            child: Text(AppLocalizations.of(context)!.filter,
-                                style: const TextStyle(fontSize: 18))),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        Text(AppLocalizations.of(context)!.search_by),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            controller: _searchController,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding:
-                                  const EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                      source: MyData(data, context),
-                      columns: [
-                        const DataColumn(
-                            label: Text("ID")),
-                        DataColumn(
-                            label: Text(AppLocalizations.of(context)!.patient_name)),
-                        DataColumn(
-                            label: Text(AppLocalizations.of(context)!.address)),
-                        DataColumn(
-                            label: Text(AppLocalizations.of(context)!.contact_number)),
-                        const DataColumn(
-                            label: Text("")),
-                      ],
-                      header: Center(
-                          child: Text(
-                              AppLocalizations.of(context)!.patient_list)),
-                      columnSpacing: 130,
-                      horizontalMargin: 40,
-                    ),
+            child: Expanded(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: PaginatedDataTable(
+                    showCheckboxColumn: true,
+                    showEmptyRows: true,
+                    source: MyData(data, context),
+                    columns: [
+                      const DataColumn(
+                          label: Text("ID")),
+                      DataColumn(
+                          label: Text(AppLocalizations.of(context)!.patient_name)),
+                      DataColumn(
+                          label: Text(AppLocalizations.of(context)!.address)),
+                      DataColumn(
+                          label: Text(AppLocalizations.of(context)!.contact_number)),
+                      const DataColumn(
+                          label: Text("")),
+                    ],
+                    columnSpacing: 50,
+                    horizontalMargin: 40,
+                    showFirstLastButtons: true,
                   ),
                 ),
-              ],
+              ),
             ),
           );
         },
@@ -160,8 +117,8 @@ class MyData extends DataTableSource {
     return DataRow(cells: [
       DataCell(Text('${patient.id}')),
       DataCell(Text(patient.name)),
-      DataCell(Text(patient.contactNumber)),
       DataCell(Text(patient.address)),
+      DataCell(Text(patient.contactNumber)),
       DataCell(
         Row(
           children: [

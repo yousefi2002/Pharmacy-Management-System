@@ -1,3 +1,6 @@
+import 'package:fargard_pharmacy_management_system/customer/crud_for_customer.dart';
+import 'package:fargard_pharmacy_management_system/doctors_page/crud_for_doctor.dart';
+import 'package:fargard_pharmacy_management_system/homepage/home_page.dart';
 import 'package:fargard_pharmacy_management_system/provider/provider_setting.dart';
 import 'package:fargard_pharmacy_management_system/expenses_page/crud_for_expenses.dart';
 import 'package:fargard_pharmacy_management_system/patient_regis_page/crud_for_patients.dart';
@@ -25,6 +28,8 @@ void main() async {
       ChangeNotifierProvider(create: (_) => PatientProvider(),),
       ChangeNotifierProvider(create: (_) => UserProvider(),),
       ChangeNotifierProvider(create: (_) => ExpensesProvider(),),
+      ChangeNotifierProvider(create: (_) => CustomerProvider(),),
+      ChangeNotifierProvider(create: (_) => DoctorProvider(),),
     ],
     child: MyApp(
       local: languageCode,
@@ -83,7 +88,7 @@ class MyApp extends StatelessWidget {
               Locale('en'), // English
               Locale('fa'), // Spanish
             ],
-            home: LicenseValidationScreen(),
+            home: HomePage(),
           );
         },
       ),
