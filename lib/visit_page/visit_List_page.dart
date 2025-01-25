@@ -39,7 +39,7 @@ class _VisitListPageState extends State<VisitListPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.visit_list, style: const TextStyle(fontSize: 30),),
+            Text(AppLocalizations.of(context)!.visits, style: const TextStyle(fontSize: 30),),
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(
@@ -161,7 +161,9 @@ class mydata extends DataTableSource {
           IconButton(onPressed:(){}, icon:Icon(Icons.edit_note_outlined,color: Colors.blue,),),
         ],
       )),
-    ]);
+    ],
+        color: MaterialStateProperty.all(Colors.grey.shade200)
+    );
   }
 
   @override

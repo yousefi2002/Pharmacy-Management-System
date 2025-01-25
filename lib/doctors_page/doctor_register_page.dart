@@ -42,7 +42,7 @@ class _DoctorPageState extends State<DoctorPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.doctors, style: const TextStyle(fontSize: 30),),),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.newDoctor, style: const TextStyle(fontSize: 30),),),
       body:SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -61,7 +61,7 @@ class _DoctorPageState extends State<DoctorPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Center(child: Text(AppLocalizations.of(context)!.doctors,style: TextStyle(fontSize: 35),)),
+                      Center(child: Text(AppLocalizations.of(context)!.newDoctor,style: TextStyle(fontSize: 35),)),
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -194,7 +194,7 @@ class _DoctorPageState extends State<DoctorPage> {
                           FocusScope.of(context).requestFocus(focs3);
                         },
                         decoration: InputDecoration(
-                          labelText: 'specialization',
+                          labelText: AppLocalizations.of(context)!.specialty,
                           labelStyle: const TextStyle(
                             color: Colors.green, // Label text color
                             fontSize: 16,
@@ -249,7 +249,14 @@ class _DoctorPageState extends State<DoctorPage> {
                             String updatedAt = DateTime.now().toString();
                             if(_formKey.currentState!.validate()){
                               if(doctor.id!=null){
-                                final updatedoctor=Doctor(nameController.text, specialization.text, contactNumber.text, createdAt, updatedAt);
+                                final updatedoctor=Doctor(
+                                    nameController.text,
+                                    specialization.text,
+                                    contactNumber.text,
+                                    createdAt,
+                                    updatedAt,
+                                  id: doctor.id,
+                                );
                                 await Provider.of<DoctorProvider>(context,listen: false).updateDoctor(updatedoctor);
                                 ScaffoldMessenger.of(context).showSnackBar(
                                   const SnackBar(content: Text('Doctor updated successfully!')),

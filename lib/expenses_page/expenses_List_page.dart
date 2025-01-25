@@ -120,12 +120,12 @@ class MyData extends DataTableSource {
                 context: context,
                 builder: (BuildContext context) {
                   return AlertDialog(
-                    title: const Text('delete'),
-                    content: const Text("are_you_sure?"),
+                    title:  Text(AppLocalizations.of(context)!.delete),
+                    content:  Text(AppLocalizations.of(context)!.confirmDelete),
                     actions: [
                       TextButton(
                         onPressed: () => Navigator.of(context).pop(),
-                        child: const Text("cancel"),
+                        child: Text(AppLocalizations.of(context)!.no),
                       ),
                       TextButton(
                         onPressed: () {
@@ -133,7 +133,7 @@ class MyData extends DataTableSource {
                               .deleteExpenses(expense.id ?? 0);
                           Navigator.of(context).pop();
                         },
-                        child: const Text('delete'),
+                        child: Text(AppLocalizations.of(context)!.delete),
                       ),
                     ],
                   );
@@ -154,7 +154,9 @@ class MyData extends DataTableSource {
           ),
         ],
       )),
-    ]);
+    ],
+        color: MaterialStateProperty.all(Colors.grey.shade200)
+    );
   }
 
   @override

@@ -25,7 +25,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.patient_list, style: const TextStyle(fontSize: 30),),
+            Text(AppLocalizations.of(context)!.patients, style: const TextStyle(fontSize: 30),),
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(
@@ -81,14 +81,10 @@ class _PatientsListPageState extends State<PatientsListPage> {
                     showEmptyRows: true,
                     source: MyData(data, context),
                     columns: [
-                      const DataColumn(
-                          label: Text("ID")),
-                      DataColumn(
-                          label: Text(AppLocalizations.of(context)!.patient_name)),
-                      DataColumn(
-                          label: Text(AppLocalizations.of(context)!.address)),
-                      DataColumn(
-                          label: Text(AppLocalizations.of(context)!.contact_number)),
+                      const DataColumn(label: Text("ID")),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.patient_name)),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.address)),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
                       const DataColumn(
                           label: Text("")),
                     ],
@@ -113,7 +109,6 @@ class MyData extends DataTableSource {
   @override
   DataRow getRow(int index) {
     Patient patient = value[index];
-
     return DataRow(cells: [
       DataCell(Text('${patient.id}')),
       DataCell(Text(patient.name)),
@@ -156,15 +151,15 @@ class MyData extends DataTableSource {
                 await Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => AddPatientPage(patient), // Passing the current patient object
-                  ),
-                );
+                    builder: (context) => AddPatientPage(patient),),);
               },
             ),
           ],
         ),
       ),
-    ]);
+    ],
+        color: MaterialStateProperty.all(Colors.grey.shade200)
+    );
   }
   @override
   bool get isRowCountApproximate => false;

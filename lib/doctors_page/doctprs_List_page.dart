@@ -21,7 +21,7 @@ class _Doctors_List_pageState extends State<Doctors_List_page> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.doctor_list, style: const TextStyle(fontSize: 30),),
+            Text(AppLocalizations.of(context)!.doctors, style: const TextStyle(fontSize: 30),),
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(
@@ -78,7 +78,7 @@ class _Doctors_List_pageState extends State<Doctors_List_page> {
                     columns: [
                        DataColumn(label: Text("#"),),
                       DataColumn(label: Text(AppLocalizations.of(context)!.doctor_name),),
-                      DataColumn(label: Text("specialization"),),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.specialty),),
                       DataColumn(label: Text(AppLocalizations.of(context)!.contact_number),),
                       DataColumn(label: Text(""),),
                     ],
@@ -116,12 +116,12 @@ class MyDate extends DataTableSource {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title:const Text('delete'),
-                      content: const Text("are_you_sure?"),
+                      title: Text(AppLocalizations.of(context)!.delete),
+                      content:  Text(AppLocalizations.of(context)!.confirmDelete),
                       actions: [
                         TextButton(
                           onPressed: () => Navigator.of(context).pop(),
-                          child: const Text("cancel"),
+                          child: Text(AppLocalizations.of(context)!.no),
                         ),
                         TextButton(
                           onPressed: () {
@@ -129,7 +129,7 @@ class MyDate extends DataTableSource {
                                 .deleteDoctor(doctor.id ?? 0);
                             Navigator.of(context).pop();
                           },
-                          child: const Text('delete'),
+                          child:  Text(AppLocalizations.of(context)!.delete),
                         ),
                       ],
                     );
@@ -153,7 +153,9 @@ class MyDate extends DataTableSource {
           ),
         ],
       )),
-    ]);
+    ],
+        color: MaterialStateProperty.all(Colors.grey.shade200)
+    );
   }
 
   @override

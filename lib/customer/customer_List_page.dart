@@ -1,5 +1,3 @@
-import 'dart:math';
-
 import 'package:fargard_pharmacy_management_system/customer/crud_for_customer.dart';
 import 'package:fargard_pharmacy_management_system/customer/customer_regis_page.dart';
 import 'package:fargard_pharmacy_management_system/modal_classes/customers.dart';
@@ -23,7 +21,7 @@ class _CustomerListpageState extends State<CustomerListpage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.customer_list, style: const TextStyle(fontSize: 30),),
+            Text(AppLocalizations.of(context)!.customers, style: const TextStyle(fontSize: 30),),
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(
@@ -81,7 +79,7 @@ class _CustomerListpageState extends State<CustomerListpage> {
                       DataColumn(label: Container(width: 10, child: Text("ID",))),
                       DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
                       DataColumn(label: Container(width: 80, child: Text(AppLocalizations.of(context)!.contact_number))),
-                      DataColumn(label: Container(width: 80, child: Text("Email"))),
+                      DataColumn(label: Container(width: 80, child: Text(AppLocalizations.of(context)!.address))),
                       DataColumn(label: Container(width: 80, child: Text(""))),
                     ],
                     columnSpacing: 50,
@@ -106,7 +104,7 @@ class MyDate extends DataTableSource {
 
   @override
   DataRow getRow(int index) {
-    final customer = value[index];
+    Customer customer = value[index];
     return DataRow(cells: [
       DataCell(Text(customer.id.toString())),
       DataCell(Text(customer.name)),
@@ -120,17 +118,17 @@ class MyDate extends DataTableSource {
                   context:context,
                   builder: (BuildContext context){
                     return AlertDialog(
-                      title: const Text("Delete"),
-                      content: const Text("are you sure?"),
+                      title: Text(AppLocalizations.of(context)!.delete),
+                      content: Text(AppLocalizations.of(context)!.confirmDelete),
                       actions: [
                         TextButton(onPressed:(){
                           Navigator.of(context).pop();
-                        }, child: const Text("cancel")),
+                        }, child: Text(AppLocalizations.of(context)!.no)),
                         TextButton(onPressed: (){
                           Provider.of<CustomerProvider>(context,listen: false).
                           deleteCustomer(customer.id??0);
                           Navigator.of(context).pop();
-                        }, child:const Text("Delete"))
+                        }, child: Text(AppLocalizations.of(context)!.delete))
                       ],
                     );
                   });
@@ -138,7 +136,9 @@ class MyDate extends DataTableSource {
             icon: const Icon(Icons.delete, color: Colors.red,),),
           IconButton(
             onPressed: () async{
-              await Navigator.push(context, MaterialPageRoute(
+              await Navigator.push(
+                  context,
+                  MaterialPageRoute(
                   builder:(context) =>CustomerPage(customer),));
             },
             icon: const Icon(
