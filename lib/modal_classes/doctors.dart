@@ -11,8 +11,9 @@ class Doctor {
       this._specialization,
       this._contactNumber,
       this._createdAt,
-      this._updatedAt,
-      );
+      this._updatedAt,{
+        int? id,
+      }) : _id = id;
 
   int? get id => _id;
   String get name => _name ?? '';

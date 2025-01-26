@@ -45,8 +45,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
       appBar: AppBar(
-        title: const Text('Edit Patient'),
-      ),
+        title: Text(AppLocalizations.of(context)!.newPatient, style: TextStyle(fontSize: 25),)),
       body: Center(
         child: Padding(
           padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
@@ -64,7 +63,7 @@ class _AddPatientPageState extends State<AddPatientPage> {
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.spaceAround,
                   children: [
-                    const Center(child: Text('Patient', style: TextStyle(fontSize: 25),)),
+                     Center(child: Text(AppLocalizations.of(context)!.newPatient, style: TextStyle(fontSize: 25),)),
                     TextFormField(
                       validator: (value) {
                         if (value == null || value.isEmpty) {

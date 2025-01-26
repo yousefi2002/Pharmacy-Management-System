@@ -131,7 +131,7 @@ class _Medicines_ListState extends State<Medicines_List> {
                     DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.price))),
                     DataColumn(label: Container(width:80,child: Text(""))),
                   ],
-                  header: Center(child: Text(AppLocalizations.of(context)!.medicine_list)),
+                  header: Center(child: Text(AppLocalizations.of(context)!.medicines)),
                   columnSpacing: 130,
                   horizontalMargin: 40,
                 ),

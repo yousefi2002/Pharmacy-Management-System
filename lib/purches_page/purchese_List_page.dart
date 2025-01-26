@@ -160,7 +160,9 @@ class mydata extends DataTableSource {
           IconButton(onPressed:(){}, icon:Icon(Icons.edit_note_outlined,color: Colors.blue,),),
         ],
       )),
-    ]);
+    ],
+        color: MaterialStateProperty.all(Colors.grey.shade200)
+    );
   }
 
   @override

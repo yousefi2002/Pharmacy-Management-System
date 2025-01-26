@@ -398,8 +398,6 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(tableName);
   }
-
-
   // patient crud -----------------------------------------------------
   Future<int> addPatients(Patient patient) async {
     final db = await database;
@@ -414,7 +412,6 @@ class DatabaseHelper {
     final db = await database;
     return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
   }
-
   // User crud -----------------------------------------------------
   Future<int> addUser(User user) async {
     final db = await database;

@@ -52,7 +52,7 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey.shade100,
-      appBar: AppBar(title: Text("new employee", style: const TextStyle(fontSize: 30),),),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.newEmployee, style: const TextStyle(fontSize: 30),),),
       body: SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -73,7 +73,7 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
                     children: [
                       Center(
                           child: Text(
-                        AppLocalizations.of(context)!.employees,
+                        AppLocalizations.of(context)!.newEmployee,
                         style: const TextStyle(fontSize: 35),
                       )),
                       TextFormField(
@@ -148,7 +148,7 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
                           FocusScope.of(context).requestFocus(focs2);
                         },
                         decoration: InputDecoration(
-                          labelText: AppLocalizations.of(context)!.role,
+                          labelText: AppLocalizations.of(context)!.contact_number,
                           labelStyle: const TextStyle(
                             color: Colors.green, // Label text color
                             fontSize: 16,
@@ -208,7 +208,7 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
                           FocusScope.of(context).requestFocus(focs3);
                         },
                         decoration: InputDecoration(
-                          labelText: "Email",
+                          labelText:AppLocalizations.of(context)!.email,
                           labelStyle: const TextStyle(
                             color: Colors.green, // Label text color
                             fontSize: 16,
@@ -309,10 +309,11 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
                                     const SnackBar(content: Text('User updated successfully!')),
                                   );
                                 } else {
+
                                   final addPatient = User(
                                     user.id,
                                     _nameController.text,
-                                    _roleController.text,
+                                  _roleController.text,
                                     _contactController.text,
                                     _emailController.text,
                                   );

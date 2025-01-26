@@ -57,11 +57,8 @@ class _ExpensesPageState extends State<ExpensesPage> {
         '${pickedTime.hour.toString().padLeft(2, '0')}:${pickedTime.minute.toString().padLeft(2, '0')}:00';
       });
     }
-    _descriptionController.text = expenses.description;
-    _amountController.text = expenses.amount.toString();
-    _dateController.text = expenses.date;
-    _userIdController.text = expenses.userId;
   }
+
   Expenses expenses;
   _ExpensesPageState( this.expenses);
 
@@ -85,7 +82,8 @@ class _ExpensesPageState extends State<ExpensesPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title:   Text(AppLocalizations.of(context)!.newexpense,style: TextStyle(fontSize: 35),)),
       body:SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -104,7 +102,7 @@ class _ExpensesPageState extends State<ExpensesPage> {
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                     children: [
-                      Center(child: Text(AppLocalizations.of(context)!.record_expenses,style: TextStyle(fontSize: 35),)),
+                      Center(child: Text(AppLocalizations.of(context)!.newexpense,style: TextStyle(fontSize: 35),)),
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {

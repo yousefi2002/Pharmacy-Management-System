@@ -249,16 +249,30 @@ class _CustomerPageState extends State<CustomerPage> {
                         children: [
                           ElevatedButton(
                             onPressed: () async {
-                              String createdAt = DateTime.now().toString();
-                              String updatedAt = DateTime.now().toString();
                               if(_formKey.currentState!.validate()){
                                 if(customer.id!=null){
-                                  final updatecustomer=Customer(nameController.text, contactController.text, emailcontroller.text, createdAt, updatedAt);
-                                  await Provider.of<CustomerProvider>(context,listen:false).updateCustomer(updatecustomer);
+                                  String createdAt = DateTime.now().toString();
+                                  String updatedAt = DateTime.now().toString();
+                                  final updatecustomer=Customer(
+                                      nameController.text,
+                                      contactController.text,
+                                      emailcontroller.text,
+                                      createdAt,
+                                      updatedAt,
+                                    id: customer.id,
+
+                                  );
+                                  await Provider.of<CustomerProvider>(context,listen:false)
+                                      .updateCustomer(updatecustomer);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Customer updated successfully!')),
                                   );
+                                  print('Customer ID: ${customer.id}');
+                                  print('Customer Data: ${updatecustomer.toMap()}');
+
                                 }else{
+                                  String createdAt = DateTime.now().toString();
+                                  String updatedAt = DateTime.now().toString();
                                   final addCustomer=Customer(nameController.text, contactController.text, emailcontroller.text, createdAt, updatedAt);
                                   print(addCustomer);
                                   await Provider.of<CustomerProvider>(context,listen: false).addCustomer(addCustomer);
@@ -271,6 +285,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                 contactController.clear();
                                 emailcontroller.clear();
                                 Navigator.pop(context);
+
                               }
                             },
                             child: Text(AppLocalizations.of(context)!.save, style: TextStyle(color: Colors.white)),

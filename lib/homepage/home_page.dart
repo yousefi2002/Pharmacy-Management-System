@@ -279,6 +279,33 @@ class _HomePageState extends State<HomePage> {
               SizedBox(
                 width: spaceBettweenHeaderButtons,
               ),
+              // add visit button
+              Visibility(
+                visible: add_buttons_in_header_visibility,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(5.0),
+                      child: FloatingActionButton(
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => VisitPage(),
+                              ));
+                        },
+                        child: Icon(Icons.add),
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                      ),
+                    ),
+                    Text(AppLocalizations.of(context)!.newexpense)
+                  ],
+                ),
+              ),
+              SizedBox(
+                width: spaceBettweenHeaderButtons,
+              ),
             ],
           ),
         ),
@@ -302,8 +329,6 @@ class _HomePageState extends State<HomePage> {
                       AppLocalizations.of(context)!.doctor_accounts, 123),
                   title_with_amount(context,
                       AppLocalizations.of(context)!.cash_inventory, 1222),
-                  title_with_amount(context,
-                      AppLocalizations.of(context)!.number_of_patients, 45),
                 ],
               ),
             ),

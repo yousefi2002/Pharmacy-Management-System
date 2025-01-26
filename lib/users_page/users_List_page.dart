@@ -26,7 +26,7 @@ class _UsersListPageState extends State<UsersListPage> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.employee_list, style: const TextStyle(fontSize: 30),),
+            Text(AppLocalizations.of(context)!.employees, style: const TextStyle(fontSize: 30),),
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(
@@ -62,7 +62,7 @@ class _UsersListPageState extends State<UsersListPage> {
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: Text("new user"),
+                  child: Text(AppLocalizations.of(context)!.newEmployee),
                 )),
           ],
         ),
@@ -81,11 +81,11 @@ class _UsersListPageState extends State<UsersListPage> {
                     showEmptyRows: true,
                     source: MyData(data, context),
                     columns: [
-                      const DataColumn(label: Text("Id")),
+                       DataColumn(label: Text(AppLocalizations.of(context)!.id)),
                       DataColumn(label: Text(AppLocalizations.of(context)!.username)),
                       DataColumn(label: Text(AppLocalizations.of(context)!.role)),
                       DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
-                      DataColumn(label: Text("email")),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.email)),
                       const DataColumn(label: Text("")),
                     ],
                     columnSpacing: 50,
@@ -125,12 +125,12 @@ class MyData extends DataTableSource {
               context: context,
               builder: (BuildContext context) {
                 return AlertDialog(
-                  title: Text('delete'),
-                  content: Text("are_you_sure?"),
+                  title: Text(AppLocalizations.of(context)!.delete),
+                  content: Text(AppLocalizations.of(context)!.confirmDelete),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.of(context).pop(),
-                      child: Text("cancel"),
+                      child: Text(AppLocalizations.of(context)!.no),
                     ),
                     TextButton(
                       onPressed: () {
@@ -138,7 +138,7 @@ class MyData extends DataTableSource {
                             .deleteUser(user.id ?? 0);
                         Navigator.of(context).pop();
                       },
-                      child: Text('delete'),
+                      child: Text(AppLocalizations.of(context)!.delete),
                     ),
                   ],
                 );
@@ -158,7 +158,9 @@ class MyData extends DataTableSource {
             },
           ),],
       )),
-    ]);
+    ],
+        color: MaterialStateProperty.all(Colors.grey.shade200)
+    );
   }
 
   @override
