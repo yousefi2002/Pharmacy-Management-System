@@ -1,3 +1,4 @@
+import 'package:fargard_pharmacy_management_system/about_page/about_page.dart';
 import 'package:fargard_pharmacy_management_system/customer/customer_List_page.dart';
 import 'package:fargard_pharmacy_management_system/expenses_page/expenses_List_page.dart';
 import 'package:fargard_pharmacy_management_system/medicines%20List/medicines%20List.dart';
@@ -106,7 +107,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.about,
           "icon": Icons.info_outline,
-          // "navigate": AddPatientPage(),
+          "navigate": AboutPage(),
         },
       ];
 
