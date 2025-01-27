@@ -2,6 +2,7 @@
 import 'package:fargard_pharmacy_management_system/doctors_page/doctprs_List_page.dart';
 // import 'package:fargard_pharmacy_management_system/reports/employee_reports_page.dart';
 import 'package:fargard_pharmacy_management_system/purches_page/purchese_List_page.dart';
+import 'package:fargard_pharmacy_management_system/reports/roznamcha/roznamcha.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -20,6 +21,11 @@ class All_reports_page extends StatefulWidget {
 
 class _All_reports_pageState extends State<All_reports_page> {
   List<Map<String, dynamic>> pages(BuildContext context) => [
+    {
+      "name":"roznamcha",
+      "icon": Icon(Icons.add_card_outlined),
+      "navigate": Roznamcha(),
+    },
     {
       "name": AppLocalizations.of(context)!.purchase_reports,
       "icon": Icon(Icons.add_chart),
@@ -55,6 +61,7 @@ class _All_reports_pageState extends State<All_reports_page> {
   Widget build(BuildContext context) {
     final pagesList = pages(context);
     return Scaffold(
+      appBar: AppBar(),
       body:Padding(
         padding: const EdgeInsets.fromLTRB(500, 100, 500, 100),
         child: Container(

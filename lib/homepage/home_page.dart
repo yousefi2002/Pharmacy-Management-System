@@ -101,7 +101,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.settings,
           "icon": Icons.settings,
-          // "navigate": AddPatientPage(),
+          "navigate": Setting_page(),
         },
         {
           "name": AppLocalizations.of(context)!.about,
@@ -320,15 +320,17 @@ class _HomePageState extends State<HomePage> {
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
                 children: [
                   title_with_amount(
-                      context, AppLocalizations.of(context)!.daily_sales, 223),
+                      context, AppLocalizations.of(context)!.daily_sales, "223 ؋"),
                   title_with_amount(context,
-                      AppLocalizations.of(context)!.daily_purchases, 256),
+                      AppLocalizations.of(context)!.daily_purchases, "256 ؋"),
                   title_with_amount(context,
-                      AppLocalizations.of(context)!.daily_expenses, 234),
+                      AppLocalizations.of(context)!.daily_expenses, "234 ؋"),
                   title_with_amount(context,
-                      AppLocalizations.of(context)!.doctor_accounts, 123),
+                      AppLocalizations.of(context)!.doctor_accounts, "123 ؋"),
                   title_with_amount(context,
-                      AppLocalizations.of(context)!.cash_inventory, 1222),
+                      AppLocalizations.of(context)!.cash_inventory, "1222 ؋"),
+                  title_with_amount(context,
+                      AppLocalizations.of(context)!.backup, "1403/11/11")
                 ],
               ),
             ),
@@ -424,7 +426,7 @@ class _HomePageState extends State<HomePage> {
 }
 
 Widget title_with_amount(context, title, amount) {
-  var fontSize = 15.0;
+  var fontSize = 18.0;
   return Row(
     children: [
       Text(
