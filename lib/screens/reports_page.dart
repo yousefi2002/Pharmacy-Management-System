@@ -1,6 +1,6 @@
 import 'package:fargard_pharmacy_management_system/screens/purches_page/purchese_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/roznamcha.dart';
-import 'package:fargard_pharmacy_management_system/screens/salse_page/salse_List_page.dart';
+import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_List_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 

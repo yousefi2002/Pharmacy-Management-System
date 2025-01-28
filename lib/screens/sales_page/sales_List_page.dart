@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-import 'SalesPage.dart';
+import 'sales_page.dart';
 
 class Sales_List_page extends StatefulWidget {
   @override

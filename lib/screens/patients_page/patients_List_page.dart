@@ -1,4 +1,4 @@
-import 'package:fargard_pharmacy_management_system/screens/patient_regis_page/patient_regis_page.dart';
+import 'package:fargard_pharmacy_management_system/screens/patients_page/patient_regis_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';

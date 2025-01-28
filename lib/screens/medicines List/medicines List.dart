@@ -24,6 +24,7 @@ class _MedicinesListState extends State<MedicinesList> {
       Provider.of<MedicinesProvider>(context, listen: false).fetchMedicines();
     });
     return Scaffold(
+      appBar: AppBar(),
       body: Consumer<MedicinesProvider>(
         builder: ( context, value, child) {
           final data = value.medicines;
