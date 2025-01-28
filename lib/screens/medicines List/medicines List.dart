@@ -1,11 +1,13 @@
+import 'package:fargard_pharmacy_management_system/providers/crud_for_company_name.dart';
+import 'package:fargard_pharmacy_management_system/providers/crud_for_generic_name.dart';
+import 'package:fargard_pharmacy_management_system/screens/companies/companies_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-
 import '../../models/medicines.dart';
 import '../../providers/crud_for_medicines.dart';
+import '../generic_names/generic_names_list.dart';
 import 'medicine_register_page.dart';
-
 
 class MedicinesList extends StatefulWidget {
   const MedicinesList({super.key});
@@ -15,109 +17,120 @@ class MedicinesList extends StatefulWidget {
 }
 
 class _MedicinesListState extends State<MedicinesList> {
-
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Future.microtask(() {
       Provider.of<MedicinesProvider>(context, listen: false).fetchMedicines();
+      Provider.of<GenericNameProvider>(context, listen: false).fetchGeneric();
+      Provider.of<CompanyProvider>(context, listen: false).fetchCompanies();
     });
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Row(
+          children: [
+            Text(AppLocalizations.of(context)!.medicines, style: const TextStyle(fontSize: 30),),
+            const Expanded(child: SizedBox()),
+            // Text Search Bar
+            Expanded(
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: AppLocalizations.of(context)!.search,
+                  hintStyle: const TextStyle(color: Colors.white70),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white30, // Semi-transparent background
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                ),
+                style: const TextStyle(color: Colors.white),
+              ),
+            ),
+            const SizedBox(width: 8),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    )
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => MedicineRegisterPage(Medicine(null, '', '', '', null, '', '', '', ''))),);
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Text(AppLocalizations.of(context)!.register_medicine),
+                ),),
+            const SizedBox(width: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  )
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const GenericNameList()),);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Text(AppLocalizations.of(context)!.generic_names),
+              ),),
+            const SizedBox(width: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  )
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) =>  const CompaniesList()),);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Text(AppLocalizations.of(context)!.companies),
+              ),),
+          ],
+        ),
+      ),
       body: Consumer<MedicinesProvider>(
         builder: ( context, value, child) {
           final data = value.medicines;
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: PaginatedDataTable(
-                      actions: [
-                        ElevatedButton(style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.blueAccent),
-                            onPressed:(){
-                              Navigator.push(context, MaterialPageRoute(
-                                builder: (context) =>
-                                  MedicineRegisterPage(Medicine(null, '', '', '', 0.0,  '', '')),));
-                            },
-                            child:Text(AppLocalizations.of(context)!.nnew,style: TextStyle(color: Colors.black),)),
-                        const SizedBox(width: 100,),
-                        Text(AppLocalizations.of(context)!.start_date,style: TextStyle(fontSize: 18),),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        Text(AppLocalizations.of(context)!.end_date,style: TextStyle(fontSize: 18)),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 10,),
-                        ElevatedButton(
-                            style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.lightGreenAccent
-                            ),
-                            onPressed:(){
-                            },
-                            child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18,color: Colors.black))),
-                        SizedBox(width: 10,),
-                        Text(AppLocalizations.of(context)!.search),
-                        SizedBox(
-                          width: 120,
-                          height: 30,
-                          child: TextFormField(
-                            controller: _searchController,
-                            textAlign: TextAlign.center,
-                            decoration: InputDecoration(
-                              contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                              border: OutlineInputBorder(
-                                borderRadius: BorderRadius.circular(2),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-
-                      source: MyData(data, context),
-                      columns: [
-                        const DataColumn(label: Text("ID")),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.medicine_name)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.description)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.category)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.price)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.generic_name)),
-                        const DataColumn(label: Text('company Id')),
-                        const DataColumn(label: Text("")),
-                      ],
-                      header: Center(child: Text(AppLocalizations.of(context)!.medicines)),
-                      columnSpacing: 130,
-                      horizontalMargin: 40,
-                    ),
-                  ),
+            child: SingleChildScrollView(
+              child: SizedBox(
+                width: double.infinity,
+                child: PaginatedDataTable(
+                  showCheckboxColumn: true,
+                  showEmptyRows: true,
+                  source: MyData(data, context),
+                  columns: [
+                    const DataColumn(label: Text("ID")),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.medicine_name)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.description)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.category)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.price)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.generic_names)),
+                    const DataColumn(label: Text('company Id')),
+                    const DataColumn(label: Text("")),
+                  ],
+                  columnSpacing: 130,
+                  horizontalMargin: 40,
+                  showFirstLastButtons: true,
                 ),
-              ],
+              ),
             ),
           );
         },
@@ -184,7 +197,10 @@ class MyData extends DataTableSource {
             },
           ), ],
       )),
-    ]);
+
+    ],
+        color: WidgetStateProperty.all(Colors.grey.shade200)
+    );
   }
 
   @override
