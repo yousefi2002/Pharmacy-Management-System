@@ -1,8 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import 'package:sqflite/sqflite.dart';
-
 import '../database_manager _folder/database_helper.dart';
 import '../modal_classes/customers.dart';
 class Customer_regis_page extends StatefulWidget {
@@ -329,7 +327,7 @@ class _Customer_regis_pageState extends State<Customer_regis_page> {
                             String updatedAt = DateTime.now().toString();
 
                             // ایجاد شیء Customer
-                            Customer newCustomer = Customer(name, contactNumber, email, createdAt, updatedAt);
+                            // Customer newCustomer = Customer(name, contactNumber, email, createdAt, updatedAt);
 
                             // ذخیره مشتری در دیتابیس
                             // await dbHelper.Inse(newCustomer);

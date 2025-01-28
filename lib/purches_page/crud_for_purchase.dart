@@ -1,9 +1,7 @@
   import 'package:fargard_pharmacy_management_system/database_manager%20_folder/database_service.dart';
-  import 'package:fargard_pharmacy_management_system/modal_classes/medicines.dart';
   import 'package:fargard_pharmacy_management_system/modal_classes/purchases.dart';
   import 'package:flutter/material.dart';
   import '../database_manager _folder/database_helper.dart';
-  import '../modal_classes/sales.dart';
 
   class PurchasesProvider extends ChangeNotifier {
     final DatabaseHelper _dbHelper = DatabaseHelper();

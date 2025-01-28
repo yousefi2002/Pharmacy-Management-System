@@ -1,10 +1,8 @@
 import 'package:fargard_pharmacy_management_system/doctors_page/doctprs_List_page.dart';
-// import 'package:fargard_pharmacy_management_system/reports/employee_reports_page.dart';
 import 'package:fargard_pharmacy_management_system/purches_page/purchese_List_page.dart';
 import 'package:fargard_pharmacy_management_system/salse_page/salse_List_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-import '../medicines List/medicine_register_page.dart';
 
 class All_reports_page extends StatefulWidget {
   const All_reports_page({super.key});

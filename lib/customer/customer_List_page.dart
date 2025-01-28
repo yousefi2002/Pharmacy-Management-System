@@ -183,7 +183,7 @@ class CustomersDataTableSource extends DataTableSource {
         ],
       )),
     ],
-      color: MaterialStateProperty.all(Colors.grey.shade200)
+      color: WidgetStateProperty.all(Colors.grey.shade200)
     );
   }
 
