@@ -133,9 +133,9 @@ class _CustomerPageState extends State<CustomerPage> {
                           return null;
                         },
                         controller: contactController,
-                        focusNode: focs3,
+                        focusNode: focs1,
                         onFieldSubmitted: (value) {
-                          FocusScope.of(context).requestFocus(focs4);
+                          FocusScope.of(context).requestFocus(focs2);
                         },
                         decoration: InputDecoration(
                           labelText: AppLocalizations.of(context)!.contact_number,
@@ -193,10 +193,7 @@ class _CustomerPageState extends State<CustomerPage> {
                           return null;
                         },
                         controller: emailcontroller,
-                        focusNode: focs4,
-                        onFieldSubmitted: (value) {
-                          FocusScope.of(context).requestFocus(focs5);
-                        },
+                        focusNode: focs2,
                         decoration: InputDecoration(
                           labelText: AppLocalizations.of(context)!.address,
                           labelStyle: const TextStyle(

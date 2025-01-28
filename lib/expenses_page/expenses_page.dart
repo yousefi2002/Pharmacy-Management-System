@@ -16,14 +16,13 @@ class ExpensesPage extends StatefulWidget {
 
 class _ExpensesPageState extends State<ExpensesPage> {
   final _formKey = GlobalKey<FormState>();
-  final TextEditingController _timeController = TextEditingController();
   final List<String> name=["Admin","Pharmacist","Pharmacist Assistant"];
   String? selectvalue;
   final FocusNode focs1 = FocusNode();
   final FocusNode focs2 = FocusNode();
   final FocusNode focs3 = FocusNode();
   final FocusNode focs4 = FocusNode();
-
+  final TextEditingController _timeController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _amountController = TextEditingController();
   final TextEditingController _dateController = TextEditingController();
