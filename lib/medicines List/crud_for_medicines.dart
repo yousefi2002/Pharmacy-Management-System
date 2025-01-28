@@ -6,12 +6,15 @@ import '../database_manager _folder/database_helper.dart';
 class MedicinesProvider extends ChangeNotifier {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final DatabaseService _databaseService = DatabaseService();
-  List<Medicine> _medicine = [];
 
-  List<Medicine> get medicines => _medicine;
+  Medicine? selectedMedicine;
+
+  List<Medicine> _allMedicines = [];
+
+  List<Medicine> get medicines => _allMedicines;
 
   Future<void> fetchMedicines() async {
-    _medicine = await _databaseService.fetchMedicines();
+    _allMedicines = await _databaseService.fetchMedicines();
     notifyListeners();
   }
 
@@ -28,5 +31,19 @@ class MedicinesProvider extends ChangeNotifier {
   Future<void> deleteMedicine(int id) async {
     await _dbHelper.deleteMedicines(id);
     await fetchMedicines();
+  }
+
+  selectMedicine(Medicine medicine) {
+    selectedMedicine = medicine;
+    notifyListeners();
+  }
+
+  void searchMedicines(String query) async {
+    if (query.isEmpty) {
+      fetchMedicines();
+    } else {
+      _allMedicines = await _databaseService.fetchSearchMedicines(query);
+      notifyListeners();
+    }
   }
 }
