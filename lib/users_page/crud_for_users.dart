@@ -17,17 +17,17 @@ class UserProvider extends ChangeNotifier {
   }
 
   Future<void> addUser(User user) async {
-    await _dbHelper.addUser(user);
+    await _dbHelper.addUsers(user);
     await fetchUser();
   }
 
   Future<void> updateUser(User user) async {
-    await _dbHelper.updateUser(user);
+    await _dbHelper.updateUsers(user);
     await fetchUser();
   }
 
   Future<void> deleteUser(int id) async {
-    await _dbHelper.deleteUser(id);
+    await _dbHelper.deleteUsers(id);
     await fetchUser();
   }
 }

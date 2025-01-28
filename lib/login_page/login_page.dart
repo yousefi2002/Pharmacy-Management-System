@@ -4,15 +4,15 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
-class Login_page extends StatefulWidget {
-  const Login_page({super.key});
+class LoginPage extends StatefulWidget {
+  const LoginPage({super.key});
 
   @override
-  State<Login_page> createState() => _Login_pageState();
+  State<LoginPage> createState() => _LoginPageState();
 }
 
-class _Login_pageState extends State<Login_page> {
-  final List<String> name=["Admin","Pharmacist","Pharmacist Assistant"];
+class _LoginPageState extends State<LoginPage> {
+  final List<String> name = ["Admin","Pharmacist","Pharmacist Assistant"];
   String? selectvalue;
   @override
   Widget build(BuildContext context) {

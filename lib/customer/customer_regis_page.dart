@@ -266,6 +266,8 @@ class _CustomerPageState extends State<CustomerPage> {
                                   );
                                   print('Customer ID: ${customer.id}');
                                   print('Customer Data: ${updatecustomer.toMap()}');
+                            // ایجاد شیء Customer
+                            // Customer newCustomer = Customer(name, contactNumber, email, createdAt, updatedAt);
 
                                 }else{
                                   String createdAt = DateTime.now().toString();

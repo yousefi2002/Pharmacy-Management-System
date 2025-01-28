@@ -1,11 +1,11 @@
 class Sales {
   int? _id;
-  int? _salesMedicineId;
-  int? _salesCustomerId;
-  int? _salesUserId;
-  String? _quantity;
+  String? _salesMedicineId;
+  String? _salesCustomerId;
+  String? _salesUserId;
+  int? _quantity;
   String? _date;
-  String? _totalPrice;
+  double? _totalPrice;
   String? _createdAt;
   String? _updatedAt;
 
@@ -21,23 +21,23 @@ class Sales {
       );
 
   int? get id => _id;
-  int get salesMedicineId => _salesMedicineId ?? 0;
-  int get salesCustomerId => _salesCustomerId ?? 0;
-  int get salesUserId => _salesUserId ?? 0;
-  String get quantity => _quantity ?? '';
+  String get salesMedicineId => _salesMedicineId ?? '';
+  String get salesCustomerId => _salesCustomerId ?? '';
+  String get salesUserId => _salesUserId ?? '';
+  int get quantity => _quantity ?? 0;
   String get date => _date ?? '';
-  String get totalPrice => _totalPrice ?? '';
+  double get totalPrice => _totalPrice ?? 0.0;
   String get createdAt => _createdAt ?? '';
   String get updatedAt => _updatedAt ?? '';
 
-  set salesMedicineId (int newValue) => _salesMedicineId = newValue;
-  set salesCustomerId (int newValue) => _salesCustomerId = newValue;
-  set salesUserID (int newValue) => _salesUserId = newValue;
-  set quantity (String newValue) => _quantity = newValue;
+  set salesMedicineId (String newValue) => _salesMedicineId = newValue;
+  set salesCustomerId (String newValue) => _salesCustomerId = newValue;
+  set salesUserID (String newValue) => _salesUserId = newValue;
+  set quantity (int newValue) => _quantity = newValue;
   set date (String newValue) => _date = newValue;
-  set totalPrice (String newValue) => _totalPrice = newValue;
-  set createdAt(String newValue) => _createdAt = newValue;
-  set updatedAt(String newValue) => _updatedAt = newValue;
+  set totalPrice (double newValue) => _totalPrice = newValue;
+  set createdAt (String newValue) => _createdAt = newValue;
+  set updatedAt (String newValue) => _updatedAt = newValue;
 
   Map<String, dynamic> toMap() {
     var map = <String, dynamic>{};

@@ -16,17 +16,17 @@ class ExpensesProvider extends ChangeNotifier {
   }
 
   Future<void> addExpenses(Expenses expense) async {
-    await _dbHelper.addExpense(expense);
+    await _dbHelper.addExpenses(expense);
     await fetchExpense();
   }
 
   Future<void> updateExpense(Expenses expense) async {
-    await _dbHelper.updateExpense(expense);
+    await _dbHelper.updateExpenses(expense);
     await fetchExpense();
   }
 
   Future<void> deleteExpenses(int id) async {
-    await _dbHelper.deleteExpense(id);
+    await _dbHelper.deleteExpenses(id);
     await fetchExpense();
   }
 

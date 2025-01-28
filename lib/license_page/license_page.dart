@@ -111,7 +111,7 @@ class _LicenseValidationScreenState extends State<LicenseValidationScreen> {
               child: ElevatedButton(
                 onPressed: () {
                   Navigator.pushReplacement(
-                      context, MaterialPageRoute(builder: (b) => Login_page()));
+                      context, MaterialPageRoute(builder: (b) => LoginPage()));
                 },
                 child: const Text("Next"),
               ),
