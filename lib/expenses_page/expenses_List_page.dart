@@ -22,6 +22,7 @@ class _ExpensesListPageState extends State<ExpensesListPage> {
       Provider.of<ExpensesProvider>(context, listen: false).fetchExpense();
     });
     return Scaffold(
+      appBar: AppBar(),
       body: Consumer<ExpensesProvider>(
         builder: (context, value, child) {
           final data = value.expenses;

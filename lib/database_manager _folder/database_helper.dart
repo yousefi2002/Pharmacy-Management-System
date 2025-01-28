@@ -1,10 +1,14 @@
 import 'dart:io';
 import 'package:fargard_pharmacy_management_system/modal_classes/expenses.dart';
 import 'package:fargard_pharmacy_management_system/modal_classes/medicines.dart';
+import 'package:fargard_pharmacy_management_system/modal_classes/purchase_details.dart';
+import 'package:fargard_pharmacy_management_system/modal_classes/purchases.dart';
+import 'package:fargard_pharmacy_management_system/modal_classes/sales.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
 import '../modal_classes/patients.dart';
+import '../modal_classes/stocks.dart';
 import '../modal_classes/users.dart';
 
 class DatabaseHelper {
@@ -38,6 +42,7 @@ class DatabaseHelper {
   String medUpdatedAt = 'updated_at';
   String medGenId = 'medicine_generic_id';
   String medComId = 'medicine_company_id';
+
 //---------------------------
   String purchaseTable = 'purchases';
   String purId = 'purchase_id';
@@ -45,10 +50,12 @@ class DatabaseHelper {
   String purSupplierId = 'purchase_supplier_id';
   String purQuantity = 'purchase_quantity';
   String purPricePerUnite = 'purchase_price_per_unite';
+  String purTotalPrice = 'purchase_total_price';
   String purDate = 'purchase_date';
   String purBatchNumber = 'purchase_batch_number';
   String purCreatedAt = 'created_at';
   String purUpdatedAt = 'updated_at';
+
 //---------------------------
   String supplierTable = 'suppliers';
   String supId = 'supplier_id';
@@ -102,9 +109,9 @@ class DatabaseHelper {
 
 //-----------------------------------------
   String purchaseDetailsTable = 'purchase_details';
+  String medicineId = 'medicine_id';
   String purchaseId = 'purchase_id';
-  String medicineId = 'medicine';
-  String purchaseQuantity = 'purchase_Quantity';
+  String purchaseQuantity = 'purchase_quantity';
   String purchasePricePerUnit = 'purchase_price_per_unit';
   String purchaseBatchNumber = 'purchase_batch_number';
 
@@ -118,7 +125,7 @@ class DatabaseHelper {
   String stockTable = 'stocks';
   String stoId = 'stock_id';
   String stoMedicineId = 'stock_medicine_id';
-  String stoBatchNumber = 'stock_batch_number';
+  String stoPricePerUnit = 'stock_price_per_unit';
   String stoQuantity = 'stock_quantity';
   String stoExpireDate = 'stock_expire_date';
   String stoLocation = 'stock_location';
@@ -175,6 +182,7 @@ class DatabaseHelper {
   }
 
   void _createDb(Database db, int newVersion) async {
+
     await db.execute('''
         CREATE TABLE $companyTable (
         $comId INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -217,15 +225,17 @@ class DatabaseHelper {
         $purSupplierId int NOT NULL,
         $purQuantity int DEFAULT NULL,
         $purPricePerUnite decimal(10,2) DEFAULT NULL,
-        $purDate date DEFAULT NULL,
+        $purTotalPrice decimal(10,2) DEFAULT NULL,
+        $purDate text DEFAULT NULL,
         $purBatchNumber varchar(255) DEFAULT NULL,
         $purCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         $purUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT $purMedId FOREIGN KEY ($purMedId) REFERENCES $medicinesTable($medId),
-        CONSTRAINT $purSupplierId FOREIGN KEY ($purSupplierId) REFERENCES $supplierTable ($supId)
+        FOREIGN KEY ($purMedId) REFERENCES $medicinesTable($medId),
+        FOREIGN KEY ($purSupplierId) REFERENCES $supplierTable ($supId)
         )''');
+
     await db.execute('CREATE INDEX $purMedId ON purchases($purMedId);');
-    await db.execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId)');
+    await db.execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId);');
 
     await db.execute('''
     CREATE TABLE $supplierTable (
@@ -304,15 +314,22 @@ class DatabaseHelper {
 
     await db.execute('''
     CREATE TABLE $purchaseDetailsTable (
-        $purchaseId int NOT NULL,
         $medicineId int NOT NULL,
-        $purchaseQuantity int NOT NULL,
+        $purchaseId int NOT NULL,
+        $purchaseQuantity int DEFAULT NULL,
         $purchasePricePerUnit REAL DEFAULT NULL,
         $purchaseBatchNumber varchar(255) DEFAULT NULL,
         PRIMARY KEY ($purchaseId,$medicineId),
-        CONSTRAINT $purchaseId FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
-        CONSTRAINT $medicineId FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
+        FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
+        FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
     )
+''');
+
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $purchaseId ON $purchaseDetailsTable ($purchaseId);
+''');
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $medicineId ON $purchaseDetailsTable ($medicineId);
 ''');
 
     await db.execute('''
@@ -331,13 +348,13 @@ class DatabaseHelper {
     CREATE TABLE $stockTable (
         $stoId INTEGER PRIMARY KEY AUTOINCREMENT,
         $stoMedicineId int NOT NULL,
-        $stoBatchNumber varchar(255) DEFAULT NULL,
+        $stoPricePerUnit decimal(10,2) DEFAULT NULL,
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
         $stoCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
         $stoUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT $stoMedicineId FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
+        FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
     )
 ''');
 
@@ -414,6 +431,7 @@ class DatabaseHelper {
   // patient crud -----------------------------------------------------
   Future<int> addUsers(User user) async {
     final db = await database;
+
     return db.insert(usersTable, user.toMap());
   }
 
@@ -425,6 +443,7 @@ class DatabaseHelper {
 
   Future<int> deleteUsers(int id) async {
     final db = await database;
+    // final result = await db.rawQuery('PRAGMA table_info($purchaseDetailsTable)');
     return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
   }
 
@@ -446,7 +465,7 @@ class DatabaseHelper {
     return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
   }
 
-  // patient crud -----------------------------------------------------
+  // Medicine crud -----------------------------------------------------
   Future<int> addMedicines(Medicine medicine) async {
     final db = await database;
     return db.insert(medicinesTable, medicine.toMap());
@@ -461,5 +480,108 @@ class DatabaseHelper {
   Future<int> deleteMedicines(int id) async {
     final db = await database;
     return db.delete(medicinesTable, where: '$medId = ?', whereArgs: [id]);
+  }
+  Future<List<Map<String, dynamic>>> searchAllMedicines(String query) async {
+    final db = await database;
+    final result = await db.query(
+      medicinesTable,
+      where: '$medName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    print(result); // Debugging purpose
+    return result;
+  }
+  // Sales crud -----------------------------------------------------
+
+  Future<int> addSales(Sales sales) async {
+    final db = await database;
+    return db.insert(salesTable, sales.toMap());
+  }
+
+  Future<int> updateSales(Sales sales) async {
+    final db = await database;
+    return db.update(salesTable, sales.toMap(), where: '$salId = ?', whereArgs: [sales.id],
+    );
+  }
+
+  Future<int> deleteSales(int id) async {
+    final db = await database;
+    return db.delete(salesTable, where: '$salId = ?', whereArgs: [id]);
+  }
+
+  // Purchase crud -----------------------------------------------------
+
+  Future<int> addPurchases(Purchase purchase) async {
+    final db = await database;
+    return db.insert(purchaseTable, purchase.toMap());
+  }
+
+  Future<int> updatePurchases(Purchase purchase) async {
+    final db = await database;
+    return db.update(purchaseTable, purchase.toMap(), where: '$purId = ?', whereArgs: [purchase.id],
+    );
+  }
+
+  Future<int> deletePurchases(int id) async {
+    final db = await database;
+    return db.delete(purchaseTable, where: '$purId = ?', whereArgs: [id]);
+  }
+
+  // Purchase Details crud -----------------------------------------------------
+
+  Future<int> addPurchasesDetails(PurchaseDetails purchase) async {
+    final db = await database;
+    return db.insert(purchaseDetailsTable, purchase.toMap());
+  }
+
+  Future<int> updatePurchasesDetails(PurchaseDetails purchase) async {
+    final db = await database;
+    return db.update(purchaseDetailsTable, purchase.toMap(), where: '$purchaseId = ?', whereArgs: [purchase.purchaseId],
+    );
+  }
+
+  Future<int> deletePurchasesDetails(int id) async {
+    final db = await database;
+    return db.delete(purchaseDetailsTable, where: '$purchaseId = ?', whereArgs: [id]);
+  }
+
+  // Stock Details crud -----------------------------------------------------
+  Future<int> addStocks(Stock stock) async {
+    final db = await database;
+    return db.insert(stockTable, stock.toMap());
+  }
+
+  Future<int> updateStocks(Stock stock) async {
+    final db = await database;
+    return db.update(stockTable, stock.toMap(), where: '$stoId = ?', whereArgs: [stock.id],
+    );
+  }
+  Future<int> deleteStocks(int id) async {
+    final db = await database;
+    return db.delete(stockTable, where: '$stoId = ?', whereArgs: [id]);
+  }
+
+  Future<void> insertOrUpdateStock(int medicineId, int quantity, Stock stock) async {
+    final db = await database;
+    // Check if the medicine exists in the stock table
+    final existingStock = await db.query(
+      stockTable,
+      where: '$stoMedicineId = ?',
+      whereArgs: [medicineId],
+    );
+    if (existingStock.isNotEmpty) {
+      // Medicine exists, update the quantity
+      await db.rawUpdate(
+        '''
+    UPDATE $stockTable 
+    SET $stoQuantity = $quantity + ? 
+    WHERE $stoMedicineId = ?
+    ''',
+        [quantity, medicineId],
+      );
+    } else {
+      // Medicine does not exist, insert a new record
+      addStocks(stock);
+    }
   }
 }

@@ -1,5 +1,6 @@
+import 'dart:math';
+
 import 'package:fargard_pharmacy_management_system/customer/customer_regis_page.dart';
-import 'package:fargard_pharmacy_management_system/patient_regis_page/patient_regis_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 
@@ -9,17 +10,15 @@ class Customer_List_page extends StatefulWidget {
 }
 
 class _Customer_List_pageState extends State<Customer_List_page> {
-  final mydata _mydata = mydata();
+  final CustomersDataTableSource _mydata = CustomersDataTableSource();
   final TextEditingController _searchController = TextEditingController();
   String _searchQuery = '';
-
   void _filterData(String query) {
     setState(() {
       _searchQuery = query.toLowerCase();
       _mydata.filterData(_searchQuery);
     });
   }
-
   @override
   void initState() {
     super.initState();
@@ -37,125 +36,112 @@ class _Customer_List_pageState extends State<Customer_List_page> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
+      appBar: AppBar(
+        title: Row(
           children: [
+            Text(AppLocalizations.of(context)!.customer_list, style: const TextStyle(fontSize: 30),),
+            const Expanded(child: SizedBox()),
+            // Text Search Bar
             Expanded(
-              child: SingleChildScrollView(
-                child: PaginatedDataTable(
-                  actions: [
-                    ElevatedButton(style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent),
-                        onPressed:(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Customer_regis_page(
-                          ),));
-                        },
-                        child:Text(AppLocalizations.of(context )!.nnew,style: TextStyle(color: Colors.black),)),
-                    SizedBox(width: 100,),
-                    Text(AppLocalizations.of(context)!.start_date,style: TextStyle(fontSize: 18),),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.end_date,style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent
-                        ),
-                        onPressed:(){
-                          setState(() {
-                            _filterData(_searchQuery);
-                          });
-                        },
-                        child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18))),
-                    SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.search_by),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        controller: _searchController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-
-                  source: _mydata,
-                  columns: [
-                    DataColumn(label: Container(width:20,child: Text("#"))),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.age)),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.gender))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.contact_number))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.address))),
-                    DataColumn(label: Container(width:80,child: Text(""))),
-                  ],
-                  header: Center(child: Text(AppLocalizations.of(context)!.customer_list)),
-                  columnSpacing: 130,
-                  horizontalMargin: 40,
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  hintStyle: const TextStyle(color: Colors.white70),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white30, // Semi-transparent background
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
+            const SizedBox(width: 8),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    )
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Customer_regis_page(),
+                      ));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Text(
+                    "Add Customer",
+                  ),
+                )),
           ],
+        ),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(8.0),
+        child: Expanded(
+          child: SingleChildScrollView(
+            child: SizedBox(
+              width: double.infinity,
+              child: PaginatedDataTable(
+                showCheckboxColumn: true,
+                showEmptyRows: true,
+                source: _mydata,
+                columns: [
+                  DataColumn(label: Container(width: 10, child: Text("#",))),
+                  DataColumn(
+                      label:
+                          Text(AppLocalizations.of(context)!.customer_name)),
+                  DataColumn(label: Text(AppLocalizations.of(context)!.age)),
+                  DataColumn(
+                      label: Container(
+                          width: 80,
+                          child: Text(AppLocalizations.of(context)!.gender))),
+                  DataColumn(
+                      label: Container(
+                          width: 80,
+                          child: Text(
+                              AppLocalizations.of(context)!.contact_number))),
+                  DataColumn(
+                      label: Container(
+                          width: 80,
+                          child:
+                              Text(AppLocalizations.of(context)!.address))),
+                  DataColumn(label: Container(width: 80, child: Text(""))),
+                ],
+                columnSpacing: 50,
+                horizontalMargin: 40,
+                showFirstLastButtons: true,
+
+              ),
+            ),
+          ),
         ),
       ),
     );
   }
 }
 
-class mydata extends DataTableSource {
-  List<Map<String, String>> _prescriptions = [
-    {"number": "1", "patient_name": "Patient A", "contact_number": "1234567890", "prescription_number": "RX001", "total_amount": "1000", "paid_amount": "900"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-  ];
+class CustomersDataTableSource extends DataTableSource {
 
-  List<Map<String, String>> _filteredPrescriptions = [];
+  // List<Map<String, String>> _filteredPrescriptions = [];
+  List<Map<String, String>> _prescriptions = [];
+  List<Map<String, String>> _filteredPrescriptions = List.generate(50, (index) {
+    final random = Random();
+    return {
+      "customer_id": (index + 1).toString(),
+      "customer_name": "Customer ${index + 1}",
+      "customer_contact_number": "123-456-78${random.nextInt(10)}${random.nextInt(10)}",
+      "customer_age": (20 + random.nextInt(40)).toString(),
+      "customer_gender": random.nextBool() ? "Male" : "Female",
+      "customer_address": "Address ${index + 1}, City ${random.nextInt(100)}",
+    };
+  });
 
   void filterData(String query) {
     if (query.isEmpty) {
@@ -167,23 +153,38 @@ class mydata extends DataTableSource {
     }
     notifyListeners();
   }
+
   @override
   DataRow getRow(int index) {
     final prescription = _filteredPrescriptions[index];
     return DataRow(cells: [
-      DataCell(Text(prescription["number"] ?? '')),
-      DataCell(Text(prescription["patient_name"] ?? '')),
-      DataCell(Text(prescription["patient_name"] ?? '')),
-      DataCell(Text(prescription["contact_number"] ?? '')),
-      DataCell(Text(prescription["prescription_number"] ?? '')),
-      DataCell(Text(prescription["total_amount"] ?? '')),
+      DataCell(Text(prescription["customer_id"] ?? '',), onTap: (){}),
+      DataCell(Text(prescription["customer_name"] ?? '')),
+      DataCell(Text(prescription["customer_contact_number"] ?? '')),
+      DataCell(Text(prescription["customer_age"] ?? '')),
+      DataCell(Text(prescription["customer_gender"] ?? '')),
+      DataCell(Text(prescription["customer_address"] ?? '')),
       DataCell(Row(
         children: [
-          IconButton(onPressed:(){}, icon:Icon(Icons.delete,color: Colors.red,),),
-          IconButton(onPressed:(){}, icon:Icon(Icons.edit_note_outlined,color: Colors.blue,),),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.delete,
+              color: Colors.red,
+            ),
+          ),
+          IconButton(
+            onPressed: () {},
+            icon: Icon(
+              Icons.edit_note_outlined,
+              color: Colors.blue,
+            ),
+          ),
         ],
       )),
-    ]);
+    ],
+      color: MaterialStateProperty.all(Colors.grey.shade200)
+    );
   }
 
   @override

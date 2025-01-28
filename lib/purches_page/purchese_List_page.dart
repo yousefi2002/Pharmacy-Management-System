@@ -1,179 +1,123 @@
 import 'package:fargard_pharmacy_management_system/purches_page/Purchase_page.dart';
+import 'package:fargard_pharmacy_management_system/purches_page/crud_for_purchase.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import 'package:provider/provider.dart';
 
-class Purchese_List_page extends StatefulWidget {
+class PurchaseListPage extends StatefulWidget {
+  const PurchaseListPage({super.key});
+
   @override
-  _Purchese_List_pageState createState() => _Purchese_List_pageState();
+  _PurchaseListPageState createState() => _PurchaseListPageState();
 }
 
-class _Purchese_List_pageState extends State<Purchese_List_page> {
-  final mydata _mydata = mydata();
+class _PurchaseListPageState extends State<PurchaseListPage> {
   final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-
-  void _filterData(String query) {
-    setState(() {
-      _searchQuery = query.toLowerCase();
-      _mydata.filterData(_searchQuery);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(() {
-      _filterData(_searchController.text);
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      Provider.of<PurchasesProvider>(context, listen: false).fetchPurchases();
+    });
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Column(
+      appBar: AppBar(
+        title: Row(
           children: [
+            Text(AppLocalizations.of(context)!.purchase_invoice, style: const TextStyle(fontSize: 30),),
+            const Expanded(child: SizedBox()),
+            // Text Search Bar
             Expanded(
-              child: SingleChildScrollView(
-                child: PaginatedDataTable(
-                  actions: [
-                    ElevatedButton(style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.blueAccent),
-                        onPressed:(){
-                          Navigator.push(context, MaterialPageRoute(builder: (context) => Purchase_page(),));
-                        },
-                        child:Text(AppLocalizations.of(context)!.nnew,style: TextStyle(color: Colors.black),)),
-                    SizedBox(width: 100,),
-                    Text(AppLocalizations.of(context)!.start_date,style: TextStyle(fontSize: 18),),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.end_date,style: TextStyle(fontSize: 18)),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                    SizedBox(width: 10,),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.lightGreenAccent
-                        ),
-                        onPressed:(){
-                          setState(() {
-                            _filterData(_searchQuery);
-                          });
-                        },
-                        child:Text(AppLocalizations.of(context)!.filter,style: TextStyle(fontSize: 18))),
-                    SizedBox(width: 10,),
-                    Text(AppLocalizations.of(context)!.search_by),
-                    SizedBox(
-                      width: 120,
-                      height: 30,
-                      child: TextFormField(
-                        controller: _searchController,
-                        textAlign: TextAlign.center,
-                        decoration: InputDecoration(
-                          contentPadding: EdgeInsets.symmetric(vertical: 8.0),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(2),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ],
-                  source: _mydata,
-                  columns: [
-                    DataColumn(label: Container(width:20,child: Text("#"))),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.account)),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.contact_number))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.date))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.invoice_number))),
-                    DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.total_price))),
-                    DataColumn(label: Container(width:80,child: Text(""))),
-                  ],
-                  header: Center(child: Text(AppLocalizations.of(context)!.purchase_invoice_list)),
-                  columnSpacing: 120,
-                  horizontalMargin: 40,
+              child: TextFormField(
+                controller: _searchController,
+                decoration: InputDecoration(
+                  hintText: 'Search...',
+                  hintStyle: const TextStyle(color: Colors.white70),
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    borderSide: BorderSide.none,
+                  ),
+                  filled: true,
+                  fillColor: Colors.white30, // Semi-transparent background
+                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
+                style: const TextStyle(color: Colors.white),
               ),
             ),
+            const SizedBox(width: 8),
+            ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10), // Rounded corners
+                    )
+                ),
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => PurchasePage(),
+                      ));
+                },
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  child: Text(
+                    "Add Customer",
+                  ),
+                )),
           ],
         ),
+      ),
+      body: Consumer<PurchasesProvider>(
+        builder: ( context, value, child) {
+          final data = value.purchases;
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Column(
+              children: [
+                Expanded(
+                  child: SingleChildScrollView(
+                    child: PaginatedDataTable(
+                      showCheckboxColumn: true,
+                      showEmptyRows: true,
+                      source: MyData(data, context),
+                      columns: [
+                        const DataColumn(label: Text("#")),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.account)),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.date)),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.invoice_number)),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.total_price)),
+                        const DataColumn(label: Text("")),
+                      ],
+                      columnSpacing: 120,
+                      horizontalMargin: 40,
+                      showFirstLastButtons: true,
+                    ),
+                  ),
+                ),
+              ],
+            ),
+          );
+        },
       ),
     );
   }
 }
 
-class mydata extends DataTableSource {
-  List<Map<String, String>> _prescriptions = [
-    {"number": "1", "patient_name": "Patient A", "contact_number": "1234567890", "prescription_number": "RX001", "total_amount": "1000", "paid_amount": "900"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-    {"number": "2", "patient_name": "Patient B", "contact_number": "0987654321", "prescription_number": "RX002", "total_amount": "1500", "paid_amount": "1400"},
-  ];
+class MyData extends DataTableSource {
+  var value;
+  final BuildContext context;
+  MyData(this.value, this.context);
 
-  List<Map<String, String>> _filteredPrescriptions = [];
-
-  void filterData(String query) {
-    if (query.isEmpty) {
-      _filteredPrescriptions = List.from(_prescriptions);
-    } else {
-      _filteredPrescriptions = _prescriptions.where((item) {
-        return item.values.any((value) => value.toLowerCase().contains(query));
-      }).toList();
-    }
-    notifyListeners();
-  }
   @override
   DataRow getRow(int index) {
-    final prescription = _filteredPrescriptions[index];
+    final data = value[index];
     return DataRow(cells: [
-      DataCell(Text(prescription["number"] ?? '')),
-      DataCell(Text(prescription["patient_name"] ?? '')),
-      DataCell(Text(prescription["contact_number"] ?? '')),
-      DataCell(Text(prescription["prescription_number"] ?? '')),
-      DataCell(Text(prescription["total_amount"] ?? '')),
-      DataCell(Text(prescription["total_amount"] ?? '')),
+      DataCell(Text(data.medicineId.toString())),
+      DataCell(Text(data.supplierId.toString())),
+      DataCell(Text(data.quantity.toString())),
+      DataCell(Text(data.date)),
+      DataCell(Text(data.pricePerUnit.toString())),
+      DataCell(Text(data.totalPrice.toString())),
       DataCell(Row(
         children: [
           IconButton(onPressed:(){}, icon:Icon(Icons.delete,color: Colors.red,),),
@@ -187,7 +131,7 @@ class mydata extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _filteredPrescriptions.length;
+  int get rowCount => value.length;
 
   @override
   int get selectedRowCount => 0;

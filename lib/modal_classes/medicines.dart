@@ -4,10 +4,10 @@ class Medicine {
   String? _description;
   String? _type;
   double? _pricePerUnit;
-  String? _createdAt;
-  String? _updatedAt;
   String? _genericID;
   String? _companyId;
+  String? _createdAt;
+  String? _updatedAt;
 
   Medicine(
     this._id,

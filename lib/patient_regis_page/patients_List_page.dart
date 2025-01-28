@@ -22,6 +22,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
       Provider.of<PatientProvider>(context, listen: false).fetchPatient();
     });
     return Scaffold(
+      appBar: AppBar(title: Text("Patients List"),),
       body: Consumer<PatientProvider>(
         builder: (context, value, child) {
           final data = value.patients;
@@ -32,6 +33,7 @@ class _PatientsListPageState extends State<PatientsListPage> {
                 Expanded(
                   child: SingleChildScrollView(
                     child: PaginatedDataTable(
+
                       actions: [
                         ElevatedButton(
                             style: ElevatedButton.styleFrom(

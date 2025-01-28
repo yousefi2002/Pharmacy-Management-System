@@ -23,6 +23,7 @@ class _UsersListPageState extends State<UsersListPage> {
       Provider.of<UserProvider>(context, listen: false).fetchUser();
     });
     return Scaffold(
+      appBar: AppBar(),
       body: Consumer<UserProvider>(
         builder: (context,  value, child) {
           final data = value.users;

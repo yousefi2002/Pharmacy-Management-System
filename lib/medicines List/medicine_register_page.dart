@@ -197,14 +197,7 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                 const SnackBar(content: Text('Medicine added successfully!')),
                               );
                             }
-
                             _formKey.currentState!.reset();
-                            // _descriptionController.clear();
-                            // _nameController.clear();
-                            // _typeController.clear();
-                            // _priceController.clear();
-                            // _genericIdController.clear();
-                            // _companyIdController.clear();
                             Navigator.pop(context);
                           }
                         },
