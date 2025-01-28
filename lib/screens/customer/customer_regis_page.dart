@@ -24,7 +24,7 @@ class _CustomerPageState extends State<CustomerPage> {
   final FocusNode focs5 = FocusNode();
   final TextEditingController nameController = TextEditingController();
   final TextEditingController contactController = TextEditingController();
-  final TextEditingController emailcontroller = TextEditingController();
+  final TextEditingController emailController = TextEditingController();
 
   Customer customer;
   _CustomerPageState(this.customer);
@@ -34,7 +34,7 @@ class _CustomerPageState extends State<CustomerPage> {
     super.initState();
     nameController.text=customer.name;
     contactController.text=customer.contactNumber;
-    emailcontroller.text=customer.email;
+    emailController.text=customer.email;
   }
 
   @override
@@ -42,12 +42,13 @@ class _CustomerPageState extends State<CustomerPage> {
     super.dispose();
     nameController.dispose();
     contactController.dispose();
-    emailcontroller.dispose();
+    emailController.dispose();
   }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text(AppLocalizations.of(context)!.new_customer, style: const TextStyle(fontSize: 30),),),
+      appBar: AppBar(title: Text(AppLocalizations.of(context)!.new_customer,
+        style: const TextStyle(fontSize: 30),),),
       body:SingleChildScrollView(
         child: Center(
           child: Padding(
@@ -193,7 +194,7 @@ class _CustomerPageState extends State<CustomerPage> {
                           }
                           return null;
                         },
-                        controller: emailcontroller,
+                        controller: emailController,
                         focusNode: focs2,
                         decoration: InputDecoration(
                           labelText: AppLocalizations.of(context)!.address,
@@ -251,30 +252,24 @@ class _CustomerPageState extends State<CustomerPage> {
                                 if(customer.id!=null){
                                   String createdAt = DateTime.now().toString();
                                   String updatedAt = DateTime.now().toString();
-                                  final updatecustomer=Customer(
+                                  final updateCustomer=Customer(
                                       nameController.text,
                                       contactController.text,
-                                      emailcontroller.text,
+                                      emailController.text,
                                       createdAt,
                                       updatedAt,
                                     id: customer.id,
 
                                   );
                                   await Provider.of<CustomerProvider>(context,listen:false)
-                                      .updateCustomer(updatecustomer);
+                                      .updateCustomer(updateCustomer);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Customer updated successfully!')),
                                   );
-                                  print('Customer ID: ${customer.id}');
-                                  print('Customer Data: ${updatecustomer.toMap()}');
-                            // ایجاد شیء Customer
-                            // Customer newCustomer = Customer(name, contactNumber, email, createdAt, updatedAt);
-
                                 }else{
                                   String createdAt = DateTime.now().toString();
                                   String updatedAt = DateTime.now().toString();
-                                  final addCustomer=Customer(nameController.text, contactController.text, emailcontroller.text, createdAt, updatedAt);
-                                  print(addCustomer);
+                                  final addCustomer=Customer(nameController.text, contactController.text, emailController.text, createdAt, updatedAt);
                                   await Provider.of<CustomerProvider>(context,listen: false).addCustomer(addCustomer);
                                   ScaffoldMessenger.of(context).showSnackBar(
                                     const SnackBar(content: Text('Customer added successfully!')),
@@ -283,7 +278,7 @@ class _CustomerPageState extends State<CustomerPage> {
                                 _formKey.currentState!.reset();
                                 nameController.clear();
                                 contactController.clear();
-                                emailcontroller.clear();
+                                emailController.clear();
                                 Navigator.pop(context);
 
                               }
