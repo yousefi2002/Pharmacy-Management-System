@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:fargard_pharmacy_management_system/models/companies.dart';
+import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -627,5 +629,41 @@ class DatabaseHelper {
       // Medicine does not exist, insert a new record
       addStocks(stock);
     }
+  }
+
+  // generic name crud -----------------------------------------------------
+
+  Future<int> addGeneric(GenericName generic) async {
+    final db = await database;
+    return db.insert(genericNameTable, generic.toMap());
+  }
+
+  Future<int> updateGeneric(GenericName generic) async {
+    final db = await database;
+    return db.update(genericNameTable, generic.toMap(), where: '$genId = ?', whereArgs: [generic.id],
+    );
+  }
+
+  Future<int> deleteGeneric(int id) async {
+    final db = await database;
+    return db.delete(genericNameTable, where: '$genId = ?', whereArgs: [id]);
+  }
+
+  // company name crud -----------------------------------------------------
+
+  Future<int> addCompany(Company company) async {
+    final db = await database;
+    return db.insert(companyTable, company.toMap());
+  }
+
+  Future<int> updateCompany(Company company) async {
+    final db = await database;
+    return db.update(companyTable, company.toMap(), where: '$comId = ?', whereArgs: [company.id],
+    );
+  }
+
+  Future<int> deleteCompany(int id) async {
+    final db = await database;
+    return db.delete(companyTable, where: '$comId = ?', whereArgs: [id]);
   }
 }
