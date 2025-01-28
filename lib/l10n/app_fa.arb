@@ -1,5 +1,6 @@
 {
     "pharmacy_name": "سیستم مدیریت داروخانه کلینیک موفق",
+    "pharmacy": "سیستم مدیریت داروخانه",
    "discount": "تخفیف",
       "prescription_date": "تاریخ نسخه",
       "sale_date": "تاریخ فروش",
@@ -13,6 +14,7 @@
       "employees": "کارمندان",
       "register_medicine": "ثبت دوا",
       "register_customer": "ثبت مشتری",
+      "new_customer": "مشتری جدید",
       "warehouse": "انبار",
       "daily_sales": "فروشات روز",
       "daily_purchases": "خریدات روز",

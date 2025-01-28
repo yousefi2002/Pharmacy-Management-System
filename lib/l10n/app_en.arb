@@ -1,5 +1,6 @@
 {
     "pharmacy_name": "Moaffagh Pharmacy Management System",
+    "pharmacy": "Pharmacy Management System",
    "discount": "Discount",
     "prescription_date": "Prescription Date",
     "sale_date": "Sale Date",
@@ -13,6 +14,7 @@
     "employees": "Employees",
     "register_medicine": "Register Medicine",
     "register_customer": "Register Customer",
+    "new_customer": "New Customer",
     "warehouse": "Warehouse",
     "daily_sales": "Daily Sales",
     "daily_purchases": "Daily Purchases",
@@ -95,7 +97,7 @@
         "about": "About",
         "medicine_list": "Medicine List",
         "patient_list": "Patient List",
-        "customer_list": "Customer List",
+        "customer_list": "Customers List",
         "doctor_list": "Doctor List",
         "nnew": "New",
         "price": "Price",
