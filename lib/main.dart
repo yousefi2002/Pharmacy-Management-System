@@ -1,16 +1,4 @@
-import 'package:fargard_pharmacy_management_system/Stock_page_of_medicine/crud_for_stock.dart';
-import 'package:fargard_pharmacy_management_system/customer/crud_for_customer.dart';
-import 'package:fargard_pharmacy_management_system/doctors_page/crud_for_doctor.dart';
-import 'package:fargard_pharmacy_management_system/homepage/home_page.dart';
-import 'package:fargard_pharmacy_management_system/provider/provider_setting.dart';
-import 'package:fargard_pharmacy_management_system/expenses_page/crud_for_expenses.dart';
-import 'package:fargard_pharmacy_management_system/medicines%20List/crud_for_medicines.dart';
-import 'package:fargard_pharmacy_management_system/patient_regis_page/crud_for_patients.dart';
-import 'package:fargard_pharmacy_management_system/provider/provider_setting.dart';
-import 'package:fargard_pharmacy_management_system/purches_page/crud_for_purchase.dart';
-import 'package:fargard_pharmacy_management_system/purches_page/crud_for_purchase_detai.dart';
-import 'package:fargard_pharmacy_management_system/salse_page/crud_for_sales.dart';
-import 'package:fargard_pharmacy_management_system/users_page/crud_for_users.dart';
+import 'package:fargard_pharmacy_management_system/providers/LanguageChange.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -19,8 +7,18 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:sqflite_common_ffi/sqflite_ffi.dart';
-import 'LanguageChange/LanguageChange.dart';
-import 'homepage/home_page.dart';
+import 'providers/crud_for_customer.dart';
+import 'providers/crud_for_doctor.dart';
+import 'providers/crud_for_expenses.dart';
+import 'providers/crud_for_medicines.dart';
+import 'providers/crud_for_patients.dart';
+import 'providers/crud_for_purchase.dart';
+import 'providers/crud_for_purchase_detai.dart';
+import 'providers/crud_for_sales.dart';
+import 'providers/crud_for_stock.dart';
+import 'providers/crud_for_users.dart';
+import 'providers/provider_setting.dart';
+import 'screens/home_page.dart';
 
 void main() async {
   SharedPreferences sp = await SharedPreferences.getInstance();
