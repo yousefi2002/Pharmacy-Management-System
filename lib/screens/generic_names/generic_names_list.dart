@@ -1,6 +1,7 @@
 import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_generic_name.dart';
 import 'package:fargard_pharmacy_management_system/screens/generic_names/generic_name_register.dart';
+import 'package:fargard_pharmacy_management_system/utilities/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -57,7 +58,7 @@ class _GenericNameListState extends State<GenericNameList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GenericNameRegisterPage(GenericName(null,'', '', ''))),);
+                      builder: (context) => GenericNameRegisterPage(GenericName(null,''))),);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -79,11 +80,11 @@ class _GenericNameListState extends State<GenericNameList> {
                   showEmptyRows: true,
                   source: MyData(data, context),
                   columns: [
-                    const DataColumn(label: Text("ID")),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.generic_names)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.id)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.generic_name)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.created_at)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.updated_at)),
-                    const DataColumn(label: Text("")),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
                   ],
                   columnSpacing: 130,
                   horizontalMargin: 40,
@@ -109,8 +110,8 @@ class MyData extends DataTableSource {
         cells: [
           DataCell(Text(genericName.id.toString()),),
           DataCell(Text(genericName.name),),
-          DataCell(Text(genericName.createdAt)),
-          DataCell(Text(genericName.updatedAt)),
+          DataCell(Text(formatLocalTime(genericName.createdAt))),
+          DataCell(Text(formatLocalTime(genericName.updatedAt))),
           DataCell(Row(
             children: [
               IconButton(

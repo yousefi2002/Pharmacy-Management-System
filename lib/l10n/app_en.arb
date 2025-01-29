@@ -1,4 +1,5 @@
 {
+    "id": "ID",
     "pharmacy_name": "Moaffagh Pharmacy Management System",
     "pharmacy": "Pharmacy Management System",
    "discount": "Discount",
@@ -30,6 +31,7 @@
     "prescription_amount": "Prescription Amount",
     "amount_payable": "Amount Payable",
     "generic_names": "Generic Names",
+    "generic_name": "Generic Name",
     "created_at": "Created At",
     "updated_at": "Updated At",
     "companies": "Companies",
@@ -138,5 +140,6 @@
               "newDoctor": "New Doctor",
               "newEmployee": "New Employee",
               "newMedicine": "New Medicine",
+              "actions": "Actions",
   "@@locale": "en"
 }

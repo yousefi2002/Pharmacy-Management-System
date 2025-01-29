@@ -1,11 +1,10 @@
 import 'package:fargard_pharmacy_management_system/models/companies.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_company_name.dart';
 import 'package:fargard_pharmacy_management_system/screens/companies/companies_register.dart';
+import 'package:fargard_pharmacy_management_system/utilities/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-import '../../providers/crud_for_medicines.dart';
-import '../medicines List/medicine_register_page.dart';
 
 class CompaniesList extends StatefulWidget {
   const CompaniesList({super.key});
@@ -60,7 +59,7 @@ class _CompaniesListState extends State<CompaniesList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CompaniesRegisterPage(Company(null,'', '', ''))),);
+                      builder: (context) => CompaniesRegisterPage(Company(null,''))),);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -83,11 +82,11 @@ class _CompaniesListState extends State<CompaniesList> {
                   showEmptyRows: true,
                   source: MyData(data, context),
                   columns: [
-                    const DataColumn(label: Text("ID")),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.id)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.company_name)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.created_at)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.updated_at)),
-                    const DataColumn(label: Text("")),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
                   ],
                   columnSpacing: 130,
                   horizontalMargin: 40,
@@ -113,8 +112,8 @@ class MyData extends DataTableSource {
         cells: [
           DataCell(Text(company.id.toString()),),
           DataCell(Text(company.name),),
-          DataCell(Text(company.createdAt)),
-          DataCell(Text(company.updatedAt)),
+          DataCell(Text(formatLocalTime(company.createdAt ?? ""))),
+          DataCell(Text(formatLocalTime(company.updatedAt ?? ""))),
           DataCell(Row(
             children: [
               IconButton(

@@ -1,4 +1,5 @@
 {
+    "id": "آیدی",
     "pharmacy_name": "سیستم مدیریت داروخانه کلینیک موفق",
     "pharmacy": "سیستم مدیریت داروخانه",
    "discount": "تخفیف",
@@ -26,6 +27,7 @@
       "total_price": "قیمت کل",
       "prescription_amount": "مبلغ نسخه",
       "amount_payable": "مبلغ قابل پرداخت",
+      "generic_names": "نام های جنریک",
       "generic_name": "نام جنریک",
       "created_at": "ایجاد شده در",
       "updated_at": "به‌روزرسانی شده در",
@@ -138,5 +140,6 @@
                  "newDoctor": "داکتر جدید",
                  "newEmployee": "کارمند جدید",
                  "newMedicine": "دوای جدید",
+                 "actions": "عملیات",
   "@@locale": "fa"
 }

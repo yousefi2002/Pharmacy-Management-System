@@ -1,5 +1,6 @@
 import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_generic_name.dart';
+import 'package:fargard_pharmacy_management_system/utilities/custom_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -71,7 +72,6 @@ class _GenericNameRegisterPageState extends State<GenericNameRegisterPage> {
                         AppLocalizations.of(context)!.register_generic,
                         style: TextStyle(fontSize: 35),
                       )),
-
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
@@ -83,55 +83,7 @@ class _GenericNameRegisterPageState extends State<GenericNameRegisterPage> {
                         onFieldSubmitted: (value) {
                           FocusScope.of(context).requestFocus(focs1);
                         },
-                        decoration: InputDecoration(
-                          labelText:
-                              AppLocalizations.of(context)!.generic_names,
-                          labelStyle: const TextStyle(
-                            color: Colors.green, // Label text color
-                            fontSize: 16,
-                          ),
-                          hintText: 'Name like Panadol',
-                          hintStyle: const TextStyle(
-                              color: Colors.grey), // Hint text color
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.circular(5), // Rounded border
-                            borderSide: const BorderSide(
-                              color: Colors
-                                  .greenAccent, // Border color when not focused
-                              width: 1,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius:
-                                BorderRadius.circular(5), // Rounded border
-                            borderSide: const BorderSide(
-                              color: Colors.green, // Border color when focused
-                              width: 2,
-                            ),
-                          ),
-                          errorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(5),
-                            borderSide: const BorderSide(
-                              color: Colors.red, // Border color on error
-                              width: 2,
-                            ),
-                          ),
-                          focusedErrorBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Colors
-                                  .redAccent, // Border color on focused error
-                              width: 2,
-                            ),
-                          ),
-                          contentPadding: const EdgeInsets.symmetric(
-                            horizontal: 16.0,
-                            vertical: 12.0,
-                          ), // Inner padding
-                          filled: true,
-                          fillColor: Colors.green.shade50, // Background color
-                        ),
+                        decoration: MyInputDecoration1(labelText: AppLocalizations.of(context)!.generic_name, hintText: 'Name like Panadol'),
                         style: const TextStyle(
                           color: Colors.black, // Input text color
                           fontSize: 18,
@@ -140,16 +92,8 @@ class _GenericNameRegisterPageState extends State<GenericNameRegisterPage> {
                       ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            String createdAt =
-                            DateTime.now().toString();
-                            String updatedAt =
-                            DateTime.now().toString();
                             if (genericName.id != null) {
-                              final updateGenericName = GenericName(
-                                  genericName.id,
-                                  _nameController.text,
-                                  createdAt,
-                                  updatedAt);
+                              final updateGenericName = GenericName(genericName.id, _nameController.text, genericName.createdAt);
                               await Provider.of<GenericNameProvider>(context,
                                       listen: false)
                                   .updateGeneric(updateGenericName);
@@ -159,11 +103,7 @@ class _GenericNameRegisterPageState extends State<GenericNameRegisterPage> {
                                         Text('Generic Name updated successfully!')),
                               );
                             } else {
-                              final newGeneric = GenericName(
-                                  genericName.id,
-                                  _nameController.text,
-                                  createdAt,
-                                  updatedAt);
+                              final newGeneric = GenericName(genericName.id, _nameController.text);
                               await Provider.of<GenericNameProvider>(context,
                                       listen: false)
                                   .addGeneric(newGeneric);

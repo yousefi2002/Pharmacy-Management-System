@@ -6,6 +6,7 @@ import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../../models/medicines.dart';
 import '../../providers/crud_for_medicines.dart';
+import '../../utilities/date_time_format.dart';
 import '../generic_names/generic_names_list.dart';
 import 'medicine_register_page.dart';
 
@@ -64,7 +65,7 @@ class _MedicinesListState extends State<MedicinesList> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => MedicineRegisterPage(Medicine(null, '', '', '', null, '', '', '', ''))),);
+                        builder: (context) => MedicineRegisterPage(Medicine.empty())),);
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -120,14 +121,16 @@ class _MedicinesListState extends State<MedicinesList> {
                   showEmptyRows: true,
                   source: MyData(data, context),
                   columns: [
-                    const DataColumn(label: Text("ID")),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.id)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.medicine_name)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.description)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.category)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.price)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.generic_names)),
-                    const DataColumn(label: Text('company Id')),
-                    const DataColumn(label: Text("")),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.generic_name)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.company_name)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.created_at)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.updated_at)),
                   ],
                   columnSpacing: 63,
                   horizontalMargin: 20,
@@ -158,8 +161,7 @@ class MyData extends DataTableSource {
           DataCell(Text(medicine.pricePerUnit.toString())),
           DataCell(Text(medicine.genericId)),
           DataCell(Text(medicine.companyId)),
-          DataCell(Row(
-        children: [
+          DataCell(Row(children: [
           IconButton(
             icon: const Icon(Icons.delete, color: Colors.red),
             onPressed: () {
@@ -198,9 +200,9 @@ class MyData extends DataTableSource {
                 ),
               );
             },
-          ), ],
-      )),
-
+          ), ],)),
+          DataCell(Text(formatLocalTime(medicine.createdAt))),
+          DataCell(Text(formatLocalTime(medicine.updatedAt))),
     ],
         color: WidgetStateProperty.all(Colors.grey.shade200)
     );
