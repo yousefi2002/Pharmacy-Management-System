@@ -429,10 +429,11 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                       hint: 'Search for medicines...',
                                       focusNode: null,
                                       requestNode: null,
-                                      onChange: (value) {
-                                        Provider.of<GenericNameProvider>(context, listen: false).searchGeneric(value);
-                                      },
+                                      onChange: (_){},
                                     ),
+                                    searchMatchFn: (item, searchValue) {
+                                      return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
+                                    },
                                   ),
                                 ),
                               ),
@@ -475,10 +476,11 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                       hint: 'Search for medicines...',
                                       focusNode: null,
                                       requestNode: null,
-                                      onChange: (value) {
-                                        Provider.of<CompanyProvider>(context, listen: false).searchCompany(value);
-                                      },
+                                      onChange: (value) {},
                                     ),
+                                    searchMatchFn: (item, searchValue) {
+                                      return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
+                                    },
                                   ),
                                 ),
                               ),
