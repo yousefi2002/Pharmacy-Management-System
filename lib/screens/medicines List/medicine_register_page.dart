@@ -30,6 +30,8 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
   final FocusNode focs4 = FocusNode();
   final FocusNode focs5 = FocusNode();
 
+  final TextEditingController _genericSearchController = TextEditingController();
+  final TextEditingController _companySearchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
@@ -99,7 +101,7 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                               Center(
                                   child: Text(
                                 AppLocalizations.of(context)!.register_medicine,
-                                style: TextStyle(fontSize: 35),
+                                style: const TextStyle(fontSize: 35),
                               )),
 
                               TextFormField(
@@ -400,35 +402,35 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                   },
                                   hint: Row(
                                     children: [
-                                      Icon(
+                                      const Icon(
                                         Icons.list,
                                         size: 16,
                                         color: Colors.lightGreenAccent,
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                         width: 4,
                                       ),
                                       Expanded(
                                           child: Text(
                                         genericName ?? 'Select Generic Name',
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 14,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.lightGreenAccent),
                                         overflow: TextOverflow.ellipsis,
-                                      ))
+                                      ),),
                                     ],
                                   ),
                                   dropdownSearchData: DropdownSearchData(
-                                    // searchController: _searchController,
+                                    searchController: _genericSearchController,
                                     searchInnerWidgetHeight: 150,
                                     searchInnerWidget: BuildTextFormField(
-                                      controller: null,
+                                      controller: _genericSearchController,
                                       hint: 'Search for medicines...',
                                       focusNode: null,
                                       requestNode: null,
                                       onChange: (value) {
-                                        // medicinesProvider.searchMedicines(value);
+                                        Provider.of<GenericNameProvider>(context, listen: false).searchGeneric(value);
                                       },
                                     ),
                                   ),
@@ -456,25 +458,25 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                   },
                                   hint: Row(
                                     children: [
-                                      Icon(Icons.list,size: 16,color: Colors.lightGreenAccent,),
-                                      SizedBox(width: 4,),
+                                      const Icon(Icons.list,size: 16,color: Colors.lightGreenAccent,),
+                                      const SizedBox(width: 4,),
                                       Expanded(child: Text(companyName ?? "Select Company Name",style:
-                                      TextStyle(fontSize: 14,
+                                      const TextStyle(fontSize: 14,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.lightGreenAccent),
                                         overflow: TextOverflow.ellipsis,))
                                     ],
                                   ),
                                   dropdownSearchData: DropdownSearchData(
-                                    // searchController: _searchController,
+                                    searchController: _companySearchController,
                                     searchInnerWidgetHeight: 150,
                                     searchInnerWidget: BuildTextFormField(
-                                      controller: null,
+                                      controller: _companySearchController,
                                       hint: 'Search for medicines...',
                                       focusNode: null,
                                       requestNode: null,
                                       onChange: (value) {
-                                        // medicinesProvider.searchMedicines(value);
+                                        Provider.of<CompanyProvider>(context, listen: false).searchCompany(value);
                                       },
                                     ),
                                   ),

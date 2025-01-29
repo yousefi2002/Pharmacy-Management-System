@@ -40,6 +40,9 @@ class _GenericNameListState extends State<GenericNameList> {
                   fillColor: Colors.white30, // Semi-transparent background
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
+                onChanged: (value){
+                  Provider.of<GenericNameProvider>(context, listen: false).searchGeneric(value);
+                },
                 style: const TextStyle(color: Colors.white),
               ),
             ),

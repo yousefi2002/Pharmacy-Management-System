@@ -57,6 +57,16 @@ class DatabaseService {
     return maps.map((map) => Medicine.fromMapObject(map)).toList();
   }
 
+  Future<List<GenericName>> fetchSearchGeneric(String query) async {
+    final List<Map<String, dynamic>> maps = await _dbHelper.searchAllGenerics(query);
+    return maps.map((map) => GenericName.fromMapObject(map)).toList();
+  }
+
+  Future<List<Company>> fetchSearchCompany(String query) async {
+    final List<Map<String, dynamic>> maps = await _dbHelper.searchAllCompany(query);
+    return maps.map((map) => Company.fromMapObject(map)).toList();
+  }
+
   Future<List<Patient>> fetchPatients() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('patients');
     return maps.map((map) => Patient.fromMapObject(map)).toList();

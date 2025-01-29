@@ -85,7 +85,7 @@ class _GenericNameRegisterPageState extends State<GenericNameRegisterPage> {
                         },
                         decoration: InputDecoration(
                           labelText:
-                              AppLocalizations.of(context)!.medicine_name,
+                              AppLocalizations.of(context)!.generic_names,
                           labelStyle: const TextStyle(
                             color: Colors.green, // Label text color
                             fontSize: 16,

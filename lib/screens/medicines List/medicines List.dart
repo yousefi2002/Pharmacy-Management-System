@@ -48,6 +48,9 @@ class _MedicinesListState extends State<MedicinesList> {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
                 style: const TextStyle(color: Colors.white),
+                onChanged: (value){
+                  Provider.of<MedicinesProvider>(context, listen: false).searchMedicines(value);
+                },
               ),
             ),
             const SizedBox(width: 8),
@@ -126,8 +129,8 @@ class _MedicinesListState extends State<MedicinesList> {
                     const DataColumn(label: Text('company Id')),
                     const DataColumn(label: Text("")),
                   ],
-                  columnSpacing: 130,
-                  horizontalMargin: 40,
+                  columnSpacing: 63,
+                  horizontalMargin: 20,
                   showFirstLastButtons: true,
                 ),
               ),

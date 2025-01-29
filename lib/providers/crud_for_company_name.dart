@@ -30,4 +30,13 @@ class CompanyProvider extends ChangeNotifier {
     await _dbHelper.deleteCompany(id);
     await fetchCompanies();
   }
+
+  void searchCompany(String query) async {
+    if (query.isEmpty) {
+      fetchCompanies();
+    } else {
+      _company = await _databaseService.fetchSearchCompany(query);
+      notifyListeners();
+    }
+  }
 }

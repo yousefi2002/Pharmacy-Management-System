@@ -43,6 +43,9 @@ class _CompaniesListState extends State<CompaniesList> {
                   fillColor: Colors.white30, // Semi-transparent background
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
+                onChanged: (value){
+                  Provider.of<CompanyProvider>(context, listen: false).searchCompany(value);
+                },
                 style: const TextStyle(color: Colors.white),
               ),
             ),

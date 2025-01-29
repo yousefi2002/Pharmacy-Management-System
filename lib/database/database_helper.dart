@@ -534,7 +534,6 @@ class DatabaseHelper {
       where: '$medName LIKE ?',
       whereArgs: ["$query%"],
     );
-    print(result); // Debugging purpose
     return result;
   }
   // Sales crud -----------------------------------------------------
@@ -649,6 +648,17 @@ class DatabaseHelper {
     return db.delete(genericNameTable, where: '$genId = ?', whereArgs: [id]);
   }
 
+  Future<List<Map<String, dynamic>>> searchAllGenerics(String query) async {
+    final db = await database;
+    final result = await db.query(
+      genericNameTable,
+      where: '$genName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    print(result); // Debugging purpose
+    return result;
+  }
+
   // company name crud -----------------------------------------------------
 
   Future<int> addCompany(Company company) async {
@@ -665,5 +675,16 @@ class DatabaseHelper {
   Future<int> deleteCompany(int id) async {
     final db = await database;
     return db.delete(companyTable, where: '$comId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> searchAllCompany(String query) async {
+    final db = await database;
+    final result = await db.query(
+      companyTable,
+      where: '$comName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    print(result); // Debugging purpose
+    return result;
   }
 }

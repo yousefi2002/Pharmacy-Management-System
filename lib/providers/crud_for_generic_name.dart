@@ -30,4 +30,13 @@ class GenericNameProvider extends ChangeNotifier {
     await _dbHelper.deleteGeneric(id);
     await fetchGeneric();
   }
+
+  void searchGeneric(String query) async {
+    if (query.isEmpty) {
+      _genericName = await _databaseService.fetchGenericNames();
+    } else {
+      _genericName = await _databaseService.fetchSearchGeneric(query);
+    }
+    notifyListeners();
+  }
 }
