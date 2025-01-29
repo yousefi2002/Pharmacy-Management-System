@@ -57,7 +57,7 @@ class _CompaniesListState extends State<CompaniesList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => CompaniesRegisterPage(Company(null,'', '', '', '', ''))),);
+                      builder: (context) => CompaniesRegisterPage(Company(null,'', '', ''))),);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -82,8 +82,8 @@ class _CompaniesListState extends State<CompaniesList> {
                   columns: [
                     const DataColumn(label: Text("ID")),
                     DataColumn(label: Text(AppLocalizations.of(context)!.company_name)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.address)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.created_at)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.updated_at)),
                     const DataColumn(label: Text("")),
                   ],
                   columnSpacing: 130,
@@ -110,8 +110,8 @@ class MyData extends DataTableSource {
         cells: [
           DataCell(Text(company.id.toString()),),
           DataCell(Text(company.name),),
-          DataCell(Text(company.address)),
-          DataCell(Text(company.contactNumber)),
+          DataCell(Text(company.createdAt)),
+          DataCell(Text(company.updatedAt)),
           DataCell(Row(
             children: [
               IconButton(
