@@ -340,9 +340,7 @@ class _PurchasePageState extends State<PurchasePage> {
                       selectedMedicines[index] = value?.name;
                       selectedMedicineDetails[index] =
                           medicinesProvider.selectMedicine(value!);
-                      unitPriceControllers[index].text =
-                          selectedMedicineDetails[index]
-                                  ?.pricePerUnit
+                      unitPriceControllers[index].text = selectedMedicineDetails[index]?.pricePerUnit
                                   .toString() ??
                               '';
                       unitPriceControllers[index].text = medicinesProvider

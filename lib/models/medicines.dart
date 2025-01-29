@@ -17,6 +17,8 @@ class Medicine {
     this._pricePerUnit,
     this._genericID,
     this._companyId,
+    this._createdAt,
+    this._updatedAt
   );
 
   int? get id => _id;

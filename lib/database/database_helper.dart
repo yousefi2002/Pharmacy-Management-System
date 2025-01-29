@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:fargard_pharmacy_management_system/models/companies.dart';
+import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -532,7 +534,6 @@ class DatabaseHelper {
       where: '$medName LIKE ?',
       whereArgs: ["$query%"],
     );
-    print(result); // Debugging purpose
     return result;
   }
   // Sales crud -----------------------------------------------------
@@ -627,5 +628,63 @@ class DatabaseHelper {
       // Medicine does not exist, insert a new record
       addStocks(stock);
     }
+  }
+
+  // generic name crud -----------------------------------------------------
+
+  Future<int> addGeneric(GenericName generic) async {
+    final db = await database;
+    return db.insert(genericNameTable, generic.toMap());
+  }
+
+  Future<int> updateGeneric(GenericName generic) async {
+    final db = await database;
+    return db.update(genericNameTable, generic.toMap(), where: '$genId = ?', whereArgs: [generic.id],
+    );
+  }
+
+  Future<int> deleteGeneric(int id) async {
+    final db = await database;
+    return db.delete(genericNameTable, where: '$genId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> searchAllGenerics(String query) async {
+    final db = await database;
+    final result = await db.query(
+      genericNameTable,
+      where: '$genName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    print(result); // Debugging purpose
+    return result;
+  }
+
+  // company name crud -----------------------------------------------------
+
+  Future<int> addCompany(Company company) async {
+    final db = await database;
+    return db.insert(companyTable, company.toMap());
+  }
+
+  Future<int> updateCompany(Company company) async {
+    final db = await database;
+    return db.update(companyTable, company.toMap(), where: '$comId = ?', whereArgs: [company.id],
+    );
+  }
+
+  Future<int> deleteCompany(int id) async {
+    final db = await database;
+    return db.delete(companyTable, where: '$comId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> searchAllCompany(String query) async {
+    final db = await database;
+    final result = await db.query(
+      companyTable,
+      where: '$comName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    print(result); // Debugging purpose
+    return result;
   }
 }

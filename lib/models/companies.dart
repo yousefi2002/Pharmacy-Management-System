@@ -7,7 +7,7 @@ class Company{
   String? _createdAt;
   String? _updatedAt;
 
-  Company(this._name, this._address, this._contactNumber, this._createdAt, this._updatedAt);
+  Company(this._id, this._name, this._createdAt, this._updatedAt);
 
   int? get id => _id;
   String get name => _name ?? '';

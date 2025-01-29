@@ -5,7 +5,7 @@ class GenericName{
   String? _createdAt;
   String? _updatedAt;
 
-  GenericName(this._name, this._createdAt, this._updatedAt);
+  GenericName(this._id, this._name, this._createdAt, this._updatedAt);
 
   int? get id => _id;
   String get name => _name ?? '';
