@@ -1,5 +1,9 @@
 {
     "id": "ID",
+    "suppliers": "Suppliers",
+    "supplier": "Supplier",
+    "new_supplier": "New Supplier",
+    "supplier_name": "Supplier Name",
     "pharmacy_name": "Moaffagh Pharmacy Management System",
     "pharmacy": "Pharmacy Management System",
    "discount": "Discount",
@@ -17,7 +21,7 @@
     "register_medicine": "Register Medicine",
     "register_customer": "Register Customer",
     "new_customer": "New Customer",
-    "warehouse": "Warehouse",
+    "stock": "Stock",
     "daily_sales": "Daily Sales",
     "register_companies": "Register Companies",
     "register_generic": "Register Generic Name",

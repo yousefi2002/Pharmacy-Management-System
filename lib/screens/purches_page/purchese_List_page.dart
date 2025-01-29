@@ -1,8 +1,10 @@
+import 'package:fargard_pharmacy_management_system/screens/suppliers/suppliers_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
 import '../../providers/crud_for_purchase.dart';
+import '../generic_names/generic_names_list.dart';
 import 'Purchase_page.dart';
 
 class PurchaseListPage extends StatefulWidget {
@@ -61,9 +63,26 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
-                    "Add Customer",
+                    AppLocalizations.of(context)!.register_medicine,
                   ),
                 )),
+            const SizedBox(width: 8),
+            ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10), // Rounded corners
+                  )
+              ),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const SuppliersList()),);
+              },
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 15.0),
+                child: Text(AppLocalizations.of(context)!.suppliers),
+              ),),
           ],
         ),
       ),

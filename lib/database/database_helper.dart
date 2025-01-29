@@ -13,6 +13,7 @@ import '../models/purchase_details.dart';
 import '../models/purchases.dart';
 import '../models/sales.dart';
 import '../models/stocks.dart';
+import '../models/suppliers.dart';
 import '../models/users.dart';
 
 class DatabaseHelper {
@@ -239,16 +240,15 @@ class DatabaseHelper {
         .execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId);');
 
     await db.execute('''
-    CREATE TABLE $supplierTable (
-        $supId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $supName varchar(255) NOT NULL,
-        $supContactNumber varchar(15) DEFAULT NULL,
-        $supEmail varchar(255) DEFAULT NULL,
-        $supAddress text,
-        $supCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $supUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
-    )
-''');
+      CREATE TABLE $supplierTable (
+          $supId INTEGER PRIMARY KEY AUTOINCREMENT, 
+          $supName varchar(255) NOT NULL,
+          $supContactNumber varchar(15) DEFAULT NULL,
+          $supEmail varchar(255) DEFAULT NULL,
+          $supAddress text,
+          $supCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+          $supUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
+      )''');
 
     await db.execute('''
     CREATE TABLE $salesTable (
@@ -587,6 +587,38 @@ class DatabaseHelper {
     return db.delete(salesTable, where: '$salId = ?', whereArgs: [id]);
   }
 
+  // Suppliers crud -----------------------------------------------------
+
+  Future<int> addSupplier(Supplier supplier) async {
+    final db = await database;
+    return db.insert(supplierTable, supplier.toMap());
+  }
+
+  Future<int> updateSupplier(Supplier supplier) async {
+    final db = await database;
+    return db.update(
+      supplierTable,
+      supplier.toMap(),
+      where: '$supId = ?',
+      whereArgs: [supplier.id],
+    );
+  }
+
+  Future<int> deleteSupplier(int id) async {
+    final db = await database;
+    return db.delete(supplierTable, where: '$supId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> searchAllSuppliers(String query) async {
+    final db = await database;
+    final result = await db.query(
+      supplierTable,
+      where: '$supName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    return result;
+  }
+
   // Purchase crud -----------------------------------------------------
 
   Future<int> addPurchases(Purchase purchase) async {
@@ -740,7 +772,6 @@ class DatabaseHelper {
       where: '$comName LIKE ?',
       whereArgs: ["$query%"],
     );
-    print(result); // Debugging purpose
     return result;
   }
 }

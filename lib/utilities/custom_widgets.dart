@@ -2,12 +2,12 @@ import 'package:flutter/material.dart';
 
 InputDecoration MyInputDecoration1({labelText, hintText}){
   return InputDecoration(
-    labelText: labelText,
+    labelText: labelText ?? "",
     labelStyle: const TextStyle(
       color: Colors.green, // Label text color
       fontSize: 16,
     ),
-    hintText: hintText,
+    hintText: hintText ?? "",
     hintStyle: const TextStyle(
         color: Colors.grey), // Hint text color
     enabledBorder: OutlineInputBorder(
