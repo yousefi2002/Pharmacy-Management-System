@@ -1,5 +1,6 @@
 {
     "id": "ID",
+    "print": "Print",
     "suppliers": "Suppliers",
     "supplier": "Supplier",
     "new_supplier": "New Supplier",

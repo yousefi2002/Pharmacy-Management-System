@@ -49,13 +49,13 @@ class DatabaseHelper {
 //---------------------------
   String purchaseTable = 'purchases';
   String purId = 'purchase_id';
-  String purMedId = 'purchase_medicine_id';
-  String purSupplierId = 'purchase_supplier_id';
-  String purQuantity = 'purchase_quantity';
-  String purPricePerUnite = 'purchase_price_per_unite';
-  String purTotalPrice = 'purchase_total_price';
   String purDate = 'purchase_date';
-  String purBatchNumber = 'purchase_batch_number';
+  String purTotalPrice = 'purchase_total_price';
+  String purSupplierId = 'purchase_supplier_id';
+  // String purMedId = 'purchase_medicine_id';
+  // String purQuantity = 'purchase_quantity';
+  // String purPricePerUnite = 'purchase_price_per_unite';
+  // String purBatchNumber = 'purchase_batch_number';
   String purCreatedAt = 'created_at';
   String purUpdatedAt = 'updated_at';
 
@@ -112,11 +112,12 @@ class DatabaseHelper {
 
 //-----------------------------------------
   String purchaseDetailsTable = 'purchase_details';
+  String purchaseDetailsID = 'purchase_details_id';
   String medicineId = 'medicine_id';
   String purchaseId = 'purchase_id';
-  String purchaseQuantity = 'purchase_quantity';
-  String purchasePricePerUnit = 'purchase_price_per_unit';
-  String purchaseBatchNumber = 'purchase_batch_number';
+  String purchaseDetailsQuantity = 'purchase_quantity';
+  String purchaseDetailsPricePerUnit = 'purchase_price_per_unit';
+  String purchaseDetailsTotal = 'purchase_details_total';
 
 //--------------------------------------------
   String salesDetailsTable = 'salesDetails';
@@ -178,13 +179,15 @@ class DatabaseHelper {
 
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}/store.db';
+    String path = '${directory.path}/store1.db';
 
-    var storeDatabase = openDatabase(path, version: 2, onCreate: _createDb);
+    var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
   }
 
   void _createDb(Database db, int newVersion) async {
+
+    //companyTable
     // Use TEXT for timestamps: Use datetime('now', 'utc') instead of CURRENT_TIMESTAMP ensures the timestamps are in UTC, which is good practice for consistency. it as an ISO 8601 formatted string (yyyy-MM-dd HH:mm:ss).
     await db.execute('''
         CREATE TABLE $companyTable (
@@ -194,6 +197,7 @@ class DatabaseHelper {
         $comUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
         ) ''');
 
+    //genericNameTable
     await db.execute('''
         CREATE TABLE $genericNameTable
         ($genId INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -202,6 +206,7 @@ class DatabaseHelper {
         $genUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
         )''');
 
+    //medicinesTable
     await db.execute('''
         CREATE TABLE $medicinesTable (
         $medId INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -219,26 +224,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX $medGenId ON medicines($medGenId);');
     await db.execute('CREATE INDEX $medComId ON medicines($medComId);');
 
-    await db.execute('''
-        CREATE TABLE $purchaseTable
-        ($purId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $purMedId int NOT NULL,
-        $purSupplierId int NOT NULL,
-        $purQuantity int DEFAULT NULL,
-        $purPricePerUnite decimal(10,2) DEFAULT NULL,
-        $purTotalPrice decimal(10,2) DEFAULT NULL,
-        $purDate text DEFAULT NULL,
-        $purBatchNumber varchar(255) DEFAULT NULL,
-        $purCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $purUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY ($purMedId) REFERENCES $medicinesTable($medId),
-        FOREIGN KEY ($purSupplierId) REFERENCES $supplierTable ($supId)
-        )''');
-
-    await db.execute('CREATE INDEX $purMedId ON purchases($purMedId);');
-    await db
-        .execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId);');
-
+    //supplierTable
     await db.execute('''
       CREATE TABLE $supplierTable (
           $supId INTEGER PRIMARY KEY AUTOINCREMENT, 
@@ -249,6 +235,40 @@ class DatabaseHelper {
           $supCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
           $supUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
       )''');
+
+    //purchaseTable
+    await db.execute('''
+        CREATE TABLE $purchaseTable
+        ($purId INTEGER PRIMARY KEY AUTOINCREMENT, 
+        $purDate TEXT DEFAULT (datetime('now', 'utc')),
+        $purTotalPrice REAL DEFAULT NULL,
+        $purSupplierId int NOT NULL,
+        $purCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $purUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        FOREIGN KEY ($purSupplierId) REFERENCES $supplierTable ($supId)
+        )''');
+    await db.execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId);');
+
+    //purchaseDetailsTable
+    await db.execute('''
+    CREATE TABLE $purchaseDetailsTable (
+        $purchaseDetailsID INT AUTO_INCREMENT PRIMARY KEY,
+        $medicineId int NOT NULL,
+        $purchaseId int NOT NULL,
+        $purchaseDetailsQuantity int DEFAULT NULL,
+        $purchaseDetailsPricePerUnit int DEFAULT NULL,
+        $purchaseDetailsTotal DECIMAL(10, 2) GENERATED ALWAYS AS ($purchaseDetailsQuantity * $purchaseDetailsPricePerUnit) STORED,
+        FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
+        FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
+    )
+    ''');
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $purchaseId ON $purchaseDetailsTable ($purchaseId);
+    ''');
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $medicineId ON $purchaseDetailsTable ($medicineId);
+    ''');
+
 
     await db.execute('''
     CREATE TABLE $salesTable (
@@ -313,25 +333,6 @@ class DatabaseHelper {
     CREATE INDEX IF NOT EXISTS $expUserId ON $expensesTable ($expUserId);
 ''');
 
-    await db.execute('''
-    CREATE TABLE $purchaseDetailsTable (
-        $medicineId int NOT NULL,
-        $purchaseId int NOT NULL,
-        $purchaseQuantity int DEFAULT NULL,
-        $purchasePricePerUnit REAL DEFAULT NULL,
-        $purchaseBatchNumber varchar(255) DEFAULT NULL,
-        PRIMARY KEY ($purchaseId,$medicineId),
-        FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
-        FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
-    )
-''');
-
-    await db.execute('''
-    CREATE INDEX IF NOT EXISTS $purchaseId ON $purchaseDetailsTable ($purchaseId);
-''');
-    await db.execute('''
-    CREATE INDEX IF NOT EXISTS $medicineId ON $purchaseDetailsTable ($medicineId);
-''');
 
     await db.execute('''
     CREATE TABLE $salesDetailsTable (
@@ -641,11 +642,28 @@ class DatabaseHelper {
     return db.delete(purchaseTable, where: '$purId = ?', whereArgs: [id]);
   }
 
+  Future<int> fetchLastInsertedPurchaseId() async {
+    final db = await database;
+    final List<Map> maps = await db.rawQuery("SELECT last_insert_rowid() AS PurchaseID;");
+    return maps[0]['PurchaseID'];
+  }
+
   // Purchase Details crud -----------------------------------------------------
 
-  Future<int> addPurchasesDetails(PurchaseDetails purchase) async {
+  // Future<int> addPurchasesDetails(PurchaseDetails purchase) async {
+  //   final db = await database;
+  //   return db.insert(purchaseDetailsTable, purchase.toMap());
+  // }
+
+  Future<void> addPurchasesDetails(List<PurchaseDetails> purchaseDetails) async {
     final db = await database;
-    return db.insert(purchaseDetailsTable, purchase.toMap());
+    Batch batch = db.batch(); // Create a batch for bulk insertion
+
+    for (var purchaseDetails in purchaseDetails) {
+      batch.insert(purchaseDetailsTable, purchaseDetails.toMap());
+    }
+
+    await batch.commit(noResult: true); // Execute batch insert
   }
 
   Future<int> updatePurchasesDetails(PurchaseDetails purchase) async {
