@@ -54,6 +54,8 @@ dependencies:
   device_info_plus: ^11.2.1
   file_picker: ^8.1.7
   searchbar_animation: ^0.0.4
+  permission_handler: ^11.0.1
+
 
 dev_dependencies:
   flutter_test:

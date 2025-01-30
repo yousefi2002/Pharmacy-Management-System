@@ -168,6 +168,13 @@ class DatabaseHelper {
 
   DatabaseHelper._createInstance();
 
+  Future<void> closeDatabase() async {
+    if (_database != null) {
+      await _database!.close();
+      _database = null;
+    }
+  }
+
   factory DatabaseHelper() {
     _databaseHelper ??= DatabaseHelper._createInstance();
     return _databaseHelper!;
@@ -177,10 +184,14 @@ class DatabaseHelper {
     _database ??= await initDatabase();
     return _database!;
   }
-
+   String path = '';
+  Future<String> getDatabasePath() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/store.db';
+  }
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}/store.db';
+     path = '${directory.path}/store.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
