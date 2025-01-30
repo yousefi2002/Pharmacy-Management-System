@@ -245,7 +245,8 @@ class _PurchasePageState extends State<PurchasePage> {
                           '${AppLocalizations.of(context)!.total_price} :  $purchaseTotalPrice AFG'),
                       ElevatedButton(
                         onPressed: () async {
-                          _savePurchase(context, selectedMedicineDetails, indexData);
+                          _savePurchase(
+                              context, selectedMedicineDetails, indexData);
                           // Navigator.of(context).pop();
                         },
                         child: Text(AppLocalizations.of(context)!.save),
@@ -397,6 +398,7 @@ class _PurchasePageState extends State<PurchasePage> {
     unitPriceControllers.add(TextEditingController());
     totalPriceForEachSelections.add(0);
   }
+
   void _deleteRow(index) {
     selectedMedicines.removeAt(index);
     selectedMedicineDetails.removeAt(index);
@@ -404,58 +406,52 @@ class _PurchasePageState extends State<PurchasePage> {
     unitPriceControllers.removeAt(index);
     totalPriceForEachSelections.removeAt(index);
   }
+
   void _updateTotalPrice(int index) {
     final quantity = int.tryParse(quantityControllers[index].text) ?? 0;
     final unitPrice = double.tryParse(unitPriceControllers[index].text) ?? 0.0;
     totalPriceForEachSelections[index] = (quantity * unitPrice);
-    purchaseTotalPrice = totalPriceForEachSelections.reduce((x,y)=> x+y);
+    purchaseTotalPrice = totalPriceForEachSelections.reduce((x, y) => x + y);
   }
-  void _savePurchase(context,List<Medicine?> medicine, int index) async {
 
+  void _savePurchase(context, List<Medicine?> medicine, int index) async {
     //step #1
-    Provider.of<PurchasesProvider>(context, listen: false).addPurchase(Purchase(date, purchaseTotalPrice, supplier?.id));
+    Provider.of<PurchasesProvider>(context, listen: false)
+        .addPurchase(Purchase(date, purchaseTotalPrice, supplier?.id));
 
     //step #2
-    Provider.of<PurchasesProvider>(context, listen: false).fetchLastInsertedPurchaseId();
-    int lastInsertedPurchaseId = Provider.of<PurchasesProvider>(context, listen: false).lastInsertedPurchaseId;
+    Provider.of<PurchasesProvider>(context, listen: false)
+        .fetchLastInsertedPurchaseId();
+    int lastInsertedPurchaseId =
+        Provider.of<PurchasesProvider>(context, listen: false)
+            .lastInsertedPurchaseId;
+
 
     //step #3
     List<PurchaseDetails> purchaseDetails = [];
-    for(int i = 0; i< selectedMedicineDetails.length; i++){{
-      purchaseDetails.add(PurchaseDetails(
+    for (int i = 0; i < selectedMedicineDetails.length; i++) {
+      {
+        purchaseDetails.add(PurchaseDetails(
           selectedMedicineDetails[i]?.id,
           lastInsertedPurchaseId,
           int.tryParse(quantityControllers[i].text),
-          double.tryParse(unitPriceControllers[i].text),));
-      //totalPriceForEachSelections[i]
+          double.tryParse(unitPriceControllers[i].text),
+        ));
+        //totalPriceForEachSelections[i]
+      }
+      Provider.of<PurchasesDetailProvider>(context, listen: false)
+        .addPurchasesDetails(purchaseDetails);
 
     }
-    Provider.of<PurchasesDetailProvider>(context, listen: false).addPurchasesDetails(purchaseDetails);
 
-    // List<Purchase> purchase = [];
-    // for (var med in medicine) {
-    //   final insetIntoPurchase = Purchase(med?.id ?? 0, 0, int.tryParse(quantityControllers[index].text), date, med?.pricePerUnit ?? 0, _updateTotalPrice(index));
-    //   await Provider.of<PurchasesProvider>(context, listen: false).addPurchases(insetIntoPurchase);
-    //   print(insetIntoPurchase);
-    //   setState(() {
-    //     purchase.add(insetIntoPurchase);
-    //   });
-    // }
-    // List<PurchaseDetails> purchaseDetail = [];
-    // for (int i = 0; i < purchase.length; i++) {
-    //     final insertIntoPurchaseDetail = PurchaseDetails(purchase[i].medicineId, 0, purchase[i].quantity, purchase[i].pricePerUnit);
-    //     await Provider.of<PurchasesDetailProvider>(context, listen: false).addPurchasesDetails(insertIntoPurchaseDetail);
-    //     print(insertIntoPurchaseDetail);
-    //     setState(() {
-    //       purchaseDetail.add(insertIntoPurchaseDetail);
-    //     });
-    //   }
-    // for (int j = 0; j < purchaseDetail.length; j++) {
-    //       final insertIntoStock = Stock(purchaseDetail[j].medicineId, purchaseDetail[j].pricePerUnit, purchaseDetail[j].quantity);
-    //       await Provider.of<StockProvider>(context, listen: false).insertUpdateStocks(insertIntoStock, purchaseDetail[j].medicineId, purchaseDetail[j].quantity);
-    //       print(insertIntoStock);
-        }
+    //step #4
+
+
+
+    //temp
+    Navigator.pop(context);
   }
+
   void _printPurchase() {}
 }
 

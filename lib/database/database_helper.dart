@@ -179,7 +179,7 @@ class DatabaseHelper {
 
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}/store1.db';
+    String path = '${directory.path}/store2.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
