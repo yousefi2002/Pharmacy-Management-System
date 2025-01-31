@@ -35,7 +35,7 @@ class _All_reports_pageState extends State<All_reports_page> {
     {
       "name": AppLocalizations.of(context)!.employee_reports,
       "icon": Icon(Icons.add_reaction),
-      "navigate": Employee_reports_page(),
+      "navigate": TestPage(),
     },
     {
       "name": AppLocalizations.of(context)!.doctor_reports,
@@ -60,21 +60,37 @@ class _All_reports_pageState extends State<All_reports_page> {
       appBar: AppBar(
         title: Text(AppLocalizations.of(context)!.reports),
       ),
-      body:Padding(
-        padding: const EdgeInsets.fromLTRB(500, 100, 500, 100),
-        child: Container(
-          child: ListView.builder(
-            itemCount: pagesList.length,
-            itemBuilder:(context, index) {
-            return Card(
-              child: ListTile(
-                onTap: (){
-                  Navigator.push(context, MaterialPageRoute(builder: (context) => pagesList[index]["navigate"],));
-                },
-                title: Center(child: Text(pagesList[index]["name"])),
-              ),
-            );
-          },),
+      body:Center(
+        child: Padding(
+          padding: const EdgeInsets.only(top: 60),
+          child: Container(
+            decoration: BoxDecoration(
+                borderRadius: BorderRadius.only(topRight:Radius.circular(30),topLeft: Radius.circular(30)),
+                gradient: LinearGradient(colors:
+                [
+                  Colors.green,
+                  Colors.greenAccent,
+                ]),
+            ),
+            width: 600,
+            height: double.infinity,
+            child: Padding(
+              padding: const EdgeInsets.only(top: 40,left: 10,right: 10),
+              child: ListView.builder(
+                itemCount: pagesList.length,
+                itemBuilder:(context, index) {
+                return Card(
+                  child: ListTile(
+                    onTap: (){
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => pagesList[index]["navigate"],));
+                    },
+                    title: Center(child: Text(pagesList[index]["name"])),
+                  ),
+                );
+              },),
+            ),
+
+          ),
         ),
       )
     );

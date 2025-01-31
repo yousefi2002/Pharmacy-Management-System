@@ -1,4 +1,5 @@
 import 'package:fargard_pharmacy_management_system/screens/visit_page/visit_regis_page.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -9,6 +10,38 @@ class SalesReports extends StatefulWidget {
 }
 
 class _SalesReportsState extends State<SalesReports> {
+  final List<double> monthlyData = [
+    20,
+    40,
+    50,
+    10,
+    20,
+    80,
+    40,
+    10,
+    20,
+    40,
+    50,
+    10,
+    20,
+    80,
+    40,
+    10,
+    20,
+    40,
+    50,
+    10,
+    20,
+    80,
+    40,
+    10,
+    20,
+    40,
+    50,
+    10,
+    20,
+    80
+  ];
   final mydata _mydata = mydata();
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
@@ -171,28 +204,110 @@ class _SalesReportsState extends State<SalesReports> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Expanded(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: double.infinity,
-              child: PaginatedDataTable(
-                showEmptyRows: true,
-                source: _mydata,
-                columns: [
-                  DataColumn(label: Container(width:20,child: Text("#"))),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.date)),
-                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.amount))),
-                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.prescription_number))),
-                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.description))),
-                  DataColumn(label: Container(width:80,child: Text(""))),
-                ],
-                columnSpacing: 50,
-                horizontalMargin: 40,
-                showFirstLastButtons: true,
+        child: Column(
+          children: [
+            Row(
+              children: [
+                Container(
+                  width: 1500,
+                  height: 200,
+                  child: BarChart(
+                    BarChartData(
+                      alignment: BarChartAlignment.spaceAround,
+                      maxY: 100,
+                      minY: 0,
+                      titlesData: FlTitlesData(
+                        leftTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            reservedSize: 40,
+                            getTitlesWidget: (value, meta) {
+                              return Text(
+                                '${value.toInt()}',
+                                style: TextStyle(color: Colors.blueGrey, fontSize: 12),
+                              );
+                            },
+                          ),
+                        ),
+                        bottomTitles: AxisTitles(
+                          sideTitles: SideTitles(
+                            showTitles: true,
+                            getTitlesWidget: (value, meta) {
+                              return Text(
+                                'Day ${value.toInt()}',
+                                style: TextStyle(color: Colors.red, fontSize: 10),
+                              );
+                            },
+                          ),
+                        ),
+                        topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                        rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+                      ),
+                      gridData: FlGridData(
+                        show: true,
+                        getDrawingHorizontalLine: (value) {
+                          return FlLine(
+                            color: Colors.grey.shade300,
+                            strokeWidth: 1,
+                          );
+                        },
+                        getDrawingVerticalLine: (value) {
+                          return FlLine(
+                            color: Colors.grey.shade300,
+                            strokeWidth: 1,
+                          );
+                        },
+                      ),
+                      borderData: FlBorderData(
+                        show: true,
+                        border: Border.all(
+                          color: Colors.blueAccent,
+                          width: 1,
+                        ),
+                      ),
+                      barGroups: List.generate(30, (index) {
+                        return BarChartGroupData(
+                          x: index + 1,
+                          barRods: [
+                            BarChartRodData(
+                              toY: monthlyData[index],
+                              color: Colors.blueAccent,
+                              width: 10,
+                              borderRadius: BorderRadius.circular(8),
+
+                            ),
+                          ],
+                        );
+                      }),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: PaginatedDataTable(
+                    showEmptyRows: true,
+                    source: _mydata,
+                    columns: [
+                      DataColumn(label: Container(width:20,child: Text("#"))),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.date)),
+                      DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.amount))),
+                      DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.prescription_number))),
+                      DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.description))),
+                      DataColumn(label: Container(width:80,child: Text(""))),
+                    ],
+                    columnSpacing: 50,
+                    horizontalMargin: 40,
+                    showFirstLastButtons: true,
+                  ),
+                ),
               ),
             ),
-          ),
+          ],
         ),
       ),
     );
