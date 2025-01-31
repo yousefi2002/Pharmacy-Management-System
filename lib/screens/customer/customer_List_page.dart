@@ -2,22 +2,24 @@ import 'package:fargard_pharmacy_management_system/providers/crud_for_customer.d
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-
 import '../../models/customers.dart';
 import 'customer_regis_page.dart';
 
-class CustomerListpage extends StatefulWidget {
+class CustomerListPage extends StatefulWidget {
+  const CustomerListPage({super.key});
+
   @override
-  _CustomerListpageState createState() => _CustomerListpageState();
+  _CustomerListPageState createState() => _CustomerListPageState();
 }
 
-class _CustomerListpageState extends State<CustomerListpage> {
+class _CustomerListPageState extends State<CustomerListPage> {
   final TextEditingController _searchController = TextEditingController();
-  @override
-
 
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      Provider.of<CustomerProvider>(context, listen: false).fetchCustomers();
+      });
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -68,26 +70,23 @@ class _CustomerListpageState extends State<CustomerListpage> {
           final date = value.customer;
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Expanded(
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: PaginatedDataTable(
-                    showCheckboxColumn: true,
-                    showEmptyRows: true,
-                    source: MyDate(date, context),
-                    columns: [
-                      DataColumn(label: Container(width: 10, child: Text("ID",))),
-                      DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
-                      DataColumn(label: Container(width: 80, child: Text(AppLocalizations.of(context)!.contact_number))),
-                      DataColumn(label: Container(width: 80, child: Text(AppLocalizations.of(context)!.address))),
-                      DataColumn(label: Container(width: 80, child: Text(""))),
-                    ],
-                    columnSpacing: 50,
-                    horizontalMargin: 40,
-                    showFirstLastButtons: true,
-
-                  ),
+            child: SingleChildScrollView(
+              child: SizedBox(
+                width: double.infinity,
+                child: PaginatedDataTable(
+                  showCheckboxColumn: true,
+                  showEmptyRows: true,
+                  source: MyDate(date, context),
+                  columns: [
+                    const DataColumn(label: Text("ID",)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.address)),
+                    const DataColumn(label: Text("")),
+                  ],
+                  columnSpacing: 50,
+                  horizontalMargin: 40,
+                  showFirstLastButtons: true,
                 ),
               ),
             ),

@@ -44,7 +44,7 @@ class _HomePageState extends State<HomePage> {
           "navigate": MedicinesList(),
         },
         {
-          "name": AppLocalizations.of(context)!.warehouse,
+          "name": AppLocalizations.of(context)!.stock,
           "icon": Icons.inventory_2_outlined,
           "navigate": StockPageOfMedicine(),
         },
@@ -71,7 +71,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.customers,
           "icon": Icons.person_2_outlined,
-          "navigate": CustomerListpage(),
+          "navigate": CustomerListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.patients,

@@ -1,4 +1,6 @@
 import 'dart:io';
+import 'package:fargard_pharmacy_management_system/models/companies.dart';
+import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -11,8 +13,8 @@ import '../models/purchase_details.dart';
 import '../models/purchases.dart';
 import '../models/sales.dart';
 import '../models/stocks.dart';
+import '../models/suppliers.dart';
 import '../models/users.dart';
-
 
 class DatabaseHelper {
   static DatabaseHelper? _databaseHelper; // singleton database helper
@@ -22,8 +24,6 @@ class DatabaseHelper {
   String companyTable = 'companies';
   String comId = 'company_id';
   String comName = 'company_name';
-  String comAddress = 'company_address';
-  String contactNumber = 'contact_number';
   String comCreatedAt = 'created_at';
   String comUpdatedAt = 'updated_at';
 
@@ -49,13 +49,13 @@ class DatabaseHelper {
 //---------------------------
   String purchaseTable = 'purchases';
   String purId = 'purchase_id';
-  String purMedId = 'purchase_medicine_id';
-  String purSupplierId = 'purchase_supplier_id';
-  String purQuantity = 'purchase_quantity';
-  String purPricePerUnite = 'purchase_price_per_unite';
-  String purTotalPrice = 'purchase_total_price';
   String purDate = 'purchase_date';
-  String purBatchNumber = 'purchase_batch_number';
+  String purTotalPrice = 'purchase_total_price';
+  String purSupplierId = 'purchase_supplier_id';
+  // String purMedId = 'purchase_medicine_id';
+  // String purQuantity = 'purchase_quantity';
+  // String purPricePerUnite = 'purchase_price_per_unite';
+  // String purBatchNumber = 'purchase_batch_number';
   String purCreatedAt = 'created_at';
   String purUpdatedAt = 'updated_at';
 
@@ -112,11 +112,12 @@ class DatabaseHelper {
 
 //-----------------------------------------
   String purchaseDetailsTable = 'purchase_details';
+  String purchaseDetailsID = 'purchase_details_id';
   String medicineId = 'medicine_id';
   String purchaseId = 'purchase_id';
-  String purchaseQuantity = 'purchase_quantity';
-  String purchasePricePerUnit = 'purchase_price_per_unit';
-  String purchaseBatchNumber = 'purchase_batch_number';
+  String purchaseDetailsQuantity = 'purchase_quantity';
+  String purchaseDetailsPricePerUnit = 'purchase_price_per_unit';
+  String purchaseDetailsTotal = 'purchase_details_total';
 
 //--------------------------------------------
   String salesDetailsTable = 'salesDetails';
@@ -178,7 +179,7 @@ class DatabaseHelper {
 
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}/store.db';
+    String path = '${directory.path}/store2.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
@@ -186,71 +187,88 @@ class DatabaseHelper {
 
   void _createDb(Database db, int newVersion) async {
 
+    //companyTable
+    // Use TEXT for timestamps: Use datetime('now', 'utc') instead of CURRENT_TIMESTAMP ensures the timestamps are in UTC, which is good practice for consistency. it as an ISO 8601 formatted string (yyyy-MM-dd HH:mm:ss).
     await db.execute('''
         CREATE TABLE $companyTable (
         $comId INTEGER PRIMARY KEY AUTOINCREMENT,
-        $comName varchar(255) NOT NULL,
-        $comAddress TEXT,
-        $contactNumber varchar(15) DEFAULT NULL,
-        $genCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $genUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+        $comName TEXT NOT NULL,
+        $comCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $comUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
         ) ''');
 
+    //genericNameTable
     await db.execute('''
         CREATE TABLE $genericNameTable
         ($genId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $genName varchar(255) NOT NULL, 
-        $genCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $genUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+        $genName TEXT NOT NULL, 
+        $genCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $genUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
         )''');
 
+    //medicinesTable
     await db.execute('''
         CREATE TABLE $medicinesTable (
-  $medId INTEGER PRIMARY KEY AUTOINCREMENT, 
-  $medName VARCHAR(255) NOT NULL,
-  $medType VARCHAR(255) DEFAULT NULL,
-  $medDescription TEXT,
-  $medPricePerUnit DECIMAL(10,2) DEFAULT NULL,
-  $medGenId TEXT DEFAULT NULL,
-  $medComId TEXT DEFAULT NULL,
-  $medCreatedAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  $medUpdatedAt TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  CONSTRAINT $medComId FOREIGN KEY ($medComId) REFERENCES $companyTable ($comId),
-  CONSTRAINT $medGenId FOREIGN KEY ($medGenId) REFERENCES $genericNameTable ($genId)
-);''');
+        $medId INTEGER PRIMARY KEY AUTOINCREMENT, 
+        $medName VARCHAR(255) NOT NULL,
+        $medType VARCHAR(255) DEFAULT NULL,
+        $medDescription TEXT,
+        $medPricePerUnit DECIMAL(10,2) DEFAULT NULL,
+        $medGenId TEXT DEFAULT NULL,
+        $medComId TEXT DEFAULT NULL,
+        $medCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $medUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        CONSTRAINT $medComId FOREIGN KEY ($medComId) REFERENCES $companyTable ($comId),
+        CONSTRAINT $medGenId FOREIGN KEY ($medGenId) REFERENCES $genericNameTable ($genId)
+      );''');
     await db.execute('CREATE INDEX $medGenId ON medicines($medGenId);');
     await db.execute('CREATE INDEX $medComId ON medicines($medComId);');
 
+    //supplierTable
+    await db.execute('''
+      CREATE TABLE $supplierTable (
+          $supId INTEGER PRIMARY KEY AUTOINCREMENT, 
+          $supName varchar(255) NOT NULL,
+          $supContactNumber varchar(15) DEFAULT NULL,
+          $supEmail varchar(255) DEFAULT NULL,
+          $supAddress text,
+          $supCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+          $supUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
+      )''');
+
+    //purchaseTable
     await db.execute('''
         CREATE TABLE $purchaseTable
         ($purId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $purMedId int NOT NULL,
+        $purDate TEXT DEFAULT (datetime('now', 'utc')),
+        $purTotalPrice REAL DEFAULT NULL,
         $purSupplierId int NOT NULL,
-        $purQuantity int DEFAULT NULL,
-        $purPricePerUnite decimal(10,2) DEFAULT NULL,
-        $purTotalPrice decimal(10,2) DEFAULT NULL,
-        $purDate text DEFAULT NULL,
-        $purBatchNumber varchar(255) DEFAULT NULL,
-        $purCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $purUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        FOREIGN KEY ($purMedId) REFERENCES $medicinesTable($medId),
+        $purCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $purUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
         FOREIGN KEY ($purSupplierId) REFERENCES $supplierTable ($supId)
         )''');
-
-    await db.execute('CREATE INDEX $purMedId ON purchases($purMedId);');
     await db.execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId);');
 
+    //purchaseDetailsTable
     await db.execute('''
-    CREATE TABLE $supplierTable (
-        $supId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $supName varchar(255) NOT NULL,
-        $supContactNumber varchar(15) DEFAULT NULL,
-        $supEmail varchar(255) DEFAULT NULL,
-        $supAddress text,
-        $supCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $supUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+    CREATE TABLE $purchaseDetailsTable (
+        $purchaseDetailsID INT AUTO_INCREMENT PRIMARY KEY,
+        $medicineId int NOT NULL,
+        $purchaseId int NOT NULL,
+        $purchaseDetailsQuantity int DEFAULT NULL,
+        $purchaseDetailsPricePerUnit int DEFAULT NULL,
+        $purchaseDetailsTotal DECIMAL(10, 2) GENERATED ALWAYS AS ($purchaseDetailsQuantity * $purchaseDetailsPricePerUnit) STORED,
+        FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
+        FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
     )
-''');
+    ''');
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $purchaseId ON $purchaseDetailsTable ($purchaseId);
+    ''');
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $medicineId ON $purchaseDetailsTable ($medicineId);
+    ''');
+
 
     await db.execute('''
     CREATE TABLE $salesTable (
@@ -315,25 +333,6 @@ class DatabaseHelper {
     CREATE INDEX IF NOT EXISTS $expUserId ON $expensesTable ($expUserId);
 ''');
 
-    await db.execute('''
-    CREATE TABLE $purchaseDetailsTable (
-        $medicineId int NOT NULL,
-        $purchaseId int NOT NULL,
-        $purchaseQuantity int DEFAULT NULL,
-        $purchasePricePerUnit REAL DEFAULT NULL,
-        $purchaseBatchNumber varchar(255) DEFAULT NULL,
-        PRIMARY KEY ($purchaseId,$medicineId),
-        FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
-        FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
-    )
-''');
-
-    await db.execute('''
-    CREATE INDEX IF NOT EXISTS $purchaseId ON $purchaseDetailsTable ($purchaseId);
-''');
-    await db.execute('''
-    CREATE INDEX IF NOT EXISTS $medicineId ON $purchaseDetailsTable ($medicineId);
-''');
 
     await db.execute('''
     CREATE TABLE $salesDetailsTable (
@@ -415,6 +414,7 @@ class DatabaseHelper {
     final db = await database;
     return await db.query(tableName);
   }
+
   // patient crud -----------------------------------------------------
   Future<int> addPatients(Patient patient) async {
     final db = await database;
@@ -423,7 +423,11 @@ class DatabaseHelper {
 
   Future<int> updatePatients(Patient patient) async {
     final db = await database;
-    return db.update(patientsTable, patient.toMap(), where: '$patId = ?', whereArgs: [patient.id],
+    return db.update(
+      patientsTable,
+      patient.toMap(),
+      where: '$patId = ?',
+      whereArgs: [patient.id],
     );
   }
 
@@ -431,6 +435,7 @@ class DatabaseHelper {
     final db = await database;
     return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
   }
+
   // patient crud -----------------------------------------------------
   Future<int> addUsers(User user) async {
     final db = await database;
@@ -439,7 +444,11 @@ class DatabaseHelper {
 
   Future<int> updateUsers(User user) async {
     final db = await database;
-    return db.update(usersTable, user.toMap(), where: '$userId = ?', whereArgs: [user.id],
+    return db.update(
+      usersTable,
+      user.toMap(),
+      where: '$userId = ?',
+      whereArgs: [user.id],
     );
   }
 
@@ -458,7 +467,11 @@ class DatabaseHelper {
 
   Future<int> updateExpenses(Expenses expenses) async {
     final db = await database;
-    return db.update(expensesTable, expenses.toMap(), where: '$expId = ?', whereArgs: [expenses.id],
+    return db.update(
+      expensesTable,
+      expenses.toMap(),
+      where: '$expId = ?',
+      whereArgs: [expenses.id],
     );
   }
 
@@ -466,30 +479,44 @@ class DatabaseHelper {
     final db = await database;
     return db.delete(expensesTable, where: '$expId = ?', whereArgs: [id]);
   }
+
   // Customer crud -----------------------------------------------------
   Future<int> addCustomer(Customer customer) async {
     final db = await database;
     return db.insert(customersTable, customer.toMap());
   }
+
   Future<int> updateCustomer(Customer customer) async {
     final db = await database;
-    return db.update(customersTable, customer.toMap(), where: '$cusId = ?', whereArgs: [customer.id],
+    return db.update(
+      customersTable,
+      customer.toMap(),
+      where: '$cusId = ?',
+      whereArgs: [customer.id],
     );
   }
+
   Future<int> deleteCustomer(int id) async {
     final db = await database;
     return db.delete(customersTable, where: '$cusId = ?', whereArgs: [id]);
   }
+
 // Doctor crud -----------------------------------------------------
   Future<int> addDoctor(Doctor doctor) async {
     final db = await database;
     return db.insert(doctorTables, doctor.toMap());
   }
+
   Future<int> updateDoctor(Doctor doctor) async {
     final db = await database;
-    return db.update(doctorTables, doctor.toMap(), where: '$docId = ?', whereArgs: [doctor.id],
+    return db.update(
+      doctorTables,
+      doctor.toMap(),
+      where: '$docId = ?',
+      whereArgs: [doctor.id],
     );
   }
+
   Future<int> deleteDoctor(int id) async {
     final db = await database;
     return db.delete(doctorTables, where: '$docId = ?', whereArgs: [id]);
@@ -517,7 +544,11 @@ class DatabaseHelper {
 
   Future<int> updateMedicines(Medicine medicine) async {
     final db = await database;
-    return db.update(medicinesTable, medicine.toMap(), where: '$medId = ?', whereArgs: [medicine.id],
+    return db.update(
+      medicinesTable,
+      medicine.toMap(),
+      where: '$medId = ?',
+      whereArgs: [medicine.id],
     );
   }
 
@@ -525,6 +556,7 @@ class DatabaseHelper {
     final db = await database;
     return db.delete(medicinesTable, where: '$medId = ?', whereArgs: [id]);
   }
+
   Future<List<Map<String, dynamic>>> searchAllMedicines(String query) async {
     final db = await database;
     final result = await db.query(
@@ -532,7 +564,6 @@ class DatabaseHelper {
       where: '$medName LIKE ?',
       whereArgs: ["$query%"],
     );
-    print(result); // Debugging purpose
     return result;
   }
   // Sales crud -----------------------------------------------------
@@ -544,13 +575,49 @@ class DatabaseHelper {
 
   Future<int> updateSales(Sales sales) async {
     final db = await database;
-    return db.update(salesTable, sales.toMap(), where: '$salId = ?', whereArgs: [sales.id],
+    return db.update(
+      salesTable,
+      sales.toMap(),
+      where: '$salId = ?',
+      whereArgs: [sales.id],
     );
   }
 
   Future<int> deleteSales(int id) async {
     final db = await database;
     return db.delete(salesTable, where: '$salId = ?', whereArgs: [id]);
+  }
+
+  // Suppliers crud -----------------------------------------------------
+
+  Future<int> addSupplier(Supplier supplier) async {
+    final db = await database;
+    return db.insert(supplierTable, supplier.toMap());
+  }
+
+  Future<int> updateSupplier(Supplier supplier) async {
+    final db = await database;
+    return db.update(
+      supplierTable,
+      supplier.toMap(),
+      where: '$supId = ?',
+      whereArgs: [supplier.id],
+    );
+  }
+
+  Future<int> deleteSupplier(int id) async {
+    final db = await database;
+    return db.delete(supplierTable, where: '$supId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> searchAllSuppliers(String query) async {
+    final db = await database;
+    final result = await db.query(
+      supplierTable,
+      where: '$supName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    return result;
   }
 
   // Purchase crud -----------------------------------------------------
@@ -562,7 +629,11 @@ class DatabaseHelper {
 
   Future<int> updatePurchases(Purchase purchase) async {
     final db = await database;
-    return db.update(purchaseTable, purchase.toMap(), where: '$purId = ?', whereArgs: [purchase.id],
+    return db.update(
+      purchaseTable,
+      purchase.toMap(),
+      where: '$purId = ?',
+      whereArgs: [purchase.id],
     );
   }
 
@@ -571,22 +642,44 @@ class DatabaseHelper {
     return db.delete(purchaseTable, where: '$purId = ?', whereArgs: [id]);
   }
 
+  Future<int> fetchLastInsertedPurchaseId() async {
+    final db = await database;
+    final List<Map> maps = await db.rawQuery("SELECT last_insert_rowid() AS PurchaseID;");
+    return maps[0]['PurchaseID'];
+  }
+
   // Purchase Details crud -----------------------------------------------------
 
-  Future<int> addPurchasesDetails(PurchaseDetails purchase) async {
+  // Future<int> addPurchasesDetails(PurchaseDetails purchase) async {
+  //   final db = await database;
+  //   return db.insert(purchaseDetailsTable, purchase.toMap());
+  // }
+
+  Future<void> addPurchasesDetails(List<PurchaseDetails> purchaseDetails) async {
     final db = await database;
-    return db.insert(purchaseDetailsTable, purchase.toMap());
+    Batch batch = db.batch(); // Create a batch for bulk insertion
+
+    for (var purchaseDetails in purchaseDetails) {
+      batch.insert(purchaseDetailsTable, purchaseDetails.toMap());
+    }
+
+    await batch.commit(noResult: true); // Execute batch insert
   }
 
   Future<int> updatePurchasesDetails(PurchaseDetails purchase) async {
     final db = await database;
-    return db.update(purchaseDetailsTable, purchase.toMap(), where: '$purchaseId = ?', whereArgs: [purchase.purchaseId],
+    return db.update(
+      purchaseDetailsTable,
+      purchase.toMap(),
+      where: '$purchaseId = ?',
+      whereArgs: [purchase.purchaseId],
     );
   }
 
   Future<int> deletePurchasesDetails(int id) async {
     final db = await database;
-    return db.delete(purchaseDetailsTable, where: '$purchaseId = ?', whereArgs: [id]);
+    return db.delete(purchaseDetailsTable,
+        where: '$purchaseId = ?', whereArgs: [id]);
   }
 
   // Stock Details crud -----------------------------------------------------
@@ -597,15 +690,21 @@ class DatabaseHelper {
 
   Future<int> updateStocks(Stock stock) async {
     final db = await database;
-    return db.update(stockTable, stock.toMap(), where: '$stoId = ?', whereArgs: [stock.id],
+    return db.update(
+      stockTable,
+      stock.toMap(),
+      where: '$stoId = ?',
+      whereArgs: [stock.id],
     );
   }
+
   Future<int> deleteStocks(int id) async {
     final db = await database;
     return db.delete(stockTable, where: '$stoId = ?', whereArgs: [id]);
   }
 
-  Future<void> insertOrUpdateStock(int medicineId, int quantity, Stock stock) async {
+  Future<void> insertOrUpdateStock(
+      int medicineId, int quantity, Stock stock) async {
     final db = await database;
     // Check if the medicine exists in the stock table
     final existingStock = await db.query(
@@ -627,5 +726,70 @@ class DatabaseHelper {
       // Medicine does not exist, insert a new record
       addStocks(stock);
     }
+  }
+
+  // generic name crud -----------------------------------------------------
+
+  Future<int> addGeneric(GenericName generic) async {
+    final db = await database;
+    return db.insert(genericNameTable, generic.toMap());
+  }
+
+  Future<int> updateGeneric(GenericName generic) async {
+    final db = await database;
+    return db.update(
+      genericNameTable,
+      generic.toMap(),
+      where: '$genId = ?',
+      whereArgs: [generic.id],
+    );
+  }
+
+  Future<int> deleteGeneric(int id) async {
+    final db = await database;
+    return db.delete(genericNameTable, where: '$genId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> searchAllGenerics(String query) async {
+    final db = await database;
+    final result = await db.query(
+      genericNameTable,
+      where: '$genName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    print(result); // Debugging purpose
+    return result;
+  }
+
+  // company name crud -----------------------------------------------------
+
+  Future<int> addCompany(Company company) async {
+    final db = await database;
+    return db.insert(companyTable, company.toMap());
+  }
+
+  Future<int> updateCompany(Company company) async {
+    final db = await database;
+    return db.update(
+      companyTable,
+      company.toMap(),
+      where: '$comId = ?',
+      whereArgs: [company.id],
+    );
+  }
+
+  Future<int> deleteCompany(int id) async {
+    final db = await database;
+    return db.delete(companyTable, where: '$comId = ?', whereArgs: [id]);
+  }
+
+  Future<List<Map<String, dynamic>>> searchAllCompany(String query) async {
+    final db = await database;
+    final result = await db.query(
+      companyTable,
+      where: '$comName LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    return result;
   }
 }
