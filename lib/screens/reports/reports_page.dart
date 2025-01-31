@@ -1,11 +1,13 @@
-import 'package:fargard_pharmacy_management_system/screens/purches_page/purchese_List_page.dart';
-import 'package:fargard_pharmacy_management_system/screens/roznamcha.dart';
-import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_List_page.dart';
+
+import 'package:fargard_pharmacy_management_system/screens/reports/Doctors_repots/doctorsreports.dart';
+import 'package:fargard_pharmacy_management_system/screens/reports/purches_repots/PurcheseReports.dart';
+import 'package:fargard_pharmacy_management_system/screens/reports/roznamche/roznamche.dart';
+import 'package:fargard_pharmacy_management_system/screens/reports/selse_repots/SalesReports.dart';
+import 'package:fargard_pharmacy_management_system/screens/reports/total_reports/totalreports.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
-import 'doctors_page/doctprs_List_page.dart';
-
+import 'employee_reports_page.dart';
 class All_reports_page extends StatefulWidget {
   const All_reports_page({super.key});
 
@@ -16,46 +18,48 @@ class All_reports_page extends StatefulWidget {
 class _All_reports_pageState extends State<All_reports_page> {
   List<Map<String, dynamic>> pages(BuildContext context) => [
     {
-      "name":"roznamcha",
+      "name":AppLocalizations.of(context)!.journal,
       "icon": Icon(Icons.add_card_outlined),
-      "navigate": Roznamcha(),
+      "navigate": Roznamche(),
     },
     {
       "name": AppLocalizations.of(context)!.purchase_reports,
       "icon": Icon(Icons.add_chart),
-      "navigate": PurchaseListPage(),
+      "navigate": PurcheseReports(),
     },
     {
       "name": AppLocalizations.of(context)!.sales_reports,
       "icon": Icon(Icons.pending_actions),
-      "navigate": Sales_List_page(),
+      "navigate": SalesReports(),
     },
     {
       "name": AppLocalizations.of(context)!.employee_reports,
       "icon": Icon(Icons.add_reaction),
-      // "navigate": Employee_reports_page(),
+      "navigate": Employee_reports_page(),
     },
     {
       "name": AppLocalizations.of(context)!.doctor_reports,
       "icon": Icon(Icons.bar_chart),
-      "navigate": Doctors_List_page(),
+      "navigate": DoctorsReports(),
     },
     {
       "name": AppLocalizations.of(context)!.expense_reports,
       "icon": Icon(Icons.add_card_outlined),
-      // "navigate": MedicineRegisterPage(),
+      // "navigate": Medicine_register_page(),
     },
     {
       "name": AppLocalizations.of(context)!.total_income_expenses,
       "icon": Icon(Icons.add_card_outlined),
-      // "navigate": MedicineRegisterPage(),
+      "navigate": TotalReports(),
     },
   ];
   @override
   Widget build(BuildContext context) {
     final pagesList = pages(context);
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.reports),
+      ),
       body:Padding(
         padding: const EdgeInsets.fromLTRB(500, 100, 500, 100),
         child: Container(

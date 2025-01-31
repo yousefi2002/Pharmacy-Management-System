@@ -145,6 +145,7 @@
               "newDoctor": "New Doctor",
               "newEmployee": "New Employee",
               "newMedicine": "New Medicine",
+              "journal": "Journal",
               "actions": "Actions",
   "@@locale": "en"
 }
