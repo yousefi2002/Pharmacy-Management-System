@@ -36,7 +36,7 @@ class _StockPageOfMedicineState extends State<StockPageOfMedicine> {
                         DataColumn(label: Text(AppLocalizations.of(context)!.medicine_name)),
                         DataColumn(label: Text(AppLocalizations.of(context)!.inventory)),
                       ],
-                      header: Center(child: Text(AppLocalizations.of(context)!.warehouse)),
+                      header: Center(child: Text(AppLocalizations.of(context)!.stock)),
                       columnSpacing: 140,
                       horizontalMargin: 80,
                     ),

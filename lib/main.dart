@@ -1,4 +1,7 @@
 import 'package:fargard_pharmacy_management_system/providers/LanguageChange.dart';
+import 'package:fargard_pharmacy_management_system/providers/crud_for_company_name.dart';
+import 'package:fargard_pharmacy_management_system/providers/crud_for_generic_name.dart';
+import 'package:fargard_pharmacy_management_system/providers/crud_for_supplier.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
@@ -39,6 +42,9 @@ void main() async {
       ChangeNotifierProvider(create: (_) => PurchasesProvider(),),
       ChangeNotifierProvider(create: (_) => PurchasesDetailProvider(),),
       ChangeNotifierProvider(create: (_) => StockProvider(),),
+      ChangeNotifierProvider(create: (_) => CompanyProvider(),),
+      ChangeNotifierProvider(create: (_) => GenericNameProvider(),),
+      ChangeNotifierProvider(create: (_) => SupplierProvider(),),
     ],
     child: MyApp(
       local: languageCode,

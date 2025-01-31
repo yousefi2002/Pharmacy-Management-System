@@ -17,7 +17,7 @@ class PurchasesDetailProvider extends ChangeNotifier {
     notifyListeners();
   }
 
-  Future<void> addPurchasesDetails(PurchaseDetails purchaseDetails) async {
+  Future<void> addPurchasesDetails(List<PurchaseDetails> purchaseDetails) async {
     await _dbHelper.addPurchasesDetails(purchaseDetails);
     await fetchPurchasesDetails();
   }
