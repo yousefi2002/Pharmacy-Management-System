@@ -182,10 +182,14 @@ class DatabaseHelper {
     _database ??= await initDatabase();
     return _database!;
   }
-
+  String path = '';
+  Future<String> getDatabasePath() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/store.db';
+  }
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}/store2.db';
+    path = '${directory.path}/store.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
