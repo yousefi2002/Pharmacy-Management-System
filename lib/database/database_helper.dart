@@ -167,6 +167,12 @@ class DatabaseHelper {
 
   DatabaseHelper._createInstance();
 
+  Future<void> closeDatabase() async {
+    if (_database != null) {
+      await _database!.close();
+      _database = null;
+    }
+  }
   factory DatabaseHelper() {
     _databaseHelper ??= DatabaseHelper._createInstance();
     return _databaseHelper!;
