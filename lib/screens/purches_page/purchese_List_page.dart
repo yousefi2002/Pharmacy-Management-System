@@ -142,7 +142,31 @@ class MyData extends DataTableSource {
       DataCell(Text(formatLocalTime(purchase.updatedAt))),
       DataCell(Row(
         children: [
-          IconButton(onPressed:(){}, icon:Icon(Icons.delete,color: Colors.red,),),
+          IconButton(
+            onPressed: (){
+              showDialog(
+                context: context,
+                builder: (BuildContext context) {
+                  return AlertDialog(
+                    title: Text(AppLocalizations.of(context)!.delete),
+                    content: Text(AppLocalizations.of(context)!.confirmDelete),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.of(context).pop(),
+                        child: Text(AppLocalizations.of(context)!.no),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          Provider.of<PurchasesProvider>(context, listen: false).deletePurchases(purchase.id ?? 0);
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(AppLocalizations.of(context)!.delete),
+                      ),
+                    ],
+                  );
+                },
+              );
+            }, icon:Icon(Icons.delete,color: Colors.red,),),
           IconButton(onPressed:(){}, icon:Icon(Icons.edit_note_outlined,color: Colors.blue,),),
         ],
       )),

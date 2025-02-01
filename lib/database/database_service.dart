@@ -97,6 +97,11 @@ class DatabaseService {
     return maps.map((map) => Stock.fromMapObject(map)).toList();
   }
 
+  Future<List<Medicine>> fetchMedicinesNameFromStock() async {
+    final List<Map<String, dynamic>> maps = await _dbHelper.getMedicineNamesFromStock();
+    return maps.map((map) => Medicine.fromMapObject(map)).toList();
+  }
+
   Future<List<Supplier>> fetchSuppliers() async {
     final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('suppliers');
     return maps.map((map) => Supplier.fromMapObject(map)).toList();
