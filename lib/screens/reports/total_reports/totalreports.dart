@@ -2,6 +2,7 @@ import 'dart:ui';
 import 'package:fargard_pharmacy_management_system/screens/reports/total_reports/sixmounth.dart';
 import 'package:fargard_pharmacy_management_system/screens/reports/total_reports/threemounth.dart';
 import 'package:fargard_pharmacy_management_system/screens/reports/total_reports/year.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -29,7 +30,8 @@ class _TotalReportsState extends State<TotalReports> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.total_income_expenses, style: TextStyle(fontSize: 30)),
+            Text(AppLocalizations.of(context)!.total_income_expenses,
+                style: TextStyle(fontSize: 30)),
             const Expanded(child: SizedBox()),
             Expanded(
               child: SearchBarAnimation(
@@ -52,15 +54,39 @@ class _TotalReportsState extends State<TotalReports> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceAround,
               children: [
-                containerForReports(20000, 12000, 8000, "روزانه"),
-                containerForReports(20000, 12000, 8000, "ماهانه"),
-                containerForReports(20000, 12000, 8000, "سه ماه"),
-                containerForReports(20000, 12000, 8000, "شش ماه"),
-                containerForReports(20000, 12000, 8000, "سالانه"),
+                SizedBox(
+                  width: 200,
+                  child: Expanded(
+                    child: Column(
+                      children: [
+                        ListTile(
+                          title: Text("عواید",style: TextStyle(fontSize: 30),),
+                          trailing: Icon(Icons.bookmark_outlined,color: Colors.blueAccent,size: 50,)
+                        ),
+                        ListTile(
+                            title: Text("مصارف",style: TextStyle(fontSize: 30),),
+                            trailing: Icon(Icons.bookmark_outlined,color: Colors.red,size: 50,)
+                        ),
+                        ListTile(
+                            title: Text("خرید",style: TextStyle(fontSize: 30),),
+                            trailing: Icon(Icons.bookmark_outlined,color: Colors.orange,size: 50,)
+                        ),
+                        ListTile(
+                            title: Text("باقی",style: TextStyle(fontSize: 30),),
+                            trailing: Icon(Icons.bookmark_outlined,color: Colors.lightGreenAccent,size: 50,)
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+                containerForReports(1500, 2000, 2000, "روزانه",3000),
+                containerForReports(1500, 2000, 2000, "ماهانه",3000),
+                containerForReports(1500, 2000, 2000, "سه ماه",3000),
+                containerForReports(1500, 2000, 2000, "شش ماه",3000),
+                containerForReports(1500, 2000, 2000, "سالانه",3000),
               ],
             ),
           ),
-
           Expanded(
             child: getReportWidget(selectedReport),
           ),
@@ -69,7 +95,7 @@ class _TotalReportsState extends State<TotalReports> {
     );
   }
 
-  Widget containerForReports(int incom, int expenses, int cash, String reportType) {
+  Widget containerForReports(double incom, double expenses, double cash, String reportType,double purches) {
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -98,9 +124,8 @@ class _TotalReportsState extends State<TotalReports> {
               ),
               border: Border.all(
                 style: BorderStyle.solid,
-                color: selectedReport == reportType
-                    ? Colors.white
-                    : Colors.white,
+                color:
+                    selectedReport == reportType ? Colors.white : Colors.white,
                 width: selectedReport == reportType ? 3 : 1,
               ),
               borderRadius: BorderRadius.only(
@@ -109,35 +134,65 @@ class _TotalReportsState extends State<TotalReports> {
                 bottomRight: Radius.circular(radius),
               ),
             ),
-            width: 180,
-            height: 180,
+            width: 220,
+            height: 220,
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Text(
-                    "${AppLocalizations.of(context)!.amount}: $incom",
-                    style: TextStyle(fontSize: 20, fontFamily: "Nazanin"),
-                  ),
-                  Text(
-                    "${AppLocalizations.of(context)!.expenses}: $expenses",
-                    style: TextStyle(fontSize: 20, fontFamily: "Nazanin"),
-                  ),
-                  Text(
-                    "${AppLocalizations.of(context)!.inventory}: $cash",
-                    style: TextStyle(fontSize: 20, fontFamily: "Nazanin"),
-                  ),
-                ],
-              ),
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Expanded(
+                      child: PieChart(
+                        PieChartData(
+                          sections: [
+                            PieChartSectionData(
+                              value: incom,
+                              title: '$incom ؋ ',
+                              color: Colors.red,
+                              radius: 30,
+                              titleStyle: TextStyle(
+                                  fontSize: 16,
+                                 ),
+                            ),
+                            PieChartSectionData(
+                              value: expenses,
+                              title: '$expenses ؋ ',
+                              color: Colors.blueAccent,
+                              radius: 30,
+                              titleStyle: TextStyle(
+                                  fontSize: 16,
+                              ),
+                            ),
+                            PieChartSectionData(
+                              value: cash,
+                              title: "$cash ؋ ",
+                              color: Colors.lightGreenAccent,
+                              radius: 30,
+                              titleStyle: TextStyle(
+                                  fontSize: 16,
+                              ),
+                            ),
+                            PieChartSectionData(
+                              value: purches,
+                              title: "$purches ؋ ",
+                              color: Colors.orange,
+                              radius: 30,
+                              titleStyle: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ]),
             ),
-          ),
+          )
         ],
       ),
     );
   }
-
 
   // ویجت گزارش بر اساس نوع انتخاب‌شده
   Widget getReportWidget(String reportType) {
@@ -153,7 +208,8 @@ class _TotalReportsState extends State<TotalReports> {
       case "سالانه":
         return year();
       default:
-        return Center(child: Text("گزارش انتخاب نشده", style: TextStyle(fontSize: 24)));
+        return Center(
+            child: Text("گزارش انتخاب نشده", style: TextStyle(fontSize: 24)));
     }
   }
 }
