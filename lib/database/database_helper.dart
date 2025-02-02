@@ -461,7 +461,7 @@ class DatabaseHelper {
   Future<int> addUsers(User user) async {
     final db = await database;
 // final a = db.rawQuery('drop table $salesDetailsTable');
-// print(a);
+// print(l);
     return db.insert(usersTable, user.toMap());
   }
 
@@ -477,6 +477,8 @@ class DatabaseHelper {
 
   Future<int> deleteUsers(int id) async {
     final db = await database;
+    // final a = db.rawQuery('drop table $purchaseTable');
+    // print(a);
     return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
   }
 
