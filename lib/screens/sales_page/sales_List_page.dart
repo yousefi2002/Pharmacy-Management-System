@@ -1,41 +1,25 @@
+import 'package:fargard_pharmacy_management_system/providers/crud_for_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
+import 'package:provider/provider.dart';
 import 'sales_page.dart';
 
-class Sales_List_page extends StatefulWidget {
+class SalesListPage extends StatefulWidget {
+  const SalesListPage({super.key});
+
   @override
-  _Sales_List_pageState createState() => _Sales_List_pageState();
+  _SalesListPageState createState() => _SalesListPageState();
 }
 
-class _Sales_List_pageState extends State<Sales_List_page> {
-  final mydata _myDate = mydata();
+class _SalesListPageState extends State<SalesListPage> {
+
   final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
-
-  void _filterData(String query) {
-    setState(() {
-      _searchQuery = query.toLowerCase();
-      _myDate.filterData(_searchQuery);
-    });
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _searchController.addListener(() {
-      _filterData(_searchController.text);
-    });
-  }
-
-  @override
-  void dispose() {
-    _searchController.dispose();
-    super.dispose();
-  }
 
   @override
   Widget build(BuildContext context) {
+    Future.microtask(() {
+      Provider.of<SalesProvider>(context, listen: false).fetchSales();
+    });
     return Scaffold(
       appBar: AppBar(
         title: Row(
@@ -77,78 +61,68 @@ class _Sales_List_pageState extends State<Sales_List_page> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
-                    "Add Customer",
+                    "Add Sales",
                   ),
                 )),
           ],
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(8.0),
-        child: Expanded(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: double.infinity,
-              child: PaginatedDataTable(
-                showCheckboxColumn: true,
-                showEmptyRows: true,
-                source: _myDate,
-                columns: [
-                  const DataColumn(label: Text("#")),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.patient_name)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.seller)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.prescription_number)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.sale_date)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.total_price)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.total_price)),
-                  const DataColumn(label: Text("")),
-                ],
-                columnSpacing: 50,
-                horizontalMargin: 40,
-                showFirstLastButtons: true,
+      body: Consumer<SalesProvider>(
+        builder: ( context, value, child) {
+          return Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: SingleChildScrollView(
+              child: SizedBox(
+                width: double.infinity,
+                child: PaginatedDataTable(
+                  showCheckboxColumn: true,
+                  showEmptyRows: true,
+                  source: MyData(value.sales, context),
+                  columns: [
+                    const DataColumn(label: Text("#")),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.sales_invoices)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.date)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.price)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.discount)),
+                    const DataColumn(label: Text("")),
+                  ],
+                  columnSpacing: 50,
+                  horizontalMargin: 40,
+                  showFirstLastButtons: true,
+                ),
               ),
             ),
-          ),
-        ),
+          );
+        },
       ),
     );
   }
 }
 
-class mydata extends DataTableSource {
-  List<Map<String, String>> _prescriptions = [];
+class MyData extends DataTableSource {
+  var value;
+  final BuildContext context;
+  MyData(this.value, this.context);
 
-  List<Map<String, String>> _filteredPrescriptions = [];
-
-  void filterData(String query) {
-    if (query.isEmpty) {
-      _filteredPrescriptions = List.from(_prescriptions);
-    } else {
-      _filteredPrescriptions = _prescriptions.where((item) {
-        return item.values.any((value) => value.toLowerCase().contains(query));
-      }).toList();
-    }
-    notifyListeners();
-  }
   @override
   DataRow getRow(int index) {
-    final prescription = _filteredPrescriptions[index];
+    final salesValue = value[index];
     return DataRow(cells: [
-      DataCell(Text(prescription["number"] ?? '')),
-      DataCell(Text(prescription["patient_name"] ?? '')),
-      DataCell(Text(prescription["patient_name"] ?? '')),
-      DataCell(Text(prescription["contact_number"] ?? '')),
-      DataCell(Text(prescription["prescription_number"] ?? '')),
-      DataCell(Text(prescription["total_amount"] ?? '')),
-      DataCell(Text(prescription["total_amount"] ?? '')),
-      DataCell(Row(
-        children: [
-          IconButton(onPressed:(){}, icon:Icon(Icons.delete,color: Colors.red,),),
-          IconButton(onPressed:(){}, icon:Icon(Icons.edit_note_outlined,color: Colors.blue,),),
+      DataCell(Text(salesValue.id.toString())),
+      DataCell(Text(salesValue.salesCustomerId.toString())),
+      DataCell(Text(salesValue.salesUserId.toString())),
+      DataCell(Text(salesValue.date)),
+      DataCell(Text(salesValue.price.toString())),
+      DataCell(Text(salesValue.discount.toString())),
+      DataCell(Row(children: [
+          IconButton(onPressed:(){}, icon: const Icon(Icons.delete,color: Colors.red,),),
+          IconButton(onPressed:(){}, icon: const Icon(Icons.edit_note_outlined,color: Colors.blue,),),
         ],
-      )),
+      ),
+     ),
     ],
-        color: MaterialStateProperty.all(Colors.grey.shade200)
+      color: WidgetStateProperty.all(Colors.grey.shade200)
     );
   }
 
@@ -156,7 +130,7 @@ class mydata extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => _filteredPrescriptions.length;
+  int get rowCount => value.length;
 
   @override
   int get selectedRowCount => 0;

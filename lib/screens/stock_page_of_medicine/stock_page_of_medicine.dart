@@ -18,7 +18,6 @@ class _StockPageOfMedicineState extends State<StockPageOfMedicine> {
   Widget build(BuildContext context) {
     Future.microtask(() {
       Provider.of<StockProvider>(context, listen: false).fetchStocks();
-      Provider.of<StockProvider>(context, listen: false).fetchMedicinesNameFromStock();
     });
     return Scaffold(
       appBar: AppBar(),
@@ -33,7 +32,7 @@ class _StockPageOfMedicineState extends State<StockPageOfMedicine> {
                 Expanded(
                   child: SingleChildScrollView(
                     child: PaginatedDataTable(
-                      source: MyData(stockList,medicineNameList, context),
+                      source: MyData( stockList, medicineNameList, context),
                       columns: [
                         const DataColumn(label: Text("#")),
                         DataColumn(label: Text(AppLocalizations.of(context)!.medicine_name)),
@@ -67,9 +66,10 @@ class MyData extends DataTableSource {
 
     final data = stockData[index];
     final medicineData = medicineName[index];
+print(medicineData.id);
     return DataRow(cells: [
       DataCell(Text(data.medicineId.toString())),
-      DataCell(Text(medicineData.name ?? 'No Name')),
+      DataCell(Text(medicineData.name)),
       DataCell(Text(data.pricePerUnit.toString())),
       DataCell(Text(data.quantity.toString())),
       DataCell(IconButton(
