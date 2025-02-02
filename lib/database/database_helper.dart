@@ -188,11 +188,11 @@ class DatabaseHelper {
   String path = '';
   Future<String> getDatabasePath() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/store.db';
+    return '${directory.path}/store3.db';
   }
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    path = '${directory.path}/store.db';
+    path = '${directory.path}/store3.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
@@ -290,8 +290,8 @@ class DatabaseHelper {
         $salDate date DEFAULT NULL,
         $salDiscount REAL DEFAULT NULL,
         $salPrice REAL DEFAULT NULL,
-        $salCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $salUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $salCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $salUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
         CONSTRAINT $salCustomerId FOREIGN KEY ($salCustomerId) REFERENCES $customersTable ($cusId),
         CONSTRAINT $salUserID FOREIGN KEY ($salUserID) REFERENCES $usersTable ($userId)
     )
@@ -314,8 +314,8 @@ class DatabaseHelper {
         $userRole varchar(15) DEFAULT NULL,
         $userContactNumber varchar(15) DEFAULT NULL,
         $userEmail varchar(255) DEFAULT NULL,
-        $supCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $supUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
+        $supCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $supUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
     )
 ''');
 
@@ -325,8 +325,8 @@ class DatabaseHelper {
         $cusName varchar(255) NOT NULL,
         $cusContactNumber varchar(15) DEFAULT NULL,
         $cusEmail varchar(255) DEFAULT NULL,
-        $cusCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $cusUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
+        $cusCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $cusUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
     )
 ''');
 
@@ -337,8 +337,8 @@ class DatabaseHelper {
         $expAmount Real DEFAULT NULL,
         $expDate TEXT DEFAULT NULL,
         $expUserId INTEGER null,
-        $expCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $expUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $expCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $expUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
         CONSTRAINT $expUserId FOREIGN KEY ($expUserId) REFERENCES $usersTable ($userId)
     )
 ''');
@@ -375,8 +375,8 @@ class DatabaseHelper {
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
-        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
         FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
     )
 ''');
@@ -391,8 +391,8 @@ class DatabaseHelper {
         $docName varchar(255) NOT NULL,
         $docSpecialization varchar(255) DEFAULT NULL,
         $docContactNumber varchar(15) DEFAULT NULL,
-        $docCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $docUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
+        $docCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $docUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
     )
 ''');
 
@@ -402,8 +402,8 @@ class DatabaseHelper {
         $patName varchar(255) NOT NULL,
         $patContactNumber varchar(15) DEFAULT NULL,
         $patAddress text,
-        $patCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $patUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
+        $patCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $patUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
     )
 ''');
 
@@ -414,8 +414,8 @@ class DatabaseHelper {
         $appointmentDoctorId int NOT NULL,
         $appointmentDate date DEFAULT NULL,
         $appointmentFee REAL DEFAULT NULL,
-        $appointmentCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $appointmentUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $appointmentCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $appointmentUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
         $appointmentUserId int NOT NULL,
         CONSTRAINT $appointmentPatientId FOREIGN KEY ($appointmentPatientId) REFERENCES $patientsTable ($patId),
         CONSTRAINT $appointmentDoctorId FOREIGN KEY ($appointmentDoctorId) REFERENCES $doctorTables ($docId),
