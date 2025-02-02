@@ -1,7 +1,7 @@
 import 'package:fargard_pharmacy_management_system/screens/backup_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/patients_page/patients_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/purches_page/purchese_List_page.dart';
-import 'package:fargard_pharmacy_management_system/screens/reports_page.dart';
+import 'package:fargard_pharmacy_management_system/screens/reports/reports_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/users_page/users_List_page.dart';

@@ -54,6 +54,13 @@ dependencies:
   device_info_plus: ^11.2.1
   file_picker: ^8.1.7
   searchbar_animation: ^0.0.4
+  pie_chart: ^5.0.0
+  fl_chart: ^0.70.2
+
+
+
+
+
 
 dev_dependencies:
   flutter_test:
