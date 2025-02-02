@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:fargard_pharmacy_management_system/models/companies.dart';
 import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
+import 'package:fargard_pharmacy_management_system/models/sales_details.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 
@@ -69,18 +70,6 @@ class DatabaseHelper {
   String supCreatedAt = 'created_at';
   String supUpdatedAt = 'updated_at';
 
-//----------------------------
-  String salesTable = 'sales';
-  String salId = 'sales_id';
-  String salMedId = 'sales_medicine_id';
-  String salCustomerId = 'sales_customer_id';
-  String salUserID = 'sales_user_id';
-  String salQuantity = 'sales_quantity';
-  String salDate = 'sales_date';
-  String salTotalPrice = 'sales_total_price';
-  String salCreatedAt = 'created_at';
-  String salUpdatedAt = 'updated_at';
-
 //-----------------------------
   String usersTable = 'users';
   String userId = 'user_id';
@@ -119,12 +108,26 @@ class DatabaseHelper {
   String purchaseDetailsPricePerUnit = 'purchase_price_per_unit';
   String purchaseDetailsTotal = 'purchase_details_total';
 
+  //----------------------------
+  String salesTable = 'sales';
+  String salId = 'sales_id';
+  String salCustomerId = 'sales_customer_id';
+  String salUserID = 'sales_user_id';
+  String salDate = 'sales_date';
+  String salDiscount = 'sales_discount';
+  String salPrice = 'sales_price';
+  String salCreatedAt = 'created_at';
+  String salUpdatedAt = 'updated_at';
+
 //--------------------------------------------
-  String salesDetailsTable = 'salesDetails';
-  String salesId = 'sales_detail_id';
-  String salesMedicineId = 'sales_medicine_id';
-  String salesQuantity = 'sales_quantity';
-  String salesPricePerUnite = 'sales_price_per_unite';
+  String salesDetailsTable = 'sales_details';
+  String salesDetailId = 'sales_detail_id';
+  String salesMedicineId = 'sales_detail_medicine_id';
+  String salesDetailSalesId = 'sales_detail_sales_id';
+  String salesQuantity = 'sales_detail_quantity';
+  String salesPricePerUnite = 'sales_detail_price_per_unite';
+  String salesTotalPrice = 'sales_detail_total_price';
+
 //----------------------------------------------
   String stockTable = 'stocks';
   String stoId = 'stock_id';
@@ -282,22 +285,24 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE $salesTable (
         $salId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $salCustomerId int NOT NULL,
-        $salMedId int NOT NULL,
-        $salUserID int NOT NULL,
-        $salQuantity int DEFAULT NULL,
+        $salCustomerId int DEFAULT NULL,
+        $salUserID int DEFAULT NULL,
         $salDate date DEFAULT NULL,
-        $salTotalPrice REAL DEFAULT NULL,
-        $salCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $salUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        CONSTRAINT $salMedId FOREIGN KEY ($salMedId) REFERENCES $medicinesTable ($medId),
+        $salDiscount REAL DEFAULT NULL,
+        $salPrice REAL DEFAULT NULL,
+        $salCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $salUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
         CONSTRAINT $salCustomerId FOREIGN KEY ($salCustomerId) REFERENCES $customersTable ($cusId),
         CONSTRAINT $salUserID FOREIGN KEY ($salUserID) REFERENCES $usersTable ($userId)
     )
 ''');
+    // $salMedId int NOT NULL,
+    // $salQuantity int DEFAULT NULL,
+    // $salTotalPrice REAL DEFAULT NULL,
+    // CONSTRAINT $salMedId FOREIGN KEY ($salMedId) REFERENCES $medicinesTable ($medId),
+    // CREATE INDEX IF NOT EXISTS $salMedId ON $salesTable ($salMedId);
 
     await db.execute('''
-    CREATE INDEX IF NOT EXISTS $salMedId ON $salesTable ($salMedId);
     CREATE INDEX IF NOT EXISTS $salCustomerId ON $salesTable ($salCustomerId);
     CREATE INDEX IF NOT EXISTS $salUserID ON $salesTable ($salUserID);
 ''');
@@ -309,8 +314,8 @@ class DatabaseHelper {
         $userRole varchar(15) DEFAULT NULL,
         $userContactNumber varchar(15) DEFAULT NULL,
         $userEmail varchar(255) DEFAULT NULL,
-        $supCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $supUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+        $supCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $supUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
     )
 ''');
 
@@ -320,8 +325,8 @@ class DatabaseHelper {
         $cusName varchar(255) NOT NULL,
         $cusContactNumber varchar(15) DEFAULT NULL,
         $cusEmail varchar(255) DEFAULT NULL,
-        $cusCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $cusUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+        $cusCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $cusUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
     )
 ''');
 
@@ -332,8 +337,8 @@ class DatabaseHelper {
         $expAmount Real DEFAULT NULL,
         $expDate TEXT DEFAULT NULL,
         $expUserId INTEGER null,
-        $expCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $expUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        $expCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $expUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
         CONSTRAINT $expUserId FOREIGN KEY ($expUserId) REFERENCES $usersTable ($userId)
     )
 ''');
@@ -342,17 +347,24 @@ class DatabaseHelper {
     CREATE INDEX IF NOT EXISTS $expUserId ON $expensesTable ($expUserId);
 ''');
 
-
     await db.execute('''
     CREATE TABLE $salesDetailsTable (
-        $salesId int NOT NULL,
-        $salesMedicineId int NOT NULL,
-        $salesQuantity int NOT NULL,
+        $salesDetailId INTEGER PRIMARY KEY AUTOINCREMENT,
+        $salesMedicineId int DEFAULT NULL,
+        $salesDetailSalesId int DEFAULT NULL,
+        $salesQuantity int DEFAULT NULL,
         $salesPricePerUnite REAL DEFAULT NULL,
-        PRIMARY KEY ($salesId, $salesMedicineId),
-        CONSTRAINT $salesId FOREIGN KEY ($salesId) REFERENCES $salesTable($salId),
-        CONSTRAINT $salesMedicineId FOREIGN KEY ($salesMedicineId) REFERENCES $medicinesTable ($medId)
+        $salesTotalPrice REAL DEFAULT NULL,
+        FOREIGN KEY ($salesDetailSalesId) REFERENCES $salesTable($salId),
+        FOREIGN KEY ($salesMedicineId) REFERENCES $medicinesTable ($medId)
     )
+''');
+
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $salesDetailSalesId ON $salesDetailsTable ($salesDetailSalesId);
+''');
+    await db.execute('''
+    CREATE INDEX IF NOT EXISTS $salesMedicineId ON $salesDetailsTable ($salesMedicineId);
 ''');
 
     await db.execute('''
@@ -363,8 +375,8 @@ class DatabaseHelper {
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
-        $stoCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $stoUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
         FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
     )
 ''');
@@ -379,8 +391,8 @@ class DatabaseHelper {
         $docName varchar(255) NOT NULL,
         $docSpecialization varchar(255) DEFAULT NULL,
         $docContactNumber varchar(15) DEFAULT NULL,
-        $docCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $docUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+        $docCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $docUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
     )
 ''');
 
@@ -390,8 +402,8 @@ class DatabaseHelper {
         $patName varchar(255) NOT NULL,
         $patContactNumber varchar(15) DEFAULT NULL,
         $patAddress text,
-        $patCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $patUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP
+        $patCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $patUpdatedAt TEXT DEFAULT (datetime('now', 'utc')
     )
 ''');
 
@@ -402,8 +414,8 @@ class DatabaseHelper {
         $appointmentDoctorId int NOT NULL,
         $appointmentDate date DEFAULT NULL,
         $appointmentFee REAL DEFAULT NULL,
-        $appointmentCreatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-        $appointmentUpdatedAt timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+        $appointmentCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $appointmentUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
         $appointmentUserId int NOT NULL,
         CONSTRAINT $appointmentPatientId FOREIGN KEY ($appointmentPatientId) REFERENCES $patientsTable ($patId),
         CONSTRAINT $appointmentDoctorId FOREIGN KEY ($appointmentDoctorId) REFERENCES $doctorTables ($docId),
@@ -445,9 +457,11 @@ class DatabaseHelper {
     return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
   }
 
-  // patient crud -----------------------------------------------------
+  // user crud -----------------------------------------------------
   Future<int> addUsers(User user) async {
     final db = await database;
+// final a = db.rawQuery('drop table $salesDetailsTable');
+// print(a);
     return db.insert(usersTable, user.toMap());
   }
 
@@ -466,7 +480,7 @@ class DatabaseHelper {
     return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
   }
 
-  // patient crud -----------------------------------------------------
+  // expenses crud -----------------------------------------------------
 
   Future<int> addExpenses(Expenses expenses) async {
     final db = await database;
@@ -595,6 +609,40 @@ class DatabaseHelper {
   Future<int> deleteSales(int id) async {
     final db = await database;
     return db.delete(salesTable, where: '$salId = ?', whereArgs: [id]);
+  }
+
+  Future<int> fetchLastInsertedSalesId() async {
+    final db = await database;
+    final List<Map> maps = await db.rawQuery("SELECT last_insert_rowid() AS SalesID;");
+    return maps[0]['SalesID'];
+  }
+  // Suppliers crud -----------------------------------------------------
+
+  Future<void> addSalesDetails(List<SalesDetails> salesDetails) async {
+    final db = await database;
+    Batch batch = db.batch(); // Create a batch for bulk insertion
+
+    for (var salesDetails in salesDetails) {
+      batch.insert(salesDetailsTable, salesDetails.toMap());
+    }
+
+    await batch.commit(noResult: true); // Execute batch insert
+  }
+
+  Future<int> updateSalesDetails(SalesDetails salesDetail) async {
+    final db = await database;
+    return db.update(
+      salesDetailsTable,
+      salesDetail.toMap(),
+      where: '$salId = ?',
+      whereArgs: [salesDetail.saleId],
+    );
+  }
+
+  Future<int> deleteSalesDetails(int id) async {
+    final db = await database;
+    return db.delete(salesDetailsTable,
+        where: '$salId = ?', whereArgs: [id]);
   }
 
   // Suppliers crud -----------------------------------------------------
@@ -735,7 +783,31 @@ class DatabaseHelper {
       await addStocks(stock);
     }
   }
+  Future<void> updateStocksIfExist(int medicineId, int quantity, Stock stock) async {
+    final db = await database;
 
+    // Check if the stock for the given medicine ID exists
+    final existingStock = await db.query(
+      stockTable,
+      where: '$stoMedicineId = ?',
+      whereArgs: [medicineId],
+    );
+
+    print('Existing stock: $existingStock');
+
+    if (existingStock.isNotEmpty) {
+      // Extract the current quantity
+      final int currentQuantity = existingStock.first[stoQuantity] as int;
+
+      // Update the stock with the new quantity
+      await db.update(
+        stockTable,
+        {stoQuantity: currentQuantity - quantity}, // Corrected quantity update
+        where: '$stoMedicineId = ?',
+        whereArgs: [medicineId],
+      );
+    }
+  }
 
   Future<List<Map<String, dynamic>>> getMedicineNamesFromStock() async {
     final db = await database;

@@ -28,7 +28,7 @@ class _All_reports_pageState extends State<All_reports_page> {
     {
       "name": AppLocalizations.of(context)!.sales_reports,
       "icon": Icon(Icons.pending_actions),
-      "navigate": Sales_List_page(),
+      "navigate": SalesListPage(),
     },
     {
       "name": AppLocalizations.of(context)!.employee_reports,

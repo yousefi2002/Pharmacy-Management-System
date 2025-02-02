@@ -56,7 +56,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.sales_invoices,
           "icon": Icons.sell_outlined,
-          "navigate": Sales_List_page(),
+          "navigate": SalesListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.visits,

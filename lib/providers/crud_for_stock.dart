@@ -16,6 +16,7 @@ class StockProvider extends ChangeNotifier {
 
   Future<void> fetchStocks() async {
     _stock = await _databaseService.fetchStocks();
+    _medicineNames = await _databaseService.fetchMedicinesNameFromStock();
     notifyListeners();
   }
 
@@ -39,9 +40,9 @@ class StockProvider extends ChangeNotifier {
     await fetchStocks();
   }
 
-  Future<void> fetchMedicinesNameFromStock() async {
-    _medicineNames = await _databaseService.fetchMedicinesNameFromStock();
-    notifyListeners();
+  Future<void> updateStocksIfExist(Stock stock, int medicineId, int quantity) async {
+    await _dbHelper.updateStocksIfExist(medicineId, quantity, stock);
+    await fetchStocks();
   }
 }
 
