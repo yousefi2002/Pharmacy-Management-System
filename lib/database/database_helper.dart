@@ -167,6 +167,12 @@ class DatabaseHelper {
 
   DatabaseHelper._createInstance();
 
+  Future<void> closeDatabase() async {
+    if (_database != null) {
+      await _database!.close();
+      _database = null;
+    }
+  }
   factory DatabaseHelper() {
     _databaseHelper ??= DatabaseHelper._createInstance();
     return _databaseHelper!;
@@ -176,10 +182,14 @@ class DatabaseHelper {
     _database ??= await initDatabase();
     return _database!;
   }
-
+  String path = '';
+  Future<String> getDatabasePath() async {
+    Directory directory = await getApplicationDocumentsDirectory();
+    return '${directory.path}/store.db';
+  }
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    String path = '${directory.path}/store2.db';
+    path = '${directory.path}/store.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
@@ -256,7 +266,7 @@ class DatabaseHelper {
         $medicineId int NOT NULL,
         $purchaseId int NOT NULL,
         $purchaseDetailsQuantity int DEFAULT NULL,
-        $purchaseDetailsPricePerUnit int DEFAULT NULL,
+        $purchaseDetailsPricePerUnit REAL DEFAULT NULL,
         $purchaseDetailsTotal DECIMAL(10, 2) GENERATED ALWAYS AS ($purchaseDetailsQuantity * $purchaseDetailsPricePerUnit) STORED,
         FOREIGN KEY ($purchaseId) REFERENCES $purchaseTable ($purId),
         FOREIGN KEY ($medicineId) REFERENCES $medicinesTable ($medId)
@@ -268,7 +278,6 @@ class DatabaseHelper {
     await db.execute('''
     CREATE INDEX IF NOT EXISTS $medicineId ON $purchaseDetailsTable ($medicineId);
     ''');
-
 
     await db.execute('''
     CREATE TABLE $salesTable (
@@ -454,7 +463,6 @@ class DatabaseHelper {
 
   Future<int> deleteUsers(int id) async {
     final db = await database;
-    // final result = await db.rawQuery('PRAGMA table_info($purchaseDetailsTable)');
     return db.delete(usersTable, where: '$userId = ?', whereArgs: [id]);
   }
 
@@ -539,6 +547,7 @@ class DatabaseHelper {
   // Medicine crud -----------------------------------------------------
   Future<int> addMedicines(Medicine medicine) async {
     final db = await database;
+
     return db.insert(medicinesTable, medicine.toMap());
   }
 
@@ -690,12 +699,7 @@ class DatabaseHelper {
 
   Future<int> updateStocks(Stock stock) async {
     final db = await database;
-    return db.update(
-      stockTable,
-      stock.toMap(),
-      where: '$stoId = ?',
-      whereArgs: [stock.id],
-    );
+    return db.update(stockTable, stock.toMap(), where: '$stoId = ?', whereArgs: [stock.id],);
   }
 
   Future<int> deleteStocks(int id) async {
@@ -703,29 +707,45 @@ class DatabaseHelper {
     return db.delete(stockTable, where: '$stoId = ?', whereArgs: [id]);
   }
 
-  Future<void> insertOrUpdateStock(
-      int medicineId, int quantity, Stock stock) async {
+  Future<void> insertOrUpdateStock(int medicineId, int quantity, Stock stock) async {
     final db = await database;
-    // Check if the medicine exists in the stock table
+
+    // Check if the stock for the given medicine ID exists
     final existingStock = await db.query(
       stockTable,
       where: '$stoMedicineId = ?',
       whereArgs: [medicineId],
     );
+
+    print('Existing stock: $existingStock');
+
     if (existingStock.isNotEmpty) {
-      // Medicine exists, update the quantity
-      await db.rawUpdate(
-        '''
-    UPDATE $stockTable 
-    SET $stoQuantity = $quantity + ? 
-    WHERE $stoMedicineId = ?
-    ''',
-        [quantity, medicineId],
+      // Extract the current quantity
+      final int currentQuantity = existingStock.first[stoQuantity] as int;
+
+      // Update the stock with the new quantity
+      await db.update(
+        stockTable,
+        {stoQuantity: currentQuantity + quantity}, // Corrected quantity update
+        where: '$stoMedicineId = ?',
+        whereArgs: [medicineId],
       );
     } else {
-      // Medicine does not exist, insert a new record
-      addStocks(stock);
+      // Insert a new stock if medicine ID is not found
+      await addStocks(stock);
     }
+  }
+
+
+  Future<List<Map<String, dynamic>>> getMedicineNamesFromStock() async {
+    final db = await database;
+    return await db.rawQuery(
+        '''
+    SELECT m.*
+    FROM $medicinesTable m
+    JOIN $stockTable s ON m.$medId = s.$stoMedicineId
+    '''
+    );
   }
 
   // generic name crud -----------------------------------------------------

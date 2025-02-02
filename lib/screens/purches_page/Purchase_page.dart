@@ -417,7 +417,7 @@ class _PurchasePageState extends State<PurchasePage> {
   void _savePurchase(context, List<Medicine?> medicine, int index) async {
     //step #1
     Provider.of<PurchasesProvider>(context, listen: false)
-        .addPurchase(Purchase(date, purchaseTotalPrice, supplier?.id));
+        .addPurchase(Purchase(date, double.tryParse(purchaseTotalPrice.toString()), supplier?.id ?? 0));
 
     //step #2
     Provider.of<PurchasesProvider>(context, listen: false)
@@ -426,6 +426,7 @@ class _PurchasePageState extends State<PurchasePage> {
         Provider.of<PurchasesProvider>(context, listen: false)
             .lastInsertedPurchaseId;
 
+    _updateTotalPrice(index);
 
     //step #3
     List<PurchaseDetails> purchaseDetails = [];
@@ -441,12 +442,15 @@ class _PurchasePageState extends State<PurchasePage> {
       }
       Provider.of<PurchasesDetailProvider>(context, listen: false)
         .addPurchasesDetails(purchaseDetails);
-
     }
 
     //step #4
 
-
+    for (int j = 0; j < selectedMedicineDetails.length; j++){
+final addUpdateStock = Stock(selectedMedicineDetails[j]?.id, double.tryParse(unitPriceControllers[j].text), int.tryParse(quantityControllers[j].text));
+      Provider.of<StockProvider>(context, listen: false)
+          .insertUpdateStocks(addUpdateStock, selectedMedicineDetails[j]!.id ?? 0, int.tryParse(quantityControllers[j].text) ?? 0);
+    }
 
     //temp
     Navigator.pop(context);
