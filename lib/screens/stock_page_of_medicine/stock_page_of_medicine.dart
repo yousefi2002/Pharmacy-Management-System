@@ -20,7 +20,9 @@ class _StockPageOfMedicineState extends State<StockPageOfMedicine> {
       Provider.of<StockProvider>(context, listen: false).fetchStocks();
     });
     return Scaffold(
-      appBar: AppBar(),
+      appBar: AppBar(
+        title: Text(AppLocalizations.of(context)!.stock),
+      ),
       body: Consumer<StockProvider>(
         builder: (context, stockProvider, child) {
           final stockList = stockProvider.stock;

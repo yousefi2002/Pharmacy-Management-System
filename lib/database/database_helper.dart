@@ -375,8 +375,8 @@ class DatabaseHelper {
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
-        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
-        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
         FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
     )
 ''');
