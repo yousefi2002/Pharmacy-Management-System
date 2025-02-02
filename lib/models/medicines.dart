@@ -17,9 +17,9 @@ class Medicine {
     this._pricePerUnit,
     this._genericID,
     this._companyId,
-    this._createdAt,
-    this._updatedAt
+    [this._createdAt]
   );
+  Medicine.empty([this._createdAt]);
 
   int? get id => _id;
   String get name => _name ?? '';
@@ -31,14 +31,32 @@ class Medicine {
   String get genericId => _genericID ?? '';
   String get companyId => _companyId ?? '';
 
-  set name(String newValue) => _name = newValue;
-  set description(String newValue) => _description = newValue;
-  set type(String newValue) => _type = newValue;
-  set pricePerUnit(double newValue) => _pricePerUnit = newValue;
+  set name(String newValue) {
+    _name = newValue;
+    updatedAt = DateTime.now().toUtc().toIso8601String();
+  }
+  set description(String newValue) {
+    _description = newValue;
+    updatedAt = DateTime.now().toUtc().toIso8601String();
+  }
+  set type(String newValue) {
+    _type = newValue;
+    updatedAt = DateTime.now().toUtc().toIso8601String();
+  }
+  set pricePerUnit(double newValue) {
+    _pricePerUnit = newValue;
+    updatedAt = DateTime.now().toUtc().toIso8601String();
+  }
   set createdAt(String newValue) => _createdAt = newValue;
   set updatedAt(String newValue) => _updatedAt = newValue;
-  set genericId(String newValue) => genericId = newValue;
-  set companyId(String newValue) => companyId = newValue;
+  set genericId(String newValue) {
+    genericId = newValue;
+    updatedAt = DateTime.now().toUtc().toIso8601String();
+  }
+  set companyId(String newValue) {
+    companyId = newValue;
+    updatedAt = DateTime.now().toUtc().toIso8601String();
+  }
 
   Map<String, dynamic> toMap() {
 
@@ -50,9 +68,8 @@ class Medicine {
     map["medicine_price_per_unit"] = _pricePerUnit;
     map["medicine_generic_id"] = _genericID.toString();
     map["medicine_company_id"] = _companyId.toString();
-    map["created_at"] = _createdAt;
-    map["updated_at"] = _updatedAt;
-
+    map["created_at"] = _createdAt ?? DateTime.now().toUtc().toIso8601String();
+    map["updated_at"] = DateTime.now().toUtc().toIso8601String();
     return map;
   }
 

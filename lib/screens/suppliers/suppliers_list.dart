@@ -1,30 +1,34 @@
-import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
-import 'package:fargard_pharmacy_management_system/providers/crud_for_generic_name.dart';
-import 'package:fargard_pharmacy_management_system/screens/generic_names/generic_name_register.dart';
+import 'package:fargard_pharmacy_management_system/models/companies.dart';
+import 'package:fargard_pharmacy_management_system/models/suppliers.dart';
+import 'package:fargard_pharmacy_management_system/providers/crud_for_company_name.dart';
+import 'package:fargard_pharmacy_management_system/providers/crud_for_supplier.dart';
+import 'package:fargard_pharmacy_management_system/screens/companies/companies_register.dart';
+import 'package:fargard_pharmacy_management_system/screens/suppliers/suppliers_register.dart';
 import 'package:fargard_pharmacy_management_system/utilities/date_time_format.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
-class GenericNameList extends StatefulWidget {
-  const GenericNameList({super.key});
+
+class SuppliersList extends StatefulWidget {
+  const SuppliersList({super.key});
 
   @override
-  _GenericNameListState createState() => _GenericNameListState();
+  _SuppliersListState createState() => _SuppliersListState();
 }
 
-class _GenericNameListState extends State<GenericNameList> {
+class _SuppliersListState extends State<SuppliersList> {
   final TextEditingController _searchController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     Future.microtask(() {
-      Provider.of<GenericNameProvider>(context, listen: false).fetchGeneric();
+      Provider.of<SupplierProvider>(context, listen: false).fetchSuppliers();
     });
     return Scaffold(
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.generic_names, style: const TextStyle(fontSize: 30),),
+            Text(AppLocalizations.of(context)!.suppliers, style: const TextStyle(fontSize: 30),),
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(
@@ -42,7 +46,7 @@ class _GenericNameListState extends State<GenericNameList> {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
                 onChanged: (value){
-                  Provider.of<GenericNameProvider>(context, listen: false).searchGeneric(value);
+                  Provider.of<SupplierProvider>(context, listen: false).searchSuppliers(value);
                 },
                 style: const TextStyle(color: Colors.white),
               ),
@@ -58,18 +62,19 @@ class _GenericNameListState extends State<GenericNameList> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => GenericNameRegisterPage(GenericName(null,''))),);
+                      builder: (context) => SupplierRegister(Supplier.empty())),);
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
-                child: Text(AppLocalizations.of(context)!.register_generic),
-              ),),
+                child: Text(AppLocalizations.of(context)!.new_supplier),
+              ),
+            ),
           ],
         ),
       ),
-      body: Consumer<GenericNameProvider>(
+      body: Consumer<SupplierProvider>(
         builder: ( context, value, child) {
-          final data = value.genericName;
+          final data = value.suppliers;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
@@ -81,10 +86,13 @@ class _GenericNameListState extends State<GenericNameList> {
                   source: MyData(data, context),
                   columns: [
                     DataColumn(label: Text(AppLocalizations.of(context)!.id)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.generic_name)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.supplier_name)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.email)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.address)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.created_at)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.updated_at)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
                   ],
                   columnSpacing: 130,
                   horizontalMargin: 40,
@@ -105,13 +113,14 @@ class MyData extends DataTableSource {
   MyData(this.value, this.context);
   @override
   DataRow getRow(int index) {
-    final genericName = value[index];
+    final supplier = value[index];
     return DataRow(
         cells: [
-          DataCell(Text(genericName.id.toString()),),
-          DataCell(Text(genericName.name),),
-          DataCell(Text(formatLocalTime(genericName.createdAt))),
-          DataCell(Text(formatLocalTime(genericName.updatedAt))),
+          DataCell(Text(supplier.id.toString()),),
+          DataCell(Text(supplier.name),),
+          DataCell(Text(supplier.contactNumber),),
+          DataCell(Text(supplier.email),),
+          DataCell(Text(supplier.address),),
           DataCell(Row(
             children: [
               IconButton(
@@ -130,8 +139,8 @@ class MyData extends DataTableSource {
                           ),
                           TextButton(
                             onPressed: () {
-                              Provider.of<GenericNameProvider>(context, listen: false)
-                                  .deleteGeneric(genericName.id ?? 0);
+                              Provider.of<SupplierProvider>(context, listen: false)
+                                  .deleteSupplier(supplier.id ?? 0);
                               Navigator.of(context).pop();
                             },
                             child: const Text('delete'),
@@ -148,12 +157,15 @@ class MyData extends DataTableSource {
                   await Navigator.push(
                     context,
                     MaterialPageRoute(
-                      builder: (context) => GenericNameRegisterPage(genericName), // Passing the current patient object
+                      builder: (context) => SupplierRegister(supplier), // Passing the current patient object
                     ),
                   );
                 },
               ), ],
           )),
+          DataCell(Text(formatLocalTime(supplier.createdAt ?? ""))),
+          DataCell(Text(formatLocalTime(supplier.updatedAt ?? ""))),
+
         ],
         color: WidgetStateProperty.all(Colors.grey.shade200)
     );

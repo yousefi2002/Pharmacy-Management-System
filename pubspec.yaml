@@ -48,13 +48,18 @@ dependencies:
   carousel_slider: ^5.0.0
   animated_text_kit: ^4.2.2
   neumorphic_button: ^0.0.1+2
-  sqflite:
+  sqflite: any
   sqflite_common_ffi: ^2.0.0
   crypto: ^3.0.6
   device_info_plus: ^11.2.1
   file_picker: ^8.1.7
   searchbar_animation: ^0.0.4
-  permission_handler: ^11.0.1
+  pie_chart: ^5.0.0
+  fl_chart: ^0.70.2
+  permission_handler:
+
+
+
 
 
 dev_dependencies:

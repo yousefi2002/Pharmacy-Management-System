@@ -2,6 +2,7 @@ import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_company_name.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_generic_name.dart';
+import 'package:fargard_pharmacy_management_system/utilities/custom_widgets.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -103,7 +104,6 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                 AppLocalizations.of(context)!.register_medicine,
                                 style: const TextStyle(fontSize: 35),
                               )),
-
                               TextFormField(
                                 validator: (value) {
                                   if (value == null || value.isEmpty) {
@@ -115,58 +115,7 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                 onFieldSubmitted: (value) {
                                   FocusScope.of(context).requestFocus(focs1);
                                 },
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(context)!
-                                      .medicine_name,
-                                  labelStyle: const TextStyle(
-                                    color: Colors.green, // Label text color
-                                    fontSize: 16,
-                                  ),
-                                  hintText: 'Name like Panadol',
-                                  hintStyle: const TextStyle(
-                                      color: Colors.grey), // Hint text color
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .greenAccent, // Border color when not focused
-                                      width: 1,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .green, // Border color when focused
-                                      width: 2,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      color:
-                                          Colors.red, // Border color on error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .redAccent, // Border color on focused error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                    vertical: 12.0,
-                                  ), // Inner padding
-                                  filled: true,
-                                  fillColor:
-                                      Colors.green.shade50, // Background color
-                                ),
+                                decoration: MyInputDecoration1(labelText:  AppLocalizations.of(context)!.medicine_name, hintText: 'Name like Panadol'),
                                 style: const TextStyle(
                                   color: Colors.black, // Input text color
                                   fontSize: 18,
@@ -183,58 +132,7 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                 onFieldSubmitted: (value) {
                                   FocusScope.of(context).requestFocus(focs2);
                                 },
-                                decoration: InputDecoration(
-                                  labelText:
-                                      AppLocalizations.of(context)!.description,
-                                  labelStyle: const TextStyle(
-                                    color: Colors.green, // Label text color
-                                    fontSize: 16,
-                                  ),
-                                  hintText: 'Name like This is for...',
-                                  hintStyle: const TextStyle(
-                                      color: Colors.grey), // Hint text color
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .greenAccent, // Border color when not focused
-                                      width: 1,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .green, // Border color when focused
-                                      width: 2,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      color:
-                                          Colors.red, // Border color on error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .redAccent, // Border color on focused error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                    vertical: 12.0,
-                                  ), // Inner padding
-                                  filled: true,
-                                  fillColor:
-                                      Colors.green.shade50, // Background color
-                                ),
+                                decoration: MyInputDecoration1(labelText: AppLocalizations.of(context)!.description, hintText: 'Name like This is for...'),
                                 style: const TextStyle(
                                   color: Colors.black, // Input text color
                                   fontSize: 18,
@@ -251,57 +149,7 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                 onFieldSubmitted: (value) {
                                   FocusScope.of(context).requestFocus(focs3);
                                 },
-                                decoration: InputDecoration(
-                                  labelText: AppLocalizations.of(context)!.type,
-                                  labelStyle: const TextStyle(
-                                    color: Colors.green, // Label text color
-                                    fontSize: 16,
-                                  ),
-                                  hintText: 'Name like for Headache',
-                                  hintStyle: const TextStyle(
-                                      color: Colors.grey), // Hint text color
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .greenAccent, // Border color when not focused
-                                      width: 1,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .green, // Border color when focused
-                                      width: 2,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      color:
-                                          Colors.red, // Border color on error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .redAccent, // Border color on focused error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                    vertical: 12.0,
-                                  ), // Inner padding
-                                  filled: true,
-                                  fillColor:
-                                      Colors.green.shade50, // Background color
-                                ),
+                                decoration: MyInputDecoration1(labelText: AppLocalizations.of(context)!.type, hintText: 'Name like for Headache'),
                                 style: const TextStyle(
                                   color: Colors.black, // Input text color
                                   fontSize: 18,
@@ -318,58 +166,7 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                 onFieldSubmitted: (value) {
                                   FocusScope.of(context).requestFocus(focs4);
                                 },
-                                decoration: InputDecoration(
-                                  labelText:
-                                      AppLocalizations.of(context)!.price,
-                                  labelStyle: const TextStyle(
-                                    color: Colors.green, // Label text color
-                                    fontSize: 16,
-                                  ),
-                                  hintText: 'Name like 3.1',
-                                  hintStyle: const TextStyle(
-                                      color: Colors.grey), // Hint text color
-                                  enabledBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .greenAccent, // Border color when not focused
-                                      width: 1,
-                                    ),
-                                  ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(
-                                        5), // Rounded border
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .green, // Border color when focused
-                                      width: 2,
-                                    ),
-                                  ),
-                                  errorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                    borderSide: const BorderSide(
-                                      color:
-                                          Colors.red, // Border color on error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  focusedErrorBorder: OutlineInputBorder(
-                                    borderRadius: BorderRadius.circular(12),
-                                    borderSide: const BorderSide(
-                                      color: Colors
-                                          .redAccent, // Border color on focused error
-                                      width: 2,
-                                    ),
-                                  ),
-                                  contentPadding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0,
-                                    vertical: 12.0,
-                                  ), // Inner padding
-                                  filled: true,
-                                  fillColor:
-                                      Colors.green.shade50, // Background color
-                                ),
+                                decoration: MyInputDecoration1(labelText: AppLocalizations.of(context)!.price, hintText: 'Name like 3.1'),
                                 style: const TextStyle(
                                   color: Colors.black, // Input text color
                                   fontSize: 18,
@@ -502,8 +299,8 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                               0.0,
                                           genericName,
                                           companyName,
-                                          createdAt,
-                                          updatedAt);
+                                          medicine.createdAt
+                                      );
                                       await Provider.of<MedicinesProvider>(
                                               context,
                                               listen: false)
@@ -520,13 +317,9 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
                                           _nameController.text,
                                           _descriptionController.text,
                                           _typeController.text,
-                                          double.tryParse(
-                                                  _priceController.text) ??
-                                              0.0,
+                                          double.tryParse(_priceController.text) ?? 0.0,
                                           genericName,
-                                          companyName,
-                                          createdAt,
-                                          updatedAt);
+                                          companyName);
                                       await Provider.of<MedicinesProvider>(
                                               context,
                                               listen: false)

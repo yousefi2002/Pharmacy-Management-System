@@ -72,26 +72,24 @@ class _UsersListPageState extends State<UsersListPage> {
           final data = value.users;
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Expanded(
-              child: SingleChildScrollView(
-                child: SizedBox(
-                  width: double.infinity,
-                  child: PaginatedDataTable(
-                    showCheckboxColumn: true,
-                    showEmptyRows: true,
-                    source: MyData(data, context),
-                    columns: [
-                       DataColumn(label: Text(AppLocalizations.of(context)!.id)),
-                      DataColumn(label: Text(AppLocalizations.of(context)!.username)),
-                      DataColumn(label: Text(AppLocalizations.of(context)!.role)),
-                      DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
-                      DataColumn(label: Text(AppLocalizations.of(context)!.email)),
-                      const DataColumn(label: Text("")),
-                    ],
-                    columnSpacing: 50,
-                    horizontalMargin: 40,
-                    showFirstLastButtons: true,
-                  ),
+            child: SingleChildScrollView(
+              child: SizedBox(
+                width: double.infinity,
+                child: PaginatedDataTable(
+                  showCheckboxColumn: true,
+                  showEmptyRows: true,
+                  source: MyData(data, context),
+                  columns: [
+                     DataColumn(label: Text(AppLocalizations.of(context)!.id)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.username)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.role)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.email)),
+                    const DataColumn(label: Text("")),
+                  ],
+                  columnSpacing: 50,
+                  horizontalMargin: 40,
+                  showFirstLastButtons: true,
                 ),
               ),
             ),
@@ -159,7 +157,7 @@ class MyData extends DataTableSource {
           ),],
       )),
     ],
-        color: MaterialStateProperty.all(Colors.grey.shade200)
+        color: WidgetStateProperty.all(Colors.grey.shade200)
     );
   }
 

@@ -1,5 +1,5 @@
 import 'package:fargard_pharmacy_management_system/screens/purches_page/purchese_List_page.dart';
-import 'package:fargard_pharmacy_management_system/screens/roznamcha.dart';
+// import 'package:fargard_pharmacy_management_system/screens/roznamcha.dart';
 import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_List_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
@@ -18,7 +18,7 @@ class _All_reports_pageState extends State<All_reports_page> {
     {
       "name":"roznamcha",
       "icon": Icon(Icons.add_card_outlined),
-      "navigate": Roznamcha(),
+      // "navigate": Roznamcha(),
     },
     {
       "name": AppLocalizations.of(context)!.purchase_reports,
@@ -28,7 +28,7 @@ class _All_reports_pageState extends State<All_reports_page> {
     {
       "name": AppLocalizations.of(context)!.sales_reports,
       "icon": Icon(Icons.pending_actions),
-      "navigate": Sales_List_page(),
+      "navigate": SalesListPage(),
     },
     {
       "name": AppLocalizations.of(context)!.employee_reports,

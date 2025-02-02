@@ -9,15 +9,17 @@ import '../models/purchases.dart';
     final DatabaseService _databaseService = DatabaseService();
 
     List<Purchase> _purchases = [];
+    int _lastInsertedPurchaseId = -1;
 
     List<Purchase> get purchases => _purchases;
+    int get lastInsertedPurchaseId => _lastInsertedPurchaseId;
 
     Future<void> fetchPurchases() async {
       _purchases = await _databaseService.fetchPurchase();
       notifyListeners();
     }
 
-    Future<void> addPurchases(Purchase purchase) async {
+    Future<void> addPurchase(Purchase purchase) async {
       await _dbHelper.addPurchases(purchase);
       await fetchPurchases();
     }
@@ -30,6 +32,10 @@ import '../models/purchases.dart';
     Future<void> deletePurchases(int id) async {
       await _dbHelper.deletePurchases(id);
       await fetchPurchases();
+    }
+    Future<void> fetchLastInsertedPurchaseId() async {
+      _lastInsertedPurchaseId = await _dbHelper.fetchLastInsertedPurchaseId();
+      notifyListeners();
     }
   }
 

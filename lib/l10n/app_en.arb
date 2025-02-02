@@ -1,4 +1,10 @@
 {
+    "id": "ID",
+    "print": "Print",
+    "suppliers": "Suppliers",
+    "supplier": "Supplier",
+    "new_supplier": "New Supplier",
+    "supplier_name": "Supplier Name",
     "pharmacy_name": "Moaffagh Pharmacy Management System",
     "pharmacy": "Pharmacy Management System",
    "discount": "Discount",
@@ -16,7 +22,7 @@
     "register_medicine": "Register Medicine",
     "register_customer": "Register Customer",
     "new_customer": "New Customer",
-    "warehouse": "Warehouse",
+    "stock": "Stock",
     "daily_sales": "Daily Sales",
     "register_companies": "Register Companies",
     "register_generic": "Register Generic Name",
@@ -30,6 +36,7 @@
     "prescription_amount": "Prescription Amount",
     "amount_payable": "Amount Payable",
     "generic_names": "Generic Names",
+    "generic_name": "Generic Name",
     "created_at": "Created At",
     "updated_at": "Updated At",
     "companies": "Companies",
@@ -138,5 +145,7 @@
               "newDoctor": "New Doctor",
               "newEmployee": "New Employee",
               "newMedicine": "New Medicine",
+              "journal": "Journal",
+              "actions": "Actions",
   "@@locale": "en"
 }

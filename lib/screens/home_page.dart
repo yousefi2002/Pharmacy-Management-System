@@ -1,7 +1,7 @@
 import 'package:fargard_pharmacy_management_system/screens/backup_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/patients_page/patients_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/purches_page/purchese_List_page.dart';
-import 'package:fargard_pharmacy_management_system/screens/reports_page.dart';
+import 'package:fargard_pharmacy_management_system/screens/reports/reports_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/users_page/users_List_page.dart';
@@ -43,7 +43,7 @@ class _HomePageState extends State<HomePage> {
           "navigate": MedicinesList(),
         },
         {
-          "name": AppLocalizations.of(context)!.warehouse,
+          "name": AppLocalizations.of(context)!.stock,
           "icon": Icons.inventory_2_outlined,
           "navigate": StockPageOfMedicine(),
         },
@@ -55,7 +55,7 @@ class _HomePageState extends State<HomePage> {
         {
           "name": AppLocalizations.of(context)!.sales_invoices,
           "icon": Icons.sell_outlined,
-          "navigate": Sales_List_page(),
+          "navigate": SalesListPage(),
         },
         {
           "name": AppLocalizations.of(context)!.visits,
