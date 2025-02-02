@@ -35,7 +35,7 @@ class _All_reports_pageState extends State<All_reports_page> {
     {
       "name": AppLocalizations.of(context)!.employee_reports,
       "icon": Icon(Icons.add_reaction),
-      "navigate": TestPage(),
+      // "navigate": TestPage(),
     },
     {
       "name": AppLocalizations.of(context)!.doctor_reports,

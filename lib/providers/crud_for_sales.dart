@@ -9,8 +9,11 @@ class SalesProvider extends ChangeNotifier {
   final DatabaseService _databaseService = DatabaseService();
 
   List<Sales> _sales = [];
+  int _lastInsertedSalesId = -1;
 
   List<Sales> get sales => _sales;
+  int get lastInsertedSalesId => _lastInsertedSalesId;
+
 
   Future<void> fetchSales() async {
     _sales = await _databaseService.fetchSales();
@@ -30,6 +33,11 @@ class SalesProvider extends ChangeNotifier {
   Future<void> deleteSales(int id) async {
     await _dbHelper.deleteSales(id);
     await fetchSales();
+  }
+
+  Future<void> fetchLastInsertedPurchaseId() async {
+    _lastInsertedSalesId = await _dbHelper.fetchLastInsertedSalesId();
+    notifyListeners();
   }
 }
 
