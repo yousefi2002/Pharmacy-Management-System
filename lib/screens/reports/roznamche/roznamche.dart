@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
+import 'package:fl_chart/fl_chart.dart';
 class Roznamche extends StatefulWidget {
   const Roznamche({super.key});
 
@@ -10,6 +11,38 @@ class Roznamche extends StatefulWidget {
 }
 
 class _RoznamcheState extends State<Roznamche> {
+  final List<double> monthlyData = [
+    20,
+    40,
+    50,
+    10,
+    20,
+    80,
+    40,
+    10,
+    20,
+    40,
+    50,
+    10,
+    20,
+    80,
+    40,
+    10,
+    20,
+    40,
+    50,
+    10,
+    20,
+    80,
+    40,
+    10,
+    20,
+    40,
+    50,
+    10,
+    20,
+    80
+  ];
   final TextEditingController _searchController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
@@ -172,29 +205,104 @@ class _RoznamcheState extends State<Roznamche> {
       body:  Container(
         child: Column(
           children: [
-            Card(
-              shape: OutlineInputBorder(
-                borderSide: BorderSide(color: CupertinoColors.white),
-              ),
-              color: Colors.green.shade300,
-              child: ListTile(
-                trailing: Icon(Icons.eco_outlined),
-                leading: Padding(
-                  padding: EdgeInsets.all(8.0),
-                  child: Text(
-                    "#",
-                    style: TextStyle(fontSize: 20),
+            Row(
+              children: [
+                SizedBox(
+                  child: Container(
+                    width: 1300,
+                    height: 200,
+                    child: BarChart(
+                      BarChartData(
+                        alignment: BarChartAlignment.spaceAround,
+                        maxY: 100,
+                        minY: 0,
+                        titlesData: FlTitlesData(
+                            leftTitles: AxisTitles(sideTitles: SideTitles())),
+                        barGroups: List.generate(30,
+                              (index) => BarChartGroupData(
+                            x: index + 1,
+                            barRods: [
+                              BarChartRodData(
+                                toY: monthlyData[index],
+                                color: Colors.blueAccent,
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    Text("         تاریخ"),
-                    Text("روز"),
-                    Text("عاید"),
-                    Text("مصارف"),
-                    Text("باقی"),
-                  ],
+                Expanded(
+                  child: SizedBox(
+                    width: 50,
+                    height: 200,
+                    child: PieChart(
+                      PieChartData(
+                        sections: [
+                          PieChartSectionData(
+                            value: 30,
+                            title: '32 ؋ ',
+                            color: Colors.red,
+                            radius: 40,
+                            titleStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          PieChartSectionData(
+                            value: 20,
+                            title: '32 ؋ ',
+                            color: Colors.blueAccent,
+                            radius: 40,
+                            titleStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          PieChartSectionData(
+                            value: 10,
+                            title: "32 ؋ ",
+                            color: Colors.lightGreenAccent,
+                            radius: 40,
+                            titleStyle: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
+                ),
+              ],
+            ),
+            Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Card(
+                shape: OutlineInputBorder(
+                  borderSide: BorderSide(color: CupertinoColors.white),
+                ),
+                color: Colors.green.shade300,
+                child: ListTile(
+                  trailing: Icon(Icons.eco_outlined),
+                  leading: Padding(
+                    padding: EdgeInsets.all(8.0),
+                    child: Text(
+                      "#",
+                      style: TextStyle(fontSize: 20),
+                    ),
+                  ),
+                  title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      Text("         تاریخ"),
+                      Text("روز"),
+                      Text("عاید"),
+                      Text("مصارف"),
+                      Text("باقی"),
+                    ],
+                  ),
                 ),
               ),
             ),
@@ -226,7 +334,7 @@ class _RoznamcheState extends State<Roznamche> {
                 },
               ),
             ),
-          ],
+        ],
         ),
       ),
     );

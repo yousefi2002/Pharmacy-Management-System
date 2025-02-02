@@ -1,4 +1,5 @@
 import 'package:fargard_pharmacy_management_system/screens/visit_page/visit_regis_page.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:intl/intl.dart';
@@ -171,28 +172,102 @@ class _DoctorsReportsState extends State<DoctorsReports> {
       ),
       body: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: Expanded(
-          child: SingleChildScrollView(
-            child: SizedBox(
-              width: double.infinity,
-              child: PaginatedDataTable(
-                showEmptyRows: true,
-                source: _mydata,
-                columns: [
-                  DataColumn(label: Container(width:20,child: Text("#"))),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.doctor_name)),
-                  DataColumn(label: Text(AppLocalizations.of(context)!.number_of_patients)),
-                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.prescription_count))),
-                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.fee_amount))),
-                  DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.prescription_amount))),
-                  DataColumn(label: Container(width:80,child: Text(""))),
-                ],
-                columnSpacing: 50,
-                horizontalMargin: 40,
-                showFirstLastButtons: true,
+        child: Column(
+          children: [
+            SizedBox(
+              child:SizedBox(
+                width: double.infinity,
+                height: 200,
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text("تعداد مریضان  ${100}؋",style: TextStyle(color: Colors.blue,fontSize: 20),),
+                          Text("تعداد نسخه ها  ${75}؋",style: TextStyle(color: Colors.orange,fontSize: 20),),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: PieChart(
+                        PieChartData(
+                          sections: [
+                            PieChartSectionData(
+                              value: 100,
+                              title: '100',
+                              color: Colors.blue,
+                              radius: 50,
+                              titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                            PieChartSectionData(
+                              value: 75,
+                              title: '75',
+                              color: Colors.orange,
+                              radius: 50,
+                              titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        children: [
+                          Text(" مجموع قیمت کل نسخه ها  ${25000}؋",style: TextStyle(color: Colors.blue,fontSize: 20),),
+                          Text("  مجموعه قیمت کل فیس ها  ${12000} ؋",style: TextStyle(color: Colors.orange,fontSize: 20),),
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: PieChart(
+                        PieChartData(
+                          sections: [
+                            PieChartSectionData(
+                              value: 25000,
+                              title: '2500 ؋',
+                              color: Colors.blue,
+                              radius: 50,
+                              titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                            PieChartSectionData(
+                              value: 12000,
+                              title: "12000 ؋",
+                              color: Colors.orange,
+                              radius: 50,
+                              titleStyle: TextStyle(fontSize: 16, fontWeight: FontWeight.bold, color: Colors.white),
+                            ),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
-          ),
+            Expanded(
+              child: SingleChildScrollView(
+                child: SizedBox(
+                  width: double.infinity,
+                  child: PaginatedDataTable(
+                    showEmptyRows: true,
+                    source: _mydata,
+                    columns: [
+                      DataColumn(label: Container(width:20,child: Text("#"))),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.doctor_name)),
+                      DataColumn(label: Text(AppLocalizations.of(context)!.number_of_patients)),
+                      DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.prescription_count))),
+                      DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.fee_amount))),
+                      DataColumn(label: Container(width:80,child: Text(AppLocalizations.of(context)!.prescription_amount))),
+                      DataColumn(label: Container(width:80,child: Text(""))),
+                    ],
+                    columnSpacing: 50,
+                    horizontalMargin: 40,
+                    showFirstLastButtons: true,
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
       ),
     );
