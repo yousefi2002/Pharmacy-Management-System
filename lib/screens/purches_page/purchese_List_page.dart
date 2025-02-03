@@ -65,7 +65,7 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
-                    AppLocalizations.of(context)!.register_medicine,
+                    AppLocalizations.of(context)!.add_medicine,
                   ),
                 )),
             const SizedBox(width: 8),

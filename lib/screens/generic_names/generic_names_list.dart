@@ -24,7 +24,7 @@ class _GenericNameListState extends State<GenericNameList> {
       appBar: AppBar(
         title: Row(
           children: [
-            Text(AppLocalizations.of(context)!.generic_names, style: const TextStyle(fontSize: 30),),
+            Text(AppLocalizations.of(context)!.generic_name, style: const TextStyle(fontSize: 30),),
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(

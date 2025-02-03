@@ -40,12 +40,13 @@ class DatabaseHelper {
   String medId = 'medicine_id';
   String medName = 'medicine_name';
   String medType = 'medicine_type';
-  String medDescription = 'medicineDescription';
-  String medPricePerUnit = 'medicine_price_per_unit';
+  String medDescription = 'medicine_description';
+  String medBarCode = 'medicine_bar_code';
+  String medPricePerUnit = 'medicine_buy_price';
+  String medSellPrice = 'medicine_sell_price';
   String medCreatedAt = 'created_at';
   String medUpdatedAt = 'updated_at';
-  String medGenId = 'medicine_generic_id';
-  String medComId = 'medicine_company_id';
+  String medGenName = 'medicine_generic_name';
 
 //---------------------------
   String purchaseTable = 'purchases';
@@ -188,11 +189,11 @@ class DatabaseHelper {
   String path = '';
   Future<String> getDatabasePath() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/store3.db';
+    return '${directory.path}/drugStor.db';
   }
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    path = '${directory.path}/store3.db';
+    path = '${directory.path}/drugStor.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
@@ -226,17 +227,13 @@ class DatabaseHelper {
         $medName VARCHAR(255) NOT NULL,
         $medType VARCHAR(255) DEFAULT NULL,
         $medDescription TEXT,
-        $medPricePerUnit DECIMAL(10,2) DEFAULT NULL,
-        $medGenId TEXT DEFAULT NULL,
-        $medComId TEXT DEFAULT NULL,
+        $medBarCode TEXT,
+        $medPricePerUnit REAL DEFAULT NULL,
+        $medSellPrice REAL DEFAULT NULL,
+        $medGenName TEXT DEFAULT NULL,
         $medCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
-        $medUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
-        CONSTRAINT $medComId FOREIGN KEY ($medComId) REFERENCES $companyTable ($comId),
-        CONSTRAINT $medGenId FOREIGN KEY ($medGenId) REFERENCES $genericNameTable ($genId)
+        $medUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
       );''');
-    await db.execute('CREATE INDEX $medGenId ON medicines($medGenId);');
-    await db.execute('CREATE INDEX $medComId ON medicines($medComId);');
-
     //supplierTable
     await db.execute('''
       CREATE TABLE $supplierTable (
@@ -375,8 +372,8 @@ class DatabaseHelper {
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
-        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc'),
-        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc'),
+        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
         FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
     )
 ''');

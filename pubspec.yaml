@@ -56,7 +56,7 @@ dependencies:
   searchbar_animation: ^0.0.4
   pie_chart: ^5.0.0
   fl_chart: ^0.70.2
-  permission_handler:
+  permission_handler: any
 
 
 

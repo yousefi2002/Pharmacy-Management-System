@@ -233,6 +233,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: FloatingActionButton(
+                        heroTag: null,
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -260,6 +261,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: FloatingActionButton(
+                        heroTag: null,
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -287,6 +289,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: FloatingActionButton(
+                        heroTag: null,
                         onPressed: () {
                           Navigator.push(
                               context,

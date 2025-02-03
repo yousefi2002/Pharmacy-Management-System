@@ -31,19 +31,24 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
   final FocusNode focs4 = FocusNode();
   final FocusNode focs5 = FocusNode();
 
-  final TextEditingController _genericSearchController = TextEditingController();
-  final TextEditingController _companySearchController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _descriptionController = TextEditingController();
   final TextEditingController _typeController = TextEditingController();
-  final TextEditingController _priceController = TextEditingController();
-  final TextEditingController _genericIdController = TextEditingController();
-  final TextEditingController _companyIdController = TextEditingController();
+  final TextEditingController _buyPriceController = TextEditingController();
+  final TextEditingController _genericNameController = TextEditingController();
+  final TextEditingController _barCodeController = TextEditingController();
+  final TextEditingController _sellPriceController = TextEditingController();
 
+  final List<String> medicineTypes = [
+    'Tablet',
+    'Liquid',
+    'Capsule',
+    'Injection',
+    'Syrup',
+    'Other'
+  ];
+  String? selectedMedicineType;
   Medicine medicine;
-  String? companyName;
-  String? genericName;
-
   _MedicineRegisterPageState(this.medicine);
 
   @override
@@ -52,9 +57,12 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
     _nameController.text = medicine.name;
     _descriptionController.text = medicine.description;
     _typeController.text = medicine.type;
-    _priceController.text = medicine.pricePerUnit.toString();
-    _genericIdController.text = medicine.genericId;
-    _companyIdController.text = medicine.companyId;
+    // _buyPriceController.text = medicine.buyPrice.toString();
+    _genericNameController.text = medicine.genericName;
+    _barCodeController.text = medicine.barCode;
+    // _sellPriceController.text = medicine.sellPrice.toString();
+    _buyPriceController.text = medicine.buyPrice != 0.0 ? medicine.buyPrice.toString() : '';
+    _sellPriceController.text = medicine.sellPrice != 0.0 ? medicine.sellPrice.toString() : '';
   }
 
   @override
@@ -62,9 +70,9 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
     _nameController.dispose();
     _descriptionController.dispose();
     _typeController.dispose();
-    _priceController.dispose();
-    _genericIdController.dispose();
-    _companyIdController.dispose();
+    _buyPriceController.dispose();
+    _genericNameController.dispose();
+    _barCodeController.dispose();
     super.dispose();
   }
 
@@ -73,286 +81,232 @@ class _MedicineRegisterPageState extends State<MedicineRegisterPage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(
-          AppLocalizations.of(context)!.register_medicine,
+          AppLocalizations.of(context)!.add_medicine,
           style: const TextStyle(fontSize: 30),
         ),
       ),
-      body: Consumer<GenericNameProvider>(
-        builder: (context, generic, child) {
-          final genericInfo = generic.genericName;
-          return Consumer<CompanyProvider>(
-            builder: (context, company, child) {
-              final companyInfo = company.company;
-              return SingleChildScrollView(
-                child: Center(
-                  child: Padding(
-                    padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
-                    child: Container(
-                      decoration: BoxDecoration(
-                          border: Border.all(color: CupertinoColors.activeGreen)),
-                      width: 800,
-                      height: 600,
-                      child: Padding(
-                        padding: const EdgeInsets.fromLTRB(40, 20, 40, 10),
-                        child: Form(
-                          key: _formKey,
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              Center(
-                                  child: Text(
-                                AppLocalizations.of(context)!.register_medicine,
-                                style: const TextStyle(fontSize: 35),
-                              )),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter the Customer\'s name';
-                                  }
-                                  return null;
-                                },
-                                controller: _nameController,
-                                onFieldSubmitted: (value) {
-                                  FocusScope.of(context).requestFocus(focs1);
-                                },
-                                decoration: MyInputDecoration1(labelText:  AppLocalizations.of(context)!.medicine_name, hintText: 'Name like Panadol'),
-                                style: const TextStyle(
-                                  color: Colors.black, // Input text color
-                                  fontSize: 18,
-                                ),
-                              ),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter the Customer\'s name';
-                                  }
-                                  return null;
-                                },
-                                controller: _descriptionController,
-                                onFieldSubmitted: (value) {
-                                  FocusScope.of(context).requestFocus(focs2);
-                                },
-                                decoration: MyInputDecoration1(labelText: AppLocalizations.of(context)!.description, hintText: 'Name like This is for...'),
-                                style: const TextStyle(
-                                  color: Colors.black, // Input text color
-                                  fontSize: 18,
-                                ),
-                              ),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter the Customer\'s name';
-                                  }
-                                  return null;
-                                },
-                                controller: _typeController,
-                                onFieldSubmitted: (value) {
-                                  FocusScope.of(context).requestFocus(focs3);
-                                },
-                                decoration: MyInputDecoration1(labelText: AppLocalizations.of(context)!.type, hintText: 'Name like for Headache'),
-                                style: const TextStyle(
-                                  color: Colors.black, // Input text color
-                                  fontSize: 18,
-                                ),
-                              ),
-                              TextFormField(
-                                validator: (value) {
-                                  if (value == null || value.isEmpty) {
-                                    return 'Please enter the Customer\'s name';
-                                  }
-                                  return null;
-                                },
-                                controller: _priceController,
-                                onFieldSubmitted: (value) {
-                                  FocusScope.of(context).requestFocus(focs4);
-                                },
-                                decoration: MyInputDecoration1(labelText: AppLocalizations.of(context)!.price, hintText: 'Name like 3.1'),
-                                style: const TextStyle(
-                                  color: Colors.black, // Input text color
-                                  fontSize: 18,
-                                ),
-                              ),
-                              SizedBox(
-                                child: DropdownButton2<GenericName>(
-                                  isExpanded: true,
-                                  items: genericInfo
-                                      .map(
-                                        (genericNameGen) =>
-                                            DropdownMenuItem<GenericName>(
-                                          value: genericNameGen,
-                                          child: Text(
-                                            genericNameGen.name,
-                                            style: const TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.lightGreen,
-                                            ),
-                                            overflow: TextOverflow.ellipsis,
-                                          ),
-                                        ),
-                                      )
-                                      .toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      genericName = value?.name ?? '';
-                                    });
-                                  },
-                                  hint: Row(
-                                    children: [
-                                      const Icon(
-                                        Icons.list,
-                                        size: 16,
-                                        color: Colors.lightGreenAccent,
-                                      ),
-                                      const SizedBox(
-                                        width: 4,
-                                      ),
-                                      Expanded(
-                                          child: Text(
-                                        genericName ?? 'Select Generic Name',
-                                        style: const TextStyle(
-                                            fontSize: 14,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.lightGreenAccent),
-                                        overflow: TextOverflow.ellipsis,
-                                      ),),
-                                    ],
-                                  ),
-                                  dropdownSearchData: DropdownSearchData(
-                                    searchController: _genericSearchController,
-                                    searchInnerWidgetHeight: 150,
-                                    searchInnerWidget: BuildTextFormField(
-                                      controller: _genericSearchController,
-                                      hint: 'Search for medicines...',
-                                      focusNode: null,
-                                      requestNode: null,
-                                      onChange: (_){},
-                                    ),
-                                    searchMatchFn: (item, searchValue) {
-                                      return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
-                                    },
-                                  ),
-                                ),
-                              ),
-                              SizedBox(
-                                child: DropdownButton2<Company>(
-                                  isExpanded: true,
-                                  items: companyInfo.map((companyNameCom) => DropdownMenuItem<Company>(
-                                    value: companyNameCom,
-                                    child: Text(companyNameCom.name,
-                                      style: const TextStyle(
-                                        fontSize: 14,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.lightGreen,
-                                      ),
-                                      overflow: TextOverflow.ellipsis,
-                                    ),
-                                  ),
-                                  ).toList(),
-                                  onChanged: (value) {
-                                    setState(() {
-                                      companyName = value?.name ?? '';
-                                    });
-                                  },
-                                  hint: Row(
-                                    children: [
-                                      const Icon(Icons.list,size: 16,color: Colors.lightGreenAccent,),
-                                      const SizedBox(width: 4,),
-                                      Expanded(child: Text(companyName ?? "Select Company Name",style:
-                                      const TextStyle(fontSize: 14,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.lightGreenAccent),
-                                        overflow: TextOverflow.ellipsis,))
-                                    ],
-                                  ),
-                                  dropdownSearchData: DropdownSearchData(
-                                    searchController: _companySearchController,
-                                    searchInnerWidgetHeight: 150,
-                                    searchInnerWidget: BuildTextFormField(
-                                      controller: _companySearchController,
-                                      hint: 'Search for medicines...',
-                                      focusNode: null,
-                                      requestNode: null,
-                                      onChange: (value) {},
-                                    ),
-                                    searchMatchFn: (item, searchValue) {
-                                      return item.value!.name.toLowerCase().contains(searchValue.toLowerCase());
-                                    },
-                                  ),
-                                ),
-                              ),
-                              ElevatedButton(
-                                onPressed: () async {
-                                  if (_formKey.currentState!.validate()) {
-                                    String createdAt =
-                                        DateTime.now().toString();
-                                    String updatedAt =
-                                        DateTime.now().toString();
-                                    if (medicine.id != null) {
-                                      final updatedMedicine = Medicine(
-                                          medicine.id,
-                                          _nameController.text,
-                                          _descriptionController.text,
-                                          _typeController.text,
-                                          double.tryParse(
-                                                  _priceController.text) ??
-                                              0.0,
-                                          genericName,
-                                          companyName,
-                                          medicine.createdAt
-                                      );
-                                      await Provider.of<MedicinesProvider>(
-                                              context,
-                                              listen: false)
-                                          .updateMedicine(updatedMedicine);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Medicine updated successfully!')),
-                                      );
-                                    } else {
-                                      final newMedicine = Medicine(
-                                          medicine.id,
-                                          _nameController.text,
-                                          _descriptionController.text,
-                                          _typeController.text,
-                                          double.tryParse(_priceController.text) ?? 0.0,
-                                          genericName,
-                                          companyName);
-                                      await Provider.of<MedicinesProvider>(
-                                              context,
-                                              listen: false)
-                                          .addMedicine(newMedicine);
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(
-                                        const SnackBar(
-                                            content: Text(
-                                                'Medicine added successfully!')),
-                                      );
-                                    }
-                                    _formKey.currentState!.reset();
-                                    Navigator.pop(context);
-                                  }
-                                },
-                                style: ElevatedButton.styleFrom(
-                                    backgroundColor: Colors.lightGreenAccent),
-                                child: Text(
-                                  AppLocalizations.of(context)!.save,
-                                  style: const TextStyle(color: Colors.black),
-                                ),
-                              ),
-                            ],
-                          ),
+      body: Center(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 800,
+              minHeight: 600,
+            ),
+            child: Container(
+              decoration: BoxDecoration(
+                  border: Border.all(color: CupertinoColors.activeGreen)),
+              width: 800,
+              height: 600,
+              child: Padding(
+                padding: const EdgeInsets.fromLTRB(40, 20, 40, 10),
+                child: Form(
+                  key: _formKey,
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Center(
+                          child: Text(
+                        AppLocalizations.of(context)!.add_medicine,
+                        style: const TextStyle(fontSize: 35),
+                      )),
+                      //Generic name
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the generic name';
+                          }
+                          return null;
+                        },
+                        controller: _genericNameController,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(focs3);
+                        },
+                        decoration: MyInputDecoration1(
+                            labelText:
+                                AppLocalizations.of(context)!.generic_name,
+                            hintText: 'Name like for Headache'),
+                        style: const TextStyle(
+                          color: Colors.black, // Input text color
+                          fontSize: 18,
                         ),
                       ),
-                    ),
+                      //Medicine name
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the medicine name';
+                          }
+                          return null;
+                        },
+                        controller: _nameController,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(focs1);
+                        },
+                        decoration: MyInputDecoration1(
+                            labelText:
+                                AppLocalizations.of(context)!.medicine_name,
+                            hintText: 'Name like Panadol'),
+                        style: const TextStyle(
+                          color: Colors.black, // Input text color
+                          fontSize: 18,
+                        ),
+                      ),
+                      //Buy Price
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the buy price';
+                          }
+                          return null;
+                        },
+                        controller: _buyPriceController,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(focs4);
+                        },
+                        decoration: MyInputDecoration1(
+                            labelText: AppLocalizations.of(context)!.buyPrice,
+                            hintText: 'Name like 3.1'),
+                        style: const TextStyle(
+                          color: Colors.black, // Input text color
+                          fontSize: 18,
+                        ),
+                      ),
+                      //Sell Price
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please enter the sell price';
+                          }
+                          return null;
+                        },
+                        controller: _sellPriceController,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(focs4);
+                        },
+                        decoration: MyInputDecoration1(
+                            labelText:
+                                AppLocalizations.of(context)!.sellPrice,
+                            hintText: 'Name like 3.1'),
+                        style: const TextStyle(
+                          color: Colors.black, // Input text color
+                          fontSize: 18,
+                        ),
+                      ),
+                      //Bar Code
+                      TextFormField(
+                        controller: _barCodeController,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(focs2);
+                        },
+                        decoration: MyInputDecoration1(
+                            labelText: AppLocalizations.of(context)!.barcode,
+                            hintText: 'Name like 09874379874304987598743'),
+                        style: const TextStyle(
+                          color: Colors.black, // Input text color
+                          fontSize: 18,
+                        ),
+                      ),
+                      //Description
+                      TextFormField(
+                        controller: _descriptionController,
+                        onFieldSubmitted: (value) {
+                          FocusScope.of(context).requestFocus(focs2);
+                        },
+                        minLines: 3, // Minimum 3 lines
+                        maxLines: null, // Allows it to expand as needed
+                        keyboardType: TextInputType.multiline,
+                        decoration: MyInputDecoration1(
+                            labelText:
+                                AppLocalizations.of(context)!.description,
+                            hintText: 'Name like This is for...'),
+                        style: const TextStyle(
+                          color: Colors.black, // Input text color
+                          fontSize: 18,
+                        ),
+                      ),
+                      //Type
+                      DropdownButtonFormField<String>(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select the medicine\'s type' ;
+                          }
+                          return null;
+                        },
+                        decoration: MyInputDecoration1(
+                            labelText: AppLocalizations.of(context)!.type,
+                            hintText: 'Name like Tablet'),
+                        value: selectedMedicineType,
+                        items: medicineTypes.map((String type) {
+                          return DropdownMenuItem<String>(
+                            value: type,
+                            child: Text(type),
+                          );
+                        }).toList(),
+                        onChanged: (String? newValue) {
+                          setState(() {
+                            selectedMedicineType = newValue;
+                          });
+                        },
+                      ),
+
+                      ElevatedButton(
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            if (medicine.id != null) {
+                              final updatedMedicine = Medicine(
+                                  medicine.id,
+                                  _genericNameController.text,
+                                  _nameController.text,
+                                  double.tryParse(_buyPriceController.text),
+                                  double.tryParse(_sellPriceController.text),
+                                  _barCodeController.text,
+                                  _descriptionController.text,
+                                  selectedMedicineType);
+                              await Provider.of<MedicinesProvider>(context,
+                                      listen: false)
+                                  .updateMedicine(updatedMedicine);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content: Text(
+                                        'Medicine updated successfully!')),
+                              );
+                            } else {
+                              final newMedicine = Medicine(
+                                  medicine.id,
+                                  _genericNameController.text,
+                                  _nameController.text,
+                                  double.tryParse(_buyPriceController.text),
+                                  double.tryParse(_sellPriceController.text),
+                                  _barCodeController.text,
+                                  _descriptionController.text,
+                                  selectedMedicineType);
+                              await Provider.of<MedicinesProvider>(context,
+                                      listen: false)
+                                  .addMedicine(newMedicine);
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                    content:
+                                        Text('Medicine added successfully!')),
+                              );
+                            }
+                            _formKey.currentState!.reset();
+                            Navigator.pop(context);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                            backgroundColor: Colors.lightGreenAccent),
+                        child: Text(
+                          AppLocalizations.of(context)!.save,
+                          style: const TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ],
                   ),
                 ),
-              );
-            },
-          );
-        },
+              ),
+            ),
+          ),
+        ),
       ),
     );
   }

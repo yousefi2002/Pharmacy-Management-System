@@ -846,7 +846,7 @@ class _SalesPageState extends State<SalesPage> {
                       selectedMedicines[index] = value.name;
                       selectedMedicineDetails[index] = value;
                       unitPriceControllers[index].text =
-                          value.pricePerUnit.toString() ?? '';
+                          value.buyPrice.toString() ?? '';
                       _updateTotalPrice(index);
                       indexData = index;
                     });
