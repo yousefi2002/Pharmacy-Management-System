@@ -1,3 +1,4 @@
+import 'package:fargard_pharmacy_management_system/models/sales_with_customer_and_user.dart';
 import 'package:flutter/material.dart';
 
 import '../database/database_helper.dart';
@@ -8,10 +9,10 @@ class SalesProvider extends ChangeNotifier {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final DatabaseService _databaseService = DatabaseService();
 
-  List<Sales> _sales = [];
+  List<SalesWithCustomerAndUser> _sales = [];
   int _lastInsertedSalesId = -1;
 
-  List<Sales> get sales => _sales;
+  List<SalesWithCustomerAndUser> get sales => _sales;
   int get lastInsertedSalesId => _lastInsertedSalesId;
 
 
@@ -38,6 +39,15 @@ class SalesProvider extends ChangeNotifier {
   Future<void> fetchLastInsertedPurchaseId() async {
     _lastInsertedSalesId = await _dbHelper.fetchLastInsertedSalesId();
     notifyListeners();
+  }
+
+  void searchSales(String query) async {
+    if (query.isEmpty) {
+      fetchSales();
+    } else {
+      _sales = await _databaseService.fetchSearchSalesCustomerAndUser(query);
+      notifyListeners();
+    }
   }
 }
 

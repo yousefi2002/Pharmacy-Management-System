@@ -1,7 +1,9 @@
+import 'package:fargard_pharmacy_management_system/models/sales_with_customer_and_user.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_sales.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
+import '../../models/sales.dart';
 import 'sales_page.dart';
 
 class SalesListPage extends StatefulWidget {
@@ -42,6 +44,9 @@ class _SalesListPageState extends State<SalesListPage> {
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
                 style: const TextStyle(color: Colors.white),
+                onChanged: (value){
+                  Provider.of<SalesProvider>(context, listen: false).searchSales(value);
+                },
               ),
             ),
             const SizedBox(width: 8),
@@ -69,6 +74,7 @@ class _SalesListPageState extends State<SalesListPage> {
       ),
       body: Consumer<SalesProvider>(
         builder: ( context, value, child) {
+          final data = value.sales;
           return Padding(
             padding: const EdgeInsets.all(8.0),
             child: SingleChildScrollView(
@@ -77,15 +83,16 @@ class _SalesListPageState extends State<SalesListPage> {
                 child: PaginatedDataTable(
                   showCheckboxColumn: true,
                   showEmptyRows: true,
-                  source: MyData(value.sales, context),
+                  source: MyData(data, context),
                   columns: [
                     const DataColumn(label: Text("#")),
                     DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.sales_invoices)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.invoice_number)),
+                    DataColumn(label: Text(AppLocalizations.of(context)!.username)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.date)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.price)),
                     DataColumn(label: Text(AppLocalizations.of(context)!.discount)),
-                    const DataColumn(label: Text("")),
+                     DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
                   ],
                   columnSpacing: 50,
                   horizontalMargin: 40,
@@ -101,7 +108,7 @@ class _SalesListPageState extends State<SalesListPage> {
 }
 
 class MyData extends DataTableSource {
-  var value;
+  List<SalesWithCustomerAndUser> value;
   final BuildContext context;
   MyData(this.value, this.context);
 
@@ -109,14 +116,42 @@ class MyData extends DataTableSource {
   DataRow getRow(int index) {
     final salesValue = value[index];
     return DataRow(cells: [
-      DataCell(Text(salesValue.id.toString())),
-      DataCell(Text(salesValue.salesCustomerId.toString())),
-      DataCell(Text(salesValue.salesUserId.toString())),
+      DataCell(Text('${index + 1}')),
+      DataCell(Text(salesValue.customerName)),
+      DataCell(Text(salesValue.salesInvoiceId.toString())),
+      DataCell(Text(salesValue.userName.toString())),
       DataCell(Text(salesValue.date)),
       DataCell(Text(salesValue.price.toString())),
       DataCell(Text(salesValue.discount.toString())),
       DataCell(Row(children: [
-          IconButton(onPressed:(){}, icon: const Icon(Icons.delete,color: Colors.red,),),
+        IconButton(
+          icon: const Icon(Icons.delete, color: Colors.red),
+          onPressed: () {
+            showDialog(
+              context: context,
+              builder: (BuildContext context) {
+                return AlertDialog(
+                  title:  Text(AppLocalizations.of(context)!.delete),
+                  content:  Text(AppLocalizations.of(context)!.delete_item),
+                  actions: [
+                    TextButton(
+                      onPressed: () => Navigator.of(context).pop(),
+                      child:  Text(AppLocalizations.of(context)!.cancel),
+                    ),
+                    TextButton(
+                      onPressed: () {
+                        Provider.of<SalesProvider>(context, listen: false)
+                            .deleteSales(salesValue.salesId ?? 0);
+                        Navigator.of(context).pop();
+                      },
+                      child: Text(AppLocalizations.of(context)!.accept),
+                    ),
+                  ],
+                );
+              },
+            );
+          },
+        ),
           IconButton(onPressed:(){}, icon: const Icon(Icons.edit_note_outlined,color: Colors.blue,),),
         ],
       ),
