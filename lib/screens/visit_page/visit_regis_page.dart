@@ -27,8 +27,8 @@ class _VisitPageState extends State<VisitPage> {
   final FocusNode focs6 = FocusNode();
   final FocusNode focs7 = FocusNode();
   final List<String> gender=["Male","Female"];
-  String? selecteDoctor;
   String? selecteGender;
+  String? selecteDoctor;
   String? doctorname1;
   final TextEditingController _dateController = TextEditingController();
   final TextEditingController doctornameController = TextEditingController();
@@ -47,7 +47,7 @@ class _VisitPageState extends State<VisitPage> {
     DateTime now = DateTime.now();
     patientnameController.text = visits.patientName ?? '';
     patientcontectController.text = visits.contactNumber ?? '';
-    selecteDoctor = visits.doctorName ?? "";
+    doctorname1 = visits.doctorName ?? "";
     selecteGender = visits.gender ?? "";
     patientageController.text = visits.age ?? "";
     feescontroller.text = visits.fees ?? "";
@@ -64,7 +64,7 @@ class _VisitPageState extends State<VisitPage> {
         final updatedPatient = Visits(
             visits.id,
             patientnameController.text,
-            selecteDoctor,
+            doctorname1,
             selecteGender,
             patientageController.text,
             feescontroller.text,
@@ -80,7 +80,7 @@ class _VisitPageState extends State<VisitPage> {
         final addPatient = Visits(
             visits.id,
             patientnameController.text,
-            selecteDoctor,
+            doctorname1,
             selecteGender,
             patientageController.text,
             feescontroller.text,

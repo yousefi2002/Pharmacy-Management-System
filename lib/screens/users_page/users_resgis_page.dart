@@ -26,9 +26,9 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
   final TextEditingController _roleController = TextEditingController();
   final TextEditingController _contactController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final List<String> name=["Admin","Pharmacist","Pharmacist Assistant"];
-  String? selectvalue;
   User user;
+  final List<String> role=["Admin","Pharmacist","Pharmacist Assistant"];
+  String? selecteRole;
 
   _UsersRegisterPageState(this.user);
 
@@ -36,7 +36,7 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
   void initState() {
     super.initState();
     _nameController.text = user.name;
-    _roleController.text = user.role;
+     selecteRole = user.role;
     _contactController.text = user.contactNumber;
     _emailController.text = user.email;
   }
@@ -59,7 +59,7 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
         final updatedUser = User(
             user.id,
             _nameController.text,
-            _roleController.text,
+             selecteRole,
             _contactController.text,
             _emailController.text);
         await Provider.of<UserProvider>(context, listen: false)
@@ -72,7 +72,7 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
         final addPatient = User(
           user.id,
           _nameController.text,
-          _roleController.text,
+           selecteRole,
           _contactController.text,
           _emailController.text,
         );
@@ -85,7 +85,6 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
 
       _formKey.currentState!.reset();
       _nameController.clear();
-      _roleController.clear();
       _contactController.clear();
       _emailController.clear();
 
@@ -133,40 +132,48 @@ class _UsersRegisterPageState extends State<UsersRegisterPage> {
                           )),
                           SizedBox(
                             child: DropdownButton2(
-                              onMenuStateChange:   (value) {
+                              onMenuStateChange: (value) {
                                 FocusScope.of(context).requestFocus(focs1);
-                                },
+                              },
                               isExpanded: true,
                               hint: Row(
                                 children: [
-                                  Icon(Icons.list,size: 16,color: Colors.lightGreenAccent,),
-                                  SizedBox(width: 4,),
-                                  Expanded(child: Text("Select Role",style:
-                                  TextStyle(fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.lightGreenAccent),
-                                    overflow: TextOverflow.ellipsis,))
+                                  Icon(Icons.list, size: 16,
+                                      color: Colors.green),
+                                  SizedBox(width: 4),
+                                  Expanded(
+                                    child: Text(
+                                      "Select Gender",
+                                      style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.green),
+                                      overflow: TextOverflow.ellipsis,
+                                    ),
+                                  ),
                                 ],
                               ),
-                              items: name.map((String names)=>DropdownMenuItem<String>(
-                                value: names,
-                                child: Text(
-                                  names,style: TextStyle(
-                                  fontSize: 14,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.lightGreen,
-                                ),
-                                  overflow: TextOverflow.ellipsis,
-                                ),
-                              ),
-                              ).toList(),
-                              value: selectvalue,
-                              onChanged:(String? value){
+                              items: role.toSet().toList().map((
+                                  String gender) {
+                                return DropdownMenuItem<String>(
+                                  value: gender,
+                                  child: Text(
+                                    gender,
+                                    style: TextStyle(fontSize: 14,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.lightGreen),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                );
+                              }).toList(),
+                              value: role.contains(selecteRole)
+                                  ? selecteRole
+                                  : null,
+                              onChanged: (String? value) {
                                 setState(() {
-                                  selectvalue=value;
+                                  selecteRole = value;
                                 });
                               },
-
                             ),
                           ),
                           TextFormField(
