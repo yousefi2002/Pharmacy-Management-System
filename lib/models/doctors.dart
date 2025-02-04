@@ -17,13 +17,13 @@ class Doctor {
 
   int? get id => _id;
   String get name => _name ?? '';
-  String get role => _specialization ?? '';
+  String get specialization => _specialization ?? '';
   String get contactNumber => _contactNumber ?? '';
   String get createdAt => _createdAt ?? '';
   String get updatedAt => _updatedAt ?? '';
 
   set name (String newValue) => _name = newValue;
-  set role (String newValue) => _specialization = newValue;
+  set specialization (String newValue) => _specialization = newValue;
   set contactNumber (String newValue) => _contactNumber = newValue;
   set createdAt(String newValue) => _createdAt = newValue;
   set updatedAt(String newValue) => _updatedAt = newValue;

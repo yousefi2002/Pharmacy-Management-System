@@ -117,7 +117,7 @@ class MyData extends DataTableSource {
     return DataRow(
         cells: [
           DataCell(Text(supplier.id.toString()),),
-          DataCell(Text(supplier.name),),
+          DataCell(Text(supplier.patientName),),
           DataCell(Text(supplier.contactNumber),),
           DataCell(Text(supplier.email),),
           DataCell(Text(supplier.address),),

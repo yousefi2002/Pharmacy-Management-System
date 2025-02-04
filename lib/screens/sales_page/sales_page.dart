@@ -524,26 +524,18 @@
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
 //-------------------------------------------------------------------
-
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fargard_pharmacy_management_system/models/sales.dart';
 import 'package:fargard_pharmacy_management_system/models/sales_details.dart';
-import 'package:fargard_pharmacy_management_system/models/suppliers.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_sales.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_sales_detail.dart';
-import 'package:fargard_pharmacy_management_system/providers/crud_for_supplier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../models/medicines.dart';
-import '../../models/purchase_details.dart';
-import '../../models/purchases.dart';
 import '../../models/stocks.dart';
 import '../../providers/crud_for_medicines.dart';
-import '../../providers/crud_for_purchase.dart';
-import '../../providers/crud_for_purchase_detai.dart';
 import '../../providers/crud_for_stock.dart';
 import '../../utilities/date_time_format.dart';
 import '../purches_page/Purchase_page.dart';
@@ -859,7 +851,6 @@ class _SalesPageState extends State<SalesPage> {
                       controller: searchController,
                       hint: 'Search for medicines...',
                       focusNode: null,
-                      requestNode: null,
                       onChange: (value) {
                         medicinesProvider.searchMedicines(value);
                       },
