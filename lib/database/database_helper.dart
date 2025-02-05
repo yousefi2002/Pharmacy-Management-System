@@ -2,10 +2,8 @@ import 'dart:io';
 import 'package:fargard_pharmacy_management_system/models/companies.dart';
 import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:fargard_pharmacy_management_system/models/sales_details.dart';
-import 'package:fargard_pharmacy_management_system/models/search_stock.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../models/customers.dart';
 import '../models/doctors.dart';
 import '../models/expenses.dart';

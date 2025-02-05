@@ -1,6 +1,5 @@
 import 'package:fargard_pharmacy_management_system/models/purchase_supplier.dart';
 import 'package:fargard_pharmacy_management_system/models/sales_with_customer_and_user.dart';
-
 import '../models/companies.dart';
 import '../models/customers.dart';
 import '../models/doctors.dart';
