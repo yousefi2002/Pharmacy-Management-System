@@ -6,7 +6,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-
 import '../../models/medicines.dart';
 import '../../models/purchase_details.dart';
 import '../../models/purchases.dart';
@@ -451,9 +450,7 @@ final addUpdateStock = Stock(selectedMedicineDetails[j]?.id, double.tryParse(uni
   void _printPurchase() {}
 }
 
-class BuildTextFormField extends StatelessWidget {
-  const BuildTextFormField(
-      {super.key,
+class BuildTextFormField extends StatelessWidget {const BuildTextFormField({super.key,
       required this.controller,
       required this.hint,
       this.focusNode,

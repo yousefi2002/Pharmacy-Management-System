@@ -2,32 +2,32 @@ import 'package:flutter/material.dart';
 
 import '../database/database_helper.dart';
 import '../database/database_service.dart';
-import '../models/patients.dart';
+import '../models/visits.dart';
 
-class PatientProvider extends ChangeNotifier {
+class VisitProvider extends ChangeNotifier {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final DatabaseService _databaseService = DatabaseService();
-  List<Patient> _patients = [];
+  List<Visits> _visits = [];
 
-  List<Patient> get patients => _patients;
+  List<Visits> get visits => _visits;
 
-  Future<void> fetchPatient() async {
-    _patients = await _databaseService.fetchPatients();
+  Future<void> fetchVisits() async {
+    _visits = await _databaseService.fetchVisits();
     notifyListeners();
   }
 
-  Future<void> addPatient(Patient patient) async {
-    await _dbHelper.addPatients(patient);
-    await fetchPatient();
+  Future<void> addPatient(Visits visits) async {
+    await _dbHelper.addVisit(visits);
+    await fetchVisits();
   }
 
-  Future<void> updatePatient(Patient patient) async {
-    await _dbHelper.updatePatients(patient);
-    await fetchPatient();
+  Future<void> updateVisits(Visits visits) async {
+    await _dbHelper.updateVisit(visits);
+    await fetchVisits();
   }
 
-  Future<void> deletePatient(int id) async {
-    await _dbHelper.deletePatients(id);
-    await fetchPatient();
+  Future<void> deleteVisits(int id) async {
+    await _dbHelper.deleteVisit(id);
+    await fetchVisits();
   }
 }

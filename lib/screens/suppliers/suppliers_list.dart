@@ -127,47 +127,7 @@ class MyData extends DataTableSource {
   @override
   DataRow getRow(int index) {
     final supplier = value[index];
-    return DataRow(cells: [
-      DataCell(
-        Text('${index + 1}'),
-      ),
-      DataCell(
-        Text(supplier.name),
-      ),
-      DataCell(
-        Text(supplier.contactNumber),
-      ),
-      DataCell(
-        Text(supplier.email),
-      ),
-      DataCell(
-        Text(supplier.address),
-      ),
-      DataCell(Row(
-        children: [
-          IconButton(
-            icon: const Icon(Icons.delete, color: Colors.red),
-            onPressed: () {
-              showDialog(
-                context: context,
-                builder: (BuildContext context) {
-                  return AlertDialog(
-                    title: Text(AppLocalizations.of(context)!.delete),
-                    content: Text(AppLocalizations.of(context)!.delete_item),
-                    actions: [
-                      TextButton(
-                        onPressed: () => Navigator.of(context).pop(),
-                        child: Text(AppLocalizations.of(context)!.cancel),
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          Provider.of<SupplierProvider>(context, listen: false)
-                              .deleteSupplier(supplier.id ?? 0);
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(AppLocalizations.of(context)!.accept),
-                      ),
-                    ],
+
                   );
                 },
               );

@@ -111,7 +111,7 @@ class MyData extends DataTableSource {
     return DataRow(
         cells: [
           DataCell(Text(company.id.toString()),),
-          DataCell(Text(company.name),),
+          DataCell(Text(company.patientName),),
           DataCell(Text(formatLocalTime(company.createdAt ?? ""))),
           DataCell(Text(formatLocalTime(company.updatedAt ?? ""))),
           DataCell(Row(

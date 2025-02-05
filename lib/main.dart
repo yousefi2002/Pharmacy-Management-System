@@ -33,7 +33,7 @@ void main() async {
   runApp(MultiProvider(
     providers: [
       ChangeNotifierProvider(create: (_) => ThemeProvider(),),
-      ChangeNotifierProvider(create: (_) => PatientProvider(),),
+      ChangeNotifierProvider(create: (_) => VisitProvider(),),
       ChangeNotifierProvider(create: (_) => UserProvider(),),
       ChangeNotifierProvider(create: (_) => ExpensesProvider(),),
       ChangeNotifierProvider(create: (_) => CustomerProvider(),),
@@ -53,7 +53,6 @@ void main() async {
     ),
   ));
 }
-
 class MyApp extends StatelessWidget {
   final String local;
   const MyApp({super.key, required this.local});

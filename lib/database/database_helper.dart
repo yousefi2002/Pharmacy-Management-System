@@ -8,7 +8,7 @@ import '../models/customers.dart';
 import '../models/doctors.dart';
 import '../models/expenses.dart';
 import '../models/medicines.dart';
-import '../models/patients.dart';
+import '../models/visits.dart';
 import '../models/purchase_details.dart';
 import '../models/purchases.dart';
 import '../models/sales.dart';
@@ -95,6 +95,7 @@ class DatabaseHelper {
   String expDescription = 'expense_description';
   String expAmount = 'expense_amount';
   String expDate = 'expense_date';
+  String expTim = 'expense_time';
   String expUserId = 'expense_user_id';
   String expCreatedAt = 'created_at';
   String expUpdatedAt = 'updated_at';
@@ -150,13 +151,18 @@ class DatabaseHelper {
   String docUpdatedAt = 'updated_at';
 
 //--------------------------------------
-  String patientsTable = 'patients';
-  String patId = 'patient_id';
-  String patName = 'patient_name';
-  String patContactNumber = 'patient_contact_number';
-  String patAddress = 'patient_address';
-  String patCreatedAt = 'created_at';
-  String patUpdatedAt = 'updated_at';
+  String visitsTable = 'visits';
+  String visId = 'visit_id';
+  String visPatientName = 'patient_name';
+  String visDoctorName = 'doctor_name';
+  String visGender = 'gender';
+  String visAge = 'age';
+  String visFees = 'fees';
+  String visDate = 'vis_date';
+  String visTim = 'vis_time';
+  String visContactNumber = 'patient_contact_number';
+  String visCreatedAt = 'created_at';
+  String visUpdatedAt = 'updated_at';
 
 //---------------------------------------
   String doctorAppointmentFeesTable = 'doctor_appointment_fees';
@@ -328,6 +334,7 @@ class DatabaseHelper {
         $expDescription text,
         $expAmount Real DEFAULT NULL,
         $expDate TEXT DEFAULT NULL,
+        $expTim TEXT DEFAULT NULL, 
         $expUserId INTEGER null,
         $expCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
         $expUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
@@ -367,8 +374,7 @@ class DatabaseHelper {
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
-        $stoCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
-        $stoUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        
         FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
     )
 ''');
@@ -389,13 +395,18 @@ class DatabaseHelper {
 ''');
 
     await db.execute('''
-    CREATE TABLE $patientsTable (
-        $patId INTEGER PRIMARY KEY AUTOINCREMENT, 
-        $patName varchar(255) NOT NULL,
-        $patContactNumber varchar(15) DEFAULT NULL,
-        $patAddress text,
-        $patCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
-        $patUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
+    CREATE TABLE $visitsTable (
+        $visId INTEGER PRIMARY KEY AUTOINCREMENT, 
+        $visPatientName varchar(255) NOT NULL,
+        $visDoctorName varchar (200) NOT NULL,
+        $visGender TEXT,
+        $visAge varchar (99) NOT NULL,
+        $visFees varchar (255) NOT NULL,
+        $visDate TEXT DEFAULT NULL, 
+        $visTim TEXT DEFAULT NULL,
+        $visContactNumber varchar(15) DEFAULT NULL,
+        $visCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
+        $visUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
     )
 ''');
 
@@ -409,7 +420,7 @@ class DatabaseHelper {
         $appointmentCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
         $appointmentUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
         $appointmentUserId int NOT NULL,
-        CONSTRAINT $appointmentPatientId FOREIGN KEY ($appointmentPatientId) REFERENCES $patientsTable ($patId),
+        CONSTRAINT $appointmentPatientId FOREIGN KEY ($appointmentPatientId) REFERENCES $visitsTable ($visId),
         CONSTRAINT $appointmentDoctorId FOREIGN KEY ($appointmentDoctorId) REFERENCES $doctorTables ($docId),
         CONSTRAINT $appointmentUserId FOREIGN KEY ($appointmentUserId) REFERENCES $usersTable ($userId)
     )
@@ -428,25 +439,25 @@ class DatabaseHelper {
     return await db.query(tableName);
   }
 
-  // patient crud -----------------------------------------------------
-  Future<int> addPatients(Patient patient) async {
+  // visits crud -----------------------------------------------------
+  Future<int> addVisit(Visits visit) async {
     final db = await database;
-    return db.insert(patientsTable, patient.toMap());
+    return db.insert(visitsTable, visit.toMap());
   }
 
-  Future<int> updatePatients(Patient patient) async {
+  Future<int> updateVisit(Visits visit) async {
     final db = await database;
     return db.update(
-      patientsTable,
-      patient.toMap(),
-      where: '$patId = ?',
-      whereArgs: [patient.id],
+      visitsTable,
+      visit.toMap(),
+      where: '$visId = ?',
+      whereArgs: [visit.id],
     );
   }
 
-  Future<int> deletePatients(int id) async {
+  Future<int> deleteVisit(int id) async {
     final db = await database;
-    return db.delete(patientsTable, where: '$patId = ?', whereArgs: [id]);
+    return db.delete(visitsTable, where: '$visId = ?', whereArgs: [id]);
   }
 
   // user crud -----------------------------------------------------
@@ -539,6 +550,7 @@ class DatabaseHelper {
     return db.delete(doctorTables, where: '$docId = ?', whereArgs: [id]);
   }
   // Doctor crud -----------------------------------------------------
+
   // Future<int> addSales(Sales sales) async {
   //   final db = await database;
   //   return db.insert(salesDetailsTable, sales.toMap());
@@ -840,6 +852,7 @@ class DatabaseHelper {
       await addStocks(stock);
     }
   }
+
   Future<void> updateStocksIfExist(int medicineId, int quantity, Stock stock) async {
     final db = await database;
 
@@ -955,4 +968,27 @@ class DatabaseHelper {
     );
     return result;
   }
+
+  // visit crud -----------------------------------------------------
+
+  // Future<int> addPatient(Doctor doctor) async {
+  //   final db = await database;
+  //   return db.insert(doctorTables, doctor.toMap());
+  // }
+  //
+  // Future<int> updatePatient(Doctor doctor) async {
+  //   final db = await database;
+  //   return db.update(
+  //     doctorTables,
+  //     doctor.toMap(),
+  //     where: '$docId = ?',
+  //     whereArgs: [doctor.id],
+  //   );
+  // }
+  //
+  // Future<int> deletePatient(int id) async {
+  //   final db = await database;
+  //   return db.delete(doctorTables, where: '$docId = ?', whereArgs: [id]);
+  // }
+
 }

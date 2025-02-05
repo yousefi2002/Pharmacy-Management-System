@@ -77,7 +77,7 @@ class _Doctors_List_pageState extends State<Doctors_List_page> {
                     showEmptyRows: true,
                     source: MyDate(date, context),
                     columns: [
-                       DataColumn(label: Text("#"),),
+                      DataColumn(label: Text("#"),),
                       DataColumn(label: Text(AppLocalizations.of(context)!.doctor_name),),
                       DataColumn(label: Text(AppLocalizations.of(context)!.specialty),),
                       DataColumn(label: Text(AppLocalizations.of(context)!.contact_number),),
@@ -105,9 +105,9 @@ class MyDate extends DataTableSource {
   DataRow getRow(int index) {
     final doctor = value[index];
     return DataRow(cells: [
-      DataCell(Text(doctor.id.toString())),
+      DataCell(Text("${index+1}")),
       DataCell(Text(doctor.name.toString())),
-      DataCell(Text(doctor.role.toString())),
+      DataCell(Text(doctor.specialization.toString())),
       DataCell(Text(doctor.contactNumber.toString())),
       DataCell(Row(
         children: [

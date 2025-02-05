@@ -7,7 +7,7 @@ import '../models/doctors_appointment_fees.dart';
 import '../models/expenses.dart';
 import '../models/generic_names.dart';
 import '../models/medicines.dart';
-import '../models/patients.dart';
+import '../models/visits.dart';
 import '../models/purchase_details.dart';
 import '../models/purchases.dart';
 import '../models/sales.dart';
@@ -71,9 +71,9 @@ class DatabaseService {
     return maps.map((map) => Company.fromMapObject(map)).toList();
   }
 
-  Future<List<Patient>> fetchPatients() async {
-    final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('patients');
-    return maps.map((map) => Patient.fromMapObject(map)).toList();
+  Future<List<Visits>> fetchVisits() async {
+    final List<Map<String, dynamic>> maps = await _dbHelper.getAllRows('visits');
+    return maps.map((map) => Visits.fromMapObject(map)).toList();
   }
 
   Future<List<PurchaseDetails>> fetchPurchaseDetails() async {

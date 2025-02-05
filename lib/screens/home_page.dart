@@ -1,12 +1,10 @@
 import 'package:fargard_pharmacy_management_system/screens/backup_page.dart';
-import 'package:fargard_pharmacy_management_system/screens/patients_page/patients_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/purches_page/purchese_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/reports/reports_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/users_page/users_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/visit_page/visit_List_page.dart';
-import 'package:fargard_pharmacy_management_system/screens/visit_page/visit_regis_page.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
@@ -72,11 +70,11 @@ class _HomePageState extends State<HomePage> {
           "icon": Icons.person_2_outlined,
           "navigate": CustomerListPage(),
         },
-        {
-          "name": AppLocalizations.of(context)!.patients,
-          "icon": Icons.person_add_alt,
-          "navigate": PatientsListPage(),
-        },
+        // {
+        //   "name": AppLocalizations.of(context)!.patients,
+        //   "icon": Icons.person_add_alt,
+        //   "navigate": PatientsListPage(),
+        // },
         {
           "name": AppLocalizations.of(context)!.doctors,
           "icon": Icons.person_pin_rounded,
@@ -263,11 +261,11 @@ class _HomePageState extends State<HomePage> {
                       child: FloatingActionButton(
                         heroTag: null,
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VisitPage(),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => VisitPage(),
+                          //     ));
                         },
                         child: Icon(Icons.add),
                         backgroundColor: Theme.of(context).colorScheme.primary,
@@ -291,11 +289,12 @@ class _HomePageState extends State<HomePage> {
                       child: FloatingActionButton(
                         heroTag: null,
                         onPressed: () {
-                          Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => VisitPage(),
-                              ));
+                          // Navigator.push(
+                          //     context,
+                          //     MaterialPageRoute(
+                          //       builder: (context) => VisitPage(),
+                          //     )
+                          // );
                         },
                         child: Icon(Icons.add),
                         backgroundColor: Theme.of(context).colorScheme.primary,

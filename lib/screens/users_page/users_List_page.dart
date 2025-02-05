@@ -109,7 +109,7 @@ class MyData extends DataTableSource {
   DataRow getRow(int index) {
     final user = value[index];
     return DataRow(cells: [
-      DataCell(Text(user.id.toString())),
+      DataCell(Text("${index+1}")),
       DataCell(Text(user.name)),
       DataCell(Text(user.role)),
       DataCell(Text(user.contactNumber)),

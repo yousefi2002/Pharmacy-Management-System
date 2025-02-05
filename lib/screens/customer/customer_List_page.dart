@@ -1,5 +1,6 @@
 import 'package:fargard_pharmacy_management_system/providers/crud_for_customer.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../../models/customers.dart';
@@ -14,85 +15,97 @@ class CustomerListPage extends StatefulWidget {
 
 class _CustomerListPageState extends State<CustomerListPage> {
   final TextEditingController _searchController = TextEditingController();
-
+  void goBack() {
+    Navigator.pop(context);
+  }
   @override
   Widget build(BuildContext context) {
     Future.microtask(() {
       Provider.of<CustomerProvider>(context, listen: false).fetchCustomers();
       });
-    return Scaffold(
-      appBar: AppBar(
-        title: Row(
-          children: [
-            Text(AppLocalizations.of(context)!.customers, style: const TextStyle(fontSize: 30),),
-            const Expanded(child: SizedBox()),
-            // Text Search Bar
-            Expanded(
-              child: TextFormField(
-                controller: _searchController,
-                decoration: InputDecoration(
-                  hintText: AppLocalizations.of(context)!.search,
-                  hintStyle: const TextStyle(color: Colors.white70),
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                    borderSide: BorderSide.none,
+    return Shortcuts(
+      shortcuts: {
+        LogicalKeySet(LogicalKeyboardKey.backspace): GoBackIntent(),
+      },
+      child: Actions(
+        actions:{
+          GoBackIntent: CallbackAction<GoBackIntent>(onInvoke: (intent) =>goBack ()),
+        },
+        child: Scaffold(
+          appBar: AppBar(
+            title: Row(
+              children: [
+                Text(AppLocalizations.of(context)!.customers, style: const TextStyle(fontSize: 30),),
+                const Expanded(child: SizedBox()),
+                // Text Search Bar
+                Expanded(
+                  child: TextFormField(
+                    controller: _searchController,
+                    decoration: InputDecoration(
+                      hintText: AppLocalizations.of(context)!.search,
+                      hintStyle: const TextStyle(color: Colors.white70),
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(10.0),
+                        borderSide: BorderSide.none,
+                      ),
+                      filled: true,
+                      fillColor: Colors.white30, // Semi-transparent background
+                      contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
+                    ),
+                    style: const TextStyle(color: Colors.white),
                   ),
-                  filled: true,
-                  fillColor: Colors.white30, // Semi-transparent background
-                  contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
-                style: const TextStyle(color: Colors.white),
-              ),
+                const SizedBox(width: 8),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10), // Rounded corners
+                        )
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => CustomerPage(Customer(null, '', null, '', null)),
+                          ));
+                    },
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 15.0),
+                      child: Text(AppLocalizations.of(context)!.register_customer),
+                    )),
+              ],
             ),
-            const SizedBox(width: 8),
-            ElevatedButton(
-                style: ElevatedButton.styleFrom(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10), // Rounded corners
-                    )
+          ),
+          body: Consumer<CustomerProvider>(
+            builder: (context,value,child) {
+              final date = value.customer;
+              return Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: SingleChildScrollView(
+                  child: SizedBox(
+                    width: double.infinity,
+                    child: PaginatedDataTable(
+                      showCheckboxColumn: true,
+                      showEmptyRows: true,
+                      source: MyDate(date, context),
+                      columns: [
+                        const DataColumn(label: Text("ID",)),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
+                        DataColumn(label: Text(AppLocalizations.of(context)!.address)),
+                        const DataColumn(label: Text("")),
+                      ],
+                      columnSpacing: 50,
+                      horizontalMargin: 40,
+                      showFirstLastButtons: true,
+                    ),
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => CustomerPage(Customer(null, '', null, '', null)),
-                      ));
-                },
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  child: Text(AppLocalizations.of(context)!.register_customer),
-                )),
-          ],
+              );
+            }
+            ),
         ),
       ),
-      body: Consumer<CustomerProvider>(
-        builder: (context,value,child) {
-          final date = value.customer;
-          return Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: SizedBox(
-                width: double.infinity,
-                child: PaginatedDataTable(
-                  showCheckboxColumn: true,
-                  showEmptyRows: true,
-                  source: MyDate(date, context),
-                  columns: [
-                    const DataColumn(label: Text("ID",)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.customer_name)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.address)),
-                    const DataColumn(label: Text("")),
-                  ],
-                  columnSpacing: 50,
-                  horizontalMargin: 40,
-                  showFirstLastButtons: true,
-                ),
-              ),
-            ),
-          );
-        }
-        ),
     );
   }
 }
@@ -106,7 +119,7 @@ class MyDate extends DataTableSource {
   DataRow getRow(int index) {
     Customer customer = value[index];
     return DataRow(cells: [
-      DataCell(Text(customer.id.toString())),
+      DataCell(Text("${index+1}")),
       DataCell(Text(customer.name)),
       DataCell(Text(customer.contactNumber)),
       DataCell(Text(customer.email)),
