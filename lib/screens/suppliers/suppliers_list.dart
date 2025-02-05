@@ -29,6 +29,7 @@ class _SuppliersListState extends State<SuppliersList> {
         title: Row(
           children: [
             Text(AppLocalizations.of(context)!.suppliers, style: const TextStyle(fontSize: 30),),
+            //
             const Expanded(child: SizedBox()),
             // Text Search Bar
             Expanded(
@@ -45,8 +46,9 @@ class _SuppliersListState extends State<SuppliersList> {
                   fillColor: Colors.white30, // Semi-transparent background
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
-                onChanged: (value){
-                  Provider.of<SupplierProvider>(context, listen: false).searchSuppliers(value);
+                onChanged: (value) {
+                  Provider.of<SupplierProvider>(context, listen: false)
+                      .searchSuppliers(value);
                 },
                 style: const TextStyle(color: Colors.white),
               ),
@@ -54,15 +56,16 @@ class _SuppliersListState extends State<SuppliersList> {
             const SizedBox(width: 8),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(10), // Rounded corners
-                  )
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10), // Rounded corners
+                ),
               ),
               onPressed: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                      builder: (context) => SupplierRegister(Supplier.empty())),);
+                      builder: (context) => SupplierRegister(Supplier.empty())),
+                );
               },
               child: Padding(
                 padding: const EdgeInsets.symmetric(vertical: 15.0),
@@ -73,32 +76,42 @@ class _SuppliersListState extends State<SuppliersList> {
         ),
       ),
       body: Consumer<SupplierProvider>(
-        builder: ( context, value, child) {
+        builder: (context, value, child) {
           final data = value.suppliers;
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: SingleChildScrollView(
-              child: SizedBox(
-                width: double.infinity,
-                child: PaginatedDataTable(
-                  showCheckboxColumn: true,
-                  showEmptyRows: true,
-                  source: MyData(data, context),
-                  columns: [
-                    DataColumn(label: Text(AppLocalizations.of(context)!.id)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.supplier_name)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.contact_number)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.email)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.address)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.created_at)),
-                    DataColumn(label: Text(AppLocalizations.of(context)!.updated_at)),
-                  ],
-                  columnSpacing: 130,
-                  horizontalMargin: 40,
-                  showFirstLastButtons: true,
-                ),
-              ),
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    child: SingleChildScrollView(
+                      child: PaginatedDataTable(
+                        showCheckboxColumn: true,
+                        showEmptyRows: true,
+                        source: MyData(data, context),
+                        columns: [
+                          DataColumn(label: Text(AppLocalizations.of(context)!.id)),
+                          DataColumn(
+                              label: Text(AppLocalizations.of(context)!.supplier_name)),
+                          DataColumn(
+                              label:
+                              Text(AppLocalizations.of(context)!.contact_number)),
+                          DataColumn(label: Text(AppLocalizations.of(context)!.email)),
+                          DataColumn(
+                              label: Text(AppLocalizations.of(context)!.address)),
+                          DataColumn(
+                              label: Text(AppLocalizations.of(context)!.actions)),
+                        ],
+                        columnSpacing: 50,
+                        horizontalMargin: 20,
+                        showFirstLastButtons: true,
+                      ),
+                    ),
+                  ),
+                );
+              },
             ),
           );
         },
@@ -114,61 +127,27 @@ class MyData extends DataTableSource {
   @override
   DataRow getRow(int index) {
     final supplier = value[index];
-    return DataRow(
-        cells: [
-          DataCell(Text(supplier.id.toString()),),
-          DataCell(Text(supplier.patientName),),
-          DataCell(Text(supplier.contactNumber),),
-          DataCell(Text(supplier.email),),
-          DataCell(Text(supplier.address),),
-          DataCell(Row(
-            children: [
-              IconButton(
-                icon: const Icon(Icons.delete, color: Colors.red),
-                onPressed: () {
-                  showDialog(
-                    context: context,
-                    builder: (BuildContext context) {
-                      return AlertDialog(
-                        title: const Text('delete'),
-                        content: const Text("are_you_sure?"),
-                        actions: [
-                          TextButton(
-                            onPressed: () => Navigator.of(context).pop(),
-                            child: const Text("cancel"),
-                          ),
-                          TextButton(
-                            onPressed: () {
-                              Provider.of<SupplierProvider>(context, listen: false)
-                                  .deleteSupplier(supplier.id ?? 0);
-                              Navigator.of(context).pop();
-                            },
-                            child: const Text('delete'),
-                          ),
-                        ],
-                      );
-                    },
-                  );
-                },
-              ),
-              IconButton(
-                icon: const Icon(Icons.edit_note_outlined, color: Colors.blue),
-                onPressed: () async {
-                  await Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => SupplierRegister(supplier), // Passing the current patient object
-                    ),
-                  );
-                },
-              ), ],
-          )),
-          DataCell(Text(formatLocalTime(supplier.createdAt ?? ""))),
-          DataCell(Text(formatLocalTime(supplier.updatedAt ?? ""))),
 
+                  );
+                },
+              );
+            },
+          ),
+          IconButton(
+            icon: const Icon(Icons.edit_note_outlined, color: Colors.blue),
+            onPressed: () async {
+              await Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => SupplierRegister(
+                      supplier), // Passing the current patient object
+                ),
+              );
+            },
+          ),
         ],
-        color: WidgetStateProperty.all(Colors.grey.shade200)
-    );
+      )),
+    ], color: WidgetStateProperty.all(Colors.grey.shade200));
   }
 
   @override

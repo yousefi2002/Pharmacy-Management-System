@@ -59,10 +59,13 @@ class _SupplierRegisterState extends State<SupplierRegister> {
           style: const TextStyle(fontSize: 30),
         ),
       ),
-      body: SingleChildScrollView(
-        child: Center(
-          child: Padding(
-            padding: const EdgeInsets.fromLTRB(50, 20, 50, 20),
+      body: Center(
+        child: SingleChildScrollView(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(
+              maxWidth: 800,
+              minHeight: 600,
+            ),
             child: Container(
               decoration: BoxDecoration(
                   border: Border.all(color: CupertinoColors.activeGreen)),
@@ -83,7 +86,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the Customer\'s name';
+                            return 'Please enter the supplier name';
                           }
                           return null;
                         },
@@ -100,7 +103,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the Supplier\'s name';
+                            return 'Please enter the contact number';
                           }
                           return null;
                         },
@@ -115,12 +118,6 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                         ),
                       ),
                       TextFormField(
-                        validator: (value) {
-                          if (value == null || value.isEmpty) {
-                            return 'Please enter the Customer\'s name';
-                          }
-                          return null;
-                        },
                         controller: _emailController,
                         onFieldSubmitted: (value) {
                           FocusScope.of(context).requestFocus(focs3);
@@ -134,7 +131,7 @@ class _SupplierRegisterState extends State<SupplierRegister> {
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Please enter the Customer\'s name';
+                            return 'Please enter the  address';
                           }
                           return null;
                         },

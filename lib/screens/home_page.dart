@@ -6,7 +6,6 @@ import 'package:fargard_pharmacy_management_system/screens/sales_page/sales_page
 import 'package:fargard_pharmacy_management_system/screens/users_page/users_List_page.dart';
 import 'package:fargard_pharmacy_management_system/screens/visit_page/visit_List_page.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 import '../providers/LanguageChange.dart';
@@ -232,6 +231,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: FloatingActionButton(
+                        heroTag: null,
                         onPressed: () {
                           Navigator.push(
                               context,
@@ -259,6 +259,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: FloatingActionButton(
+                        heroTag: null,
                         onPressed: () {
                           // Navigator.push(
                           //     context,
@@ -286,6 +287,7 @@ class _HomePageState extends State<HomePage> {
                     Padding(
                       padding: const EdgeInsets.all(5.0),
                       child: FloatingActionButton(
+                        heroTag: null,
                         onPressed: () {
                           // Navigator.push(
                           //     context,

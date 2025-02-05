@@ -1,5 +1,5 @@
-  import 'package:flutter/material.dart';
-
+import 'package:fargard_pharmacy_management_system/models/purchase_supplier.dart';
+import 'package:flutter/material.dart';
 import '../database/database_helper.dart';
 import '../database/database_service.dart';
 import '../models/purchases.dart';
@@ -8,11 +8,14 @@ import '../models/purchases.dart';
     final DatabaseHelper _dbHelper = DatabaseHelper();
     final DatabaseService _databaseService = DatabaseService();
 
-    List<Purchase> _purchases = [];
+    List<PurchaseWithSupplier> _purchases = [];
+
     int _lastInsertedPurchaseId = -1;
 
-    List<Purchase> get purchases => _purchases;
+    List<PurchaseWithSupplier> get purchases => _purchases;
+
     int get lastInsertedPurchaseId => _lastInsertedPurchaseId;
+
 
     Future<void> fetchPurchases() async {
       _purchases = await _databaseService.fetchPurchase();
@@ -36,6 +39,15 @@ import '../models/purchases.dart';
     Future<void> fetchLastInsertedPurchaseId() async {
       _lastInsertedPurchaseId = await _dbHelper.fetchLastInsertedPurchaseId();
       notifyListeners();
+    }
+
+    void searchPurchase(String query) async{
+      if (query.isEmpty) {
+        fetchPurchases();
+      } else {
+        _purchases = await _databaseService.fetchSearchPurchaseWithSupplier(query);
+        notifyListeners();
+      }
     }
   }
 

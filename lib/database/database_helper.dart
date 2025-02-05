@@ -4,7 +4,6 @@ import 'package:fargard_pharmacy_management_system/models/generic_names.dart';
 import 'package:fargard_pharmacy_management_system/models/sales_details.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
-
 import '../models/customers.dart';
 import '../models/doctors.dart';
 import '../models/expenses.dart';
@@ -40,12 +39,13 @@ class DatabaseHelper {
   String medId = 'medicine_id';
   String medName = 'medicine_name';
   String medType = 'medicine_type';
-  String medDescription = 'medicineDescription';
-  String medPricePerUnit = 'medicine_price_per_unit';
+  String medDescription = 'medicine_description';
+  String medBarCode = 'medicine_bar_code';
+  String medPricePerUnit = 'medicine_buy_price';
+  String medSellPrice = 'medicine_sell_price';
   String medCreatedAt = 'created_at';
   String medUpdatedAt = 'updated_at';
-  String medGenId = 'medicine_generic_id';
-  String medComId = 'medicine_company_id';
+  String medGenName = 'medicine_generic_name';
 
 //---------------------------
   String purchaseTable = 'purchases';
@@ -112,6 +112,7 @@ class DatabaseHelper {
   //----------------------------
   String salesTable = 'sales';
   String salId = 'sales_id';
+  String salInvoiceId = 'sales_invoice_id';
   String salCustomerId = 'sales_customer_id';
   String salUserID = 'sales_user_id';
   String salDate = 'sales_date';
@@ -194,11 +195,11 @@ class DatabaseHelper {
   String path = '';
   Future<String> getDatabasePath() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    return '${directory.path}/store3.db';
+    return '${directory.path}/drugStore.db';
   }
   Future<Database> initDatabase() async {
     Directory directory = await getApplicationDocumentsDirectory();
-    path = '${directory.path}/store3.db';
+    path = '${directory.path}/drugStore.db';
 
     var storeDatabase = openDatabase(path, version: 1, onCreate: _createDb);
     return storeDatabase;
@@ -232,17 +233,13 @@ class DatabaseHelper {
         $medName VARCHAR(255) NOT NULL,
         $medType VARCHAR(255) DEFAULT NULL,
         $medDescription TEXT,
-        $medPricePerUnit DECIMAL(10,2) DEFAULT NULL,
-        $medGenId TEXT DEFAULT NULL,
-        $medComId TEXT DEFAULT NULL,
+        $medBarCode TEXT,
+        $medPricePerUnit REAL DEFAULT NULL,
+        $medSellPrice REAL DEFAULT NULL,
+        $medGenName TEXT DEFAULT NULL,
         $medCreatedAt TEXT DEFAULT (datetime('now', 'utc')),
-        $medUpdatedAt TEXT DEFAULT (datetime('now', 'utc')),
-        CONSTRAINT $medComId FOREIGN KEY ($medComId) REFERENCES $companyTable ($comId),
-        CONSTRAINT $medGenId FOREIGN KEY ($medGenId) REFERENCES $genericNameTable ($genId)
+        $medUpdatedAt TEXT DEFAULT (datetime('now', 'utc'))
       );''');
-    await db.execute('CREATE INDEX $medGenId ON medicines($medGenId);');
-    await db.execute('CREATE INDEX $medComId ON medicines($medComId);');
-
     //supplierTable
     await db.execute('''
       CREATE TABLE $supplierTable (
@@ -269,7 +266,7 @@ class DatabaseHelper {
     await db.execute('CREATE INDEX $purSupplierId ON purchases($purSupplierId);');
 
     //purchaseDetailsTable
-    await db.execute('''
+    await db.execute(''' 
     CREATE TABLE $purchaseDetailsTable (
         $purchaseDetailsID INT AUTO_INCREMENT PRIMARY KEY,
         $medicineId int NOT NULL,
@@ -291,6 +288,7 @@ class DatabaseHelper {
     await db.execute('''
     CREATE TABLE $salesTable (
         $salId INTEGER PRIMARY KEY AUTOINCREMENT, 
+        $salInvoiceId TEXT DEFAULT NULL, 
         $salCustomerId int DEFAULT NULL,
         $salUserID int DEFAULT NULL,
         $salDate date DEFAULT NULL,
@@ -302,12 +300,6 @@ class DatabaseHelper {
         CONSTRAINT $salUserID FOREIGN KEY ($salUserID) REFERENCES $usersTable ($userId)
     )
 ''');
-    // $salMedId int NOT NULL,
-    // $salQuantity int DEFAULT NULL,
-    // $salTotalPrice REAL DEFAULT NULL,
-    // CONSTRAINT $salMedId FOREIGN KEY ($salMedId) REFERENCES $medicinesTable ($medId),
-    // CREATE INDEX IF NOT EXISTS $salMedId ON $salesTable ($salMedId);
-
     await db.execute('''
     CREATE INDEX IF NOT EXISTS $salCustomerId ON $salesTable ($salCustomerId);
     CREATE INDEX IF NOT EXISTS $salUserID ON $salesTable ($salUserID);
@@ -382,8 +374,7 @@ class DatabaseHelper {
         $stoQuantity int DEFAULT NULL,
         $stoExpireDate date DEFAULT NULL,
         $stoLocation varchar(255) DEFAULT NULL,
-        $stoCreatedAt TEXT DEFAULT (datetime('now' , 'utc')),
-        $stoUpdatedAt TEXT DEFAULT (datetime('now' , 'utc')),
+        
         FOREIGN KEY ($stoMedicineId) REFERENCES $medicinesTable ($medId)
     )
 ''');
@@ -472,7 +463,8 @@ class DatabaseHelper {
   // user crud -----------------------------------------------------
   Future<int> addUsers(User user) async {
     final db = await database;
-// final a = db.rawQuery('drop table $salesDetailsTable');
+//     final l =await db.rawQuery('ALTER TABLE $salesTable ADD COLUMN $salInvoiceId TEXT DEFAULT NULL');
+// // final a = db.rawQuery('drop table $salesDetailsTable');
 // print(l);
     return db.insert(usersTable, user.toMap());
   }
@@ -631,6 +623,38 @@ class DatabaseHelper {
     final List<Map> maps = await db.rawQuery("SELECT last_insert_rowid() AS SalesID;");
     return maps[0]['SalesID'];
   }
+
+  Future<List<Map<String, dynamic>>> searchAllSales(String query) async {
+    final db = await database;
+    final result = await db.query(
+    salesTable,
+      where: '$salInvoiceId LIKE ?',
+      whereArgs: ["$query%"],
+    );
+    return result;
+  }
+
+  Future<List<Map<String, dynamic>>> getAllSalesWithCustomerAndUser() async {
+    final db = await database;
+    return await db.rawQuery('''
+    SELECT s.*, c.$cusName, u.$userName
+    FROM $salesTable s
+    JOIN $customersTable c ON s.$salCustomerId = c.$cusId
+    JOIN $usersTable u ON s.$salUserID = u.$userId
+  ''');
+  }
+
+  Future<List<Map<String, dynamic>>> searchSalesWithCustomerAndUser(String searchValue) async {
+    final db = await database;
+    return await db.rawQuery('''
+    SELECT s.*, c.$cusName, u.$userName
+    FROM $salesTable s
+    JOIN $customersTable c ON s.$salCustomerId = c.$cusId
+    JOIN $usersTable u ON s.$salUserID = u.$userId
+    WHERE s.$salInvoiceId LIKE ?
+  ''', ["$searchValue%"]);
+  }
+
   // Suppliers crud -----------------------------------------------------
 
   Future<void> addSalesDetails(List<SalesDetails> salesDetails) async {
@@ -720,6 +744,37 @@ class DatabaseHelper {
     return maps[0]['PurchaseID'];
   }
 
+  // Future<List<Map<String, dynamic>>> getSupplierNamesFromPurchase() async {
+  //   final db = await database;
+  //   return await db.rawQuery(
+  //       '''
+  //   SELECT s.*
+  //   FROM $supplierTable s
+  //   JOIN $purchaseTable p ON s.$supId = p.$purSupplierId
+  //   '''
+  //   );
+  // }
+
+  Future<List<Map<String, dynamic>>> getAllPurchasesWithSupplierName() async {
+    final db = await database;
+    return await db.rawQuery('''
+    SELECT p.*, s.$supName
+    FROM $purchaseTable p
+    JOIN $supplierTable s ON p.$purSupplierId = s.$supId
+  ''');
+  }
+
+  Future<List<Map<String, dynamic>>> searchPurchasesWithSupplierName(String searchValue) async {
+    final db = await database;
+    return await db.rawQuery('''
+    SELECT p.*, s.$supName 
+    FROM $purchaseTable p
+    JOIN $supplierTable s ON p.$purSupplierId = s.$supId
+    WHERE s.$supName LIKE ?
+  ''', ['$searchValue%']);
+  }
+
+
   // Purchase Details crud -----------------------------------------------------
 
   // Future<int> addPurchasesDetails(PurchaseDetails purchase) async {
@@ -753,7 +808,6 @@ class DatabaseHelper {
     return db.delete(purchaseDetailsTable,
         where: '$purchaseId = ?', whereArgs: [id]);
   }
-
   // Stock Details crud -----------------------------------------------------
   Future<int> addStocks(Stock stock) async {
     final db = await database;
@@ -825,19 +879,33 @@ class DatabaseHelper {
     }
   }
 
-  Future<List<Map<String, dynamic>>> getMedicineNamesFromStock() async {
+  Future<List<Map<String, dynamic>>> getStockedMedicines() async {
     final db = await database;
-    return await db.rawQuery(
-        '''
-    SELECT m.*
-    FROM $medicinesTable m
-    JOIN $stockTable s ON m.$medId = s.$stoMedicineId
-    '''
-    );
+    return await db.rawQuery('''
+    SELECT
+       m.$medName AS medicine_name, 
+       s.$stoPricePerUnit AS stock_unit_price, 
+       s.$stoQuantity AS stock_quantity
+    FROM $stockTable s
+    JOIN $medicinesTable m ON s.$stoMedicineId = m.$medId
+    ORDER BY s.$stoQuantity DESC
+  ''');
   }
 
-  // generic name crud -----------------------------------------------------
-
+  Future<List<Map<String, dynamic>>> searchStockByMedicineName(String searchQuery) async {
+    final db = await database;
+    return await db.rawQuery('''
+    SELECT
+       m.$medName AS medicine_name, 
+       s.$stoPricePerUnit AS stock_unit_price, 
+       s.$stoQuantity AS stock_quantity
+    FROM $stockTable s
+    JOIN $medicinesTable m ON s.$stoMedicineId = m.$medId
+    WHERE m.$medName LIKE ?
+    ORDER BY s.$stoQuantity DESC
+  ''', ['$searchQuery%']);
+  }
+///----------------------------------------------------------------------------------
   Future<int> addGeneric(GenericName generic) async {
     final db = await database;
     return db.insert(genericNameTable, generic.toMap());

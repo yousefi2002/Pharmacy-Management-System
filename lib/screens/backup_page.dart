@@ -1,86 +1,120 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path/path.dart' as path;
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
+import '../database/database_helper.dart';
+
 class BackupPage extends StatefulWidget {
-  const BackupPage({Key? key}) : super(key: key);
+  const BackupPage({super.key});
 
   @override
   State<BackupPage> createState() => _BackupPageState();
 }
 
 class _BackupPageState extends State<BackupPage> {
-  String databasePath = '';
-  bool isBackupInProgress = false;
-
-  @override
-  void initState() {
-    super.initState();
-    // مسیر دیتابیس را تنظیم کنید.
-    databasePath = 'store.db'; // مسیر دقیق دیتابیس را در اینجا وارد کنید.
-  }
+  final DatabaseHelper dbHelper = DatabaseHelper();
 
   Future<void> backupDatabase() async {
     try {
-      setState(() {
-        isBackupInProgress = true;
-      });
+      String dbPath = await dbHelper.getDatabasePath();
+      File dbFile = File(dbPath);
 
-      // انتخاب مسیر برای ذخیره فایل بکاپ
-      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
-
-      if (selectedDirectory != null) {
-        // کپی کردن فایل دیتابیس به مسیر انتخاب‌شده
-        final File dbFile = File(databasePath);
-        final String fileName = path.basename(databasePath);
-        final String destinationPath = path.join(selectedDirectory, fileName);
-
-        await dbFile.copy(destinationPath);
-
-        // نمایش موفقیت
-        ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('بکاپ با موفقیت در مسیر $destinationPath ذخیره شد.')),
-        );
-      } else {
-        // اگر کاربر مسیری انتخاب نکرد
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('هیچ مسیری انتخاب نشد.')),
-        );
+      if (!await dbFile.exists()) {
+        print('❌ Database does not exist.');
+        return;
       }
+
+      // Let user pick a folder to save the backup
+      String? selectedDirectory = await FilePicker.platform.getDirectoryPath();
+      if (selectedDirectory == null) {
+        print('❌ No folder selected.');
+        return;
+      }
+
+      // Generate a backup filename
+      String backupFileName = 'backup_${DateTime.now().millisecondsSinceEpoch}.db';
+      String backupPath = '$selectedDirectory/$backupFileName';
+
+      // Copy the database to the selected folder
+      await dbFile.copy(backupPath);
+
+      print('✅ Database backed up successfully to: $backupPath');
     } catch (e) {
-      // نمایش خطا در صورت بروز مشکل
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('خطا در بکاپ‌گیری: $e')),
-      );
-    } finally {
-      setState(() {
-        isBackupInProgress = false;
-      });
+      print('❌ Error during backup: $e');
     }
   }
 
+  // 🔹 Restore Database (Choose File & Restore)
+  Future<void> restoreDatabase() async {
+    try {
+      // Close the database before restoring
+      await dbHelper.closeDatabase();
+
+      // Let user pick a .db file
+      FilePickerResult? result = await FilePicker.platform.pickFiles(
+        type: FileType.custom,
+        allowedExtensions: ['db'],
+      );
+
+      if (result == null) {
+        print('❌ No file selected.');
+        return;
+      }
+
+      String selectedBackupPath = result.files.single.path!;
+      File backupFile = File(selectedBackupPath);
+      String restorePath = await dbHelper.getDatabasePath();
+      File restoreFile = File(restorePath);
+
+      // Check if store.db already exists
+      if (await restoreFile.exists()) {
+        String newName = 'store_${DateTime.now().millisecondsSinceEpoch}.db';
+        String newPath = '${restoreFile.parent.path}/$newName';
+
+        // Rename the existing database file
+        await restoreFile.rename(newPath);
+        print('⚠️ Existing database renamed to: $newName');
+      }
+
+      // Copy the backup file to restore it
+      await backupFile.copy(restorePath);
+
+      print('✅ Database restored successfully from: $selectedBackupPath');
+    } catch (e) {
+      print('❌ Error restoring database: $e');
+    }
+  }
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+
           children: [
             Text(AppLocalizations.of(context)!.backup, style: const TextStyle(fontSize: 30),),
-            Expanded(child: SizedBox()),
-            Text("برای بک آپ گرفتن کلیک کنید"),
-            Expanded(
-              child:IconButton(onPressed:(){}, icon: Icon(Icons.backup,size:50,))
+            Row(
+              children: [IconButton(
+                  onPressed:(){
+                backupDatabase();
+              }, icon: Icon(Icons.backup,size:50,)),
+                const SizedBox(width: 15,),
+                IconButton(
+                    onPressed:(){
+                      restoreDatabase();
+                    }, icon: Icon(Icons.restore,size:50,)),],
             ),
           ],
         ),
       ),
-      body: Center(
+      body: const Center(
         child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text("لیست بک آپ های دریافتی",style: TextStyle(fontSize: 20),),
+              padding: EdgeInsets.all(8.0),
+              child: Text("",style: TextStyle(fontSize: 20),),
             ),
           ],
         ),

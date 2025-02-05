@@ -1,4 +1,5 @@
 import 'package:fargard_pharmacy_management_system/models/medicines.dart';
+import 'package:fargard_pharmacy_management_system/models/search_stock.dart';
 import 'package:flutter/material.dart';
 import '../database/database_helper.dart';
 import '../database/database_service.dart';
@@ -8,15 +9,12 @@ class StockProvider extends ChangeNotifier {
   final DatabaseHelper _dbHelper = DatabaseHelper();
   final DatabaseService _databaseService = DatabaseService();
 
-  List<Stock> _stock = [];
-  List<Medicine> _medicineNames = [];
+  List<SearchStock> _stock = [];
 
-  List<Stock> get stock => _stock;
-  List<Medicine> get medicinesName => _medicineNames;
+  List<SearchStock> get stock => _stock;
 
   Future<void> fetchStocks() async {
     _stock = await _databaseService.fetchStocks();
-    _medicineNames = await _databaseService.fetchMedicinesNameFromStock();
     notifyListeners();
   }
 
@@ -43,6 +41,14 @@ class StockProvider extends ChangeNotifier {
   Future<void> updateStocksIfExist(Stock stock, int medicineId, int quantity) async {
     await _dbHelper.updateStocksIfExist(medicineId, quantity, stock);
     await fetchStocks();
+  }
+  void searchInStock(String query) async{
+    if (query.isEmpty) {
+      fetchStocks();
+    } else {
+      _stock = await _databaseService.fetchSearchMedicinesInStock(query);
+      notifyListeners();
+    }
   }
 }
 

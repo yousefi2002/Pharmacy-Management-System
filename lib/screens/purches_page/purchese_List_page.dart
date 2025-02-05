@@ -1,3 +1,4 @@
+import 'package:fargard_pharmacy_management_system/models/purchase_supplier.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_supplier.dart';
 import 'package:fargard_pharmacy_management_system/screens/suppliers/suppliers_list.dart';
 import 'package:fargard_pharmacy_management_system/utilities/date_time_format.dart';
@@ -5,6 +6,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:provider/provider.dart';
 
+import '../../models/purchases.dart';
+import '../../models/suppliers.dart';
 import '../../providers/crud_for_purchase.dart';
 import 'Purchase_page.dart';
 
@@ -22,7 +25,6 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
   Widget build(BuildContext context) {
     Future.microtask(() {
       Provider.of<PurchasesProvider>(context, listen: false).fetchPurchases();
-      Provider.of<SupplierProvider>(context, listen: false).fetchSuppliers();
     });
     return Scaffold(
       appBar: AppBar(
@@ -45,6 +47,9 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
                   fillColor: Colors.white30, // Semi-transparent background
                   contentPadding: const EdgeInsets.symmetric(horizontal: 16.0),
                 ),
+                onChanged: (value){
+                  Provider.of<PurchasesProvider>(context, listen: false).searchPurchase(value);
+                },
                 style: const TextStyle(color: Colors.white),
               ),
             ),
@@ -59,13 +64,13 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
                   Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (context) => PurchasePage(),
+                        builder: (context) => const PurchasePage(),
                       ));
                 },
                 child: Padding(
                   padding: const EdgeInsets.symmetric(vertical: 15.0),
                   child: Text(
-                    AppLocalizations.of(context)!.register_medicine,
+                    AppLocalizations.of(context)!.add_medicine,
                   ),
                 )),
             const SizedBox(width: 8),
@@ -90,33 +95,35 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
       ),
       body: Consumer<PurchasesProvider>(
         builder: ( context, value, child) {
-          final data = value.purchases;
+          final purchaseData = value.purchases;
           return Padding(
             padding: const EdgeInsets.all(8.0),
-            child: Column(
-              children: [
-                Expanded(
-                  child: SingleChildScrollView(
-                    child: PaginatedDataTable(
-                      showCheckboxColumn: true,
-                      showEmptyRows: true,
-                      source: MyData(data, context),
-                      columns: [
-                        DataColumn(label: Text(AppLocalizations.of(context)!.id)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.date)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.total_price)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.supplier)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.created_at)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.updated_at)),
-                        DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
-                      ],
-                      columnSpacing: 120,
-                      horizontalMargin: 40,
-                      showFirstLastButtons: true,
+            child: LayoutBuilder(
+              builder: (BuildContext context, BoxConstraints constraints) {
+                return SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: SizedBox(
+                    width: constraints.maxWidth,
+                    child: SingleChildScrollView(
+                      child: PaginatedDataTable(
+                        showCheckboxColumn: true,
+                        showEmptyRows: true,
+                        source: MyData(purchaseData, context),
+                        columns: [
+                          DataColumn(label: Text(AppLocalizations.of(context)!.id)),
+                          DataColumn(label: Text(AppLocalizations.of(context)!.supplier)),
+                          DataColumn(label: Text(AppLocalizations.of(context)!.total_price)),
+                          DataColumn(label: Text(AppLocalizations.of(context)!.date)),
+                          DataColumn(label: Text(AppLocalizations.of(context)!.actions)),
+                        ],
+                        columnSpacing: 50,
+                        horizontalMargin: 20,
+                        showFirstLastButtons: true,
+                      ),
                     ),
                   ),
-                ),
-              ],
+                );
+              },
             ),
           );
         },
@@ -126,20 +133,18 @@ class _PurchaseListPageState extends State<PurchaseListPage> {
 }
 
 class MyData extends DataTableSource {
-  var value;
+  List<PurchaseWithSupplier> purchases;
   final BuildContext context;
-  MyData(this.value, this.context);
+  MyData(this.purchases, this.context);
 
   @override
   DataRow getRow(int index) {
-    final purchase = value[index];
+    final purchase = purchases[index];
     return DataRow(cells: [
-      DataCell(Text(purchase.id.toString())),
-      DataCell(Text(purchase.date.toString())),
+      DataCell(Text('${index + 1}')),
+      DataCell(Text(purchase.supplierName)),
       DataCell(Text(purchase.totalPrice.toString())),
-      DataCell(Text(purchase.supplierId.toString())),
-      DataCell(Text(formatLocalTime(purchase.createdAt))),
-      DataCell(Text(formatLocalTime(purchase.updatedAt))),
+      DataCell(Text(purchase.date.toString())),
       DataCell(Row(
         children: [
           IconButton(
@@ -157,7 +162,7 @@ class MyData extends DataTableSource {
                       ),
                       TextButton(
                         onPressed: () {
-                          Provider.of<PurchasesProvider>(context, listen: false).deletePurchases(purchase.id ?? 0);
+                          Provider.of<PurchasesProvider>(context, listen: false).deletePurchases(purchase.purchaseId ?? 0);
                           Navigator.of(context).pop();
                         },
                         child: Text(AppLocalizations.of(context)!.delete),
@@ -166,12 +171,12 @@ class MyData extends DataTableSource {
                   );
                 },
               );
-            }, icon:Icon(Icons.delete,color: Colors.red,),),
-          IconButton(onPressed:(){}, icon:Icon(Icons.edit_note_outlined,color: Colors.blue,),),
+            }, icon: const Icon(Icons.delete,color: Colors.red,),),
+          IconButton(onPressed:(){}, icon: const Icon(Icons.edit_note_outlined,color: Colors.blue,),),
         ],
       )),
     ],
-        color: MaterialStateProperty.all(Colors.grey.shade200)
+        color: WidgetStateProperty.all(Colors.grey.shade200)
     );
   }
 
@@ -179,7 +184,7 @@ class MyData extends DataTableSource {
   bool get isRowCountApproximate => false;
 
   @override
-  int get rowCount => value.length;
+  int get rowCount => purchases.length;
 
   @override
   int get selectedRowCount => 0;

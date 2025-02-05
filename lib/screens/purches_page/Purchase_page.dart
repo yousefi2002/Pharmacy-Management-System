@@ -1,5 +1,6 @@
 import 'package:dropdown_button2/dropdown_button2.dart';
 import 'package:fargard_pharmacy_management_system/models/suppliers.dart';
+import 'package:fargard_pharmacy_management_system/providers/crud_for_customer.dart';
 import 'package:fargard_pharmacy_management_system/providers/crud_for_supplier.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -74,9 +75,9 @@ class _PurchasePageState extends State<PurchasePage> {
         title: Row(
           spacing: 5,
           children: [
-            Text("Purchase Page"),
-            Expanded(child: SizedBox()),
-            Text(
+            const Text("Purchase Page"),
+            const Expanded(child: SizedBox()),
+            const Text(
               "Supplier",
               style: TextStyle(fontSize: 19),
             ),
@@ -112,10 +113,8 @@ class _PurchasePageState extends State<PurchasePage> {
                 // ),
               );
             }),
-            SizedBox(
-              width: 20,
-            ),
-            Text(
+            const SizedBox(width: 20,),
+            const Text(
               "Date",
               style: TextStyle(fontSize: 19),
             ),
@@ -134,7 +133,7 @@ class _PurchasePageState extends State<PurchasePage> {
                 // '${AppLocalizations.of(context)!.registration_date} | $date',
                 '$date',
               ),
-            )
+            ),
           ],
         ),
       ),
@@ -202,7 +201,7 @@ class _PurchasePageState extends State<PurchasePage> {
                               ..._buildRows(medicinesProvider),
                             ],
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 5,
                           ),
                           ElevatedButton(
@@ -250,13 +249,6 @@ class _PurchasePageState extends State<PurchasePage> {
                         },
                         child: Text(AppLocalizations.of(context)!.save),
                       ),
-                      ElevatedButton(
-                        onPressed: () async {
-                          _printPurchase();
-                          Navigator.of(context).pop();
-                        },
-                        child: Text(AppLocalizations.of(context)!.print),
-                      ),
                     ],
                   ),
                 ),
@@ -269,7 +261,7 @@ class _PurchasePageState extends State<PurchasePage> {
   }
 
   List<TableRow> _buildRows(MedicinesProvider medicinesProvider) {
-    final _searchController = TextEditingController();
+    final searchController = TextEditingController();
     return List<TableRow>.generate(
       selectedMedicines.length,
       (index) {
@@ -302,17 +294,17 @@ class _PurchasePageState extends State<PurchasePage> {
                       selectedMedicines[index] = value.name;
                       selectedMedicineDetails[index] = value;
                       unitPriceControllers[index].text =
-                          value.pricePerUnit.toString() ?? '';
+                          value.buyPrice.toString() ?? '';
                       _updateTotalPrice(index);
                       indexData = index;
                     });
                   },
                   hint: Text(selectedMedicines[index] ?? 'Medicine Name'),
                   dropdownSearchData: DropdownSearchData(
-                    searchController: _searchController,
+                    searchController: searchController,
                     searchInnerWidgetHeight: 150,
                     searchInnerWidget: BuildTextFormField(
-                      controller: _searchController,
+                      controller: searchController,
                       hint: 'Search for medicines...',
                       focusNode: null,
                       requestNode: null,
@@ -361,7 +353,7 @@ class _PurchasePageState extends State<PurchasePage> {
             TableCell(
               verticalAlignment: TableCellVerticalAlignment.middle,
               child: Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: const EdgeInsets.all(8.0),
                 child: Text(
                   "${totalPriceForEachSelections[index]}",
                   textAlign: TextAlign.center,
@@ -378,7 +370,7 @@ class _PurchasePageState extends State<PurchasePage> {
                         _deleteRow(index);
                       });
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.delete,
                       color: Colors.red,
                     )),

@@ -1,540 +1,6 @@
-// import 'package:dropdown_button2/dropdown_button2.dart';
-// import 'package:flutter/cupertino.dart';
-// import 'package:flutter/material.dart';
-// import 'package:flutter_gen/gen_l10n/app_localizations.dart';
-// import 'package:provider/provider.dart';
-//
-// import '../../models/medicines.dart';
-// import '../../providers/crud_for_medicines.dart';
-// import '../../providers/crud_for_sales.dart';
-//
-//
-// class SalesPage extends StatefulWidget {
-//   const SalesPage({super.key});
-//
-//   @override
-//   State<SalesPage> createState() => _SalesPageState();
-// }
-//
-// class _SalesPageState extends State<SalesPage> {
-//   List<TextEditingController> medicineNameController = [];
-//   List<TextEditingController> quantityController = [];
-//   List<TextEditingController> feePriceController = [];
-//   List<TextEditingController> discountController = [];
-//   List<TextEditingController> totalPriceController = [];
-//
-//   void addRow() {
-//     setState(() {
-//       TextEditingController orderLar1 = TextEditingController();
-//       TextEditingController feeLar1 = TextEditingController();
-//       TextEditingController personLar1 = TextEditingController();
-//       TextEditingController priceLar1 = TextEditingController();
-//
-//       medicineNameController.add(orderLar1);
-//       quantityController.add(feeLar1);
-//       feePriceController.add(personLar1);
-//       discountController.add(priceLar1);
-//       totalPriceController.add(priceLar1);
-//     });
-//   }
-//
-//   void deleteRow(int i) {
-//     setState(() {
-//       medicineNameController.removeAt(i);
-//       quantityController.removeAt(i);
-//       feePriceController.removeAt(i);
-//       discountController.removeAt(i);
-//       totalPriceController.removeAt(i);
-//     });
-//   }
-//
-//   final FocusNode focs1 = FocusNode();
-//   final FocusNode focs2 = FocusNode();
-//   final FocusNode focs3 = FocusNode();
-//   final FocusNode focs4 = FocusNode();
-//   final FocusNode focs5 = FocusNode();
-//   final FocusNode focs6 = FocusNode();
-//   final FocusNode focs7 = FocusNode();
-//   final FocusNode focs8 = FocusNode();
-//   final FocusNode focs9 = FocusNode();
-//   double textFieldFontSize = 13.0;
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     Future.microtask(() {
-//       Provider.of<MedicinesProvider>(context, listen: false).fetchMedicines();
-//     });
-//     final medicinesProvider = Provider.of<MedicinesProvider>(context, listen: false);
-//
-//     return Scaffold(
-//       floatingActionButton: FloatingActionButton(
-//         onPressed: addRow,
-//         child: Icon(Icons.add),
-//       ),
-//       appBar: AppBar(),
-//       body: Consumer<SalesProvider>(
-//         builder: ( context, value, child) {
-//           return SingleChildScrollView(
-//             scrollDirection: Axis.vertical,
-//             child: Container(
-//               color: Colors.blueAccent,
-//               child: Column(
-//                 children: [
-//                   Container(
-//                     decoration: BoxDecoration(
-//                         color: Colors.grey.shade100,
-//                         border: Border.all(
-//                           color: Colors.black,
-//                         )),
-//                     width: double.infinity,
-//                     height: 130,
-//                     child: SingleChildScrollView(
-//                       scrollDirection: Axis.horizontal,
-//                       child: Padding(
-//                         padding: const EdgeInsets.all(8.0),
-//                         child: Row(
-//                           children: [
-//                             Column(
-//                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 Text(AppLocalizations.of(context)!.patient_name),
-//                                 Text(AppLocalizations.of(context)!.contact_number),
-//                                 Text(AppLocalizations.of(context)!.related_doctor),
-//                               ],
-//                             ),
-//                             const SizedBox(
-//                               width: 20,
-//                             ),
-//                             SizedBox(
-//                               child: Column(
-//                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                                 crossAxisAlignment: CrossAxisAlignment.end,
-//                                 children: [
-//                                   SizedBox(
-//                                       width: 150,
-//                                       height: 30,
-//                                       child: TextFormField(
-//                                         style:
-//                                         TextStyle(fontSize: textFieldFontSize),
-//                                         textAlign: TextAlign.center,
-//                                         onFieldSubmitted: (value) {
-//                                           FocusScope.of(context)
-//                                               .requestFocus(focs2);
-//                                         },
-//                                         decoration: InputDecoration(
-//                                           hintText: "name",
-//                                           contentPadding:
-//                                           EdgeInsets.symmetric(vertical: 8.0),
-//                                           border: OutlineInputBorder(
-//                                               borderRadius:
-//                                               BorderRadius.circular(2)),
-//                                         ),
-//                                       )),
-//                                   SizedBox(
-//                                       width: 150,
-//                                       height: 30,
-//                                       child: TextFormField(
-//                                         focusNode: focs2,
-//                                         style:
-//                                         TextStyle(fontSize: textFieldFontSize),
-//                                         textAlign: TextAlign.center,
-//                                         onFieldSubmitted: (value) {
-//                                           FocusScope.of(context)
-//                                               .requestFocus(focs3);
-//                                         },
-//                                         decoration: InputDecoration(
-//                                             hintText: "phone",
-//                                             contentPadding:
-//                                             const EdgeInsets.symmetric(
-//                                                 vertical: 8.0),
-//                                             border: OutlineInputBorder(
-//                                                 borderRadius:
-//                                                 BorderRadius.circular(2))),
-//                                       )),
-//                                   SizedBox(
-//                                       width: 150,
-//                                       height: 30,
-//                                       child: TextFormField(
-//                                         focusNode: focs3,
-//                                         style:
-//                                         TextStyle(fontSize: textFieldFontSize),
-//                                         textAlign: TextAlign.center,
-//                                         onFieldSubmitted: (value) {
-//                                           FocusScope.of(context)
-//                                               .requestFocus(focs4);
-//                                         },
-//                                         decoration: InputDecoration(
-//                                             hintText: "doctor",
-//                                             contentPadding:
-//                                             EdgeInsets.symmetric(vertical: 8.0),
-//                                             border: OutlineInputBorder(
-//                                                 borderRadius:
-//                                                 BorderRadius.circular(2))),
-//                                       )),
-//                                 ],
-//                               ),
-//                             ),
-//                             SizedBox(
-//                               width: 50,
-//                             ),
-//                             Column(
-//                               mainAxisAlignment: MainAxisAlignment.spaceAround,
-//                               crossAxisAlignment: CrossAxisAlignment.end,
-//                               children: [
-//                                 Text(AppLocalizations.of(context)!
-//                                     .prescription_number),
-//                                 Text(AppLocalizations.of(context)!
-//                                     .prescription_date),
-//                                 Text(AppLocalizations.of(context)!.sale_date),
-//                               ],
-//                             ),
-//                             SizedBox(
-//                               width: 20,
-//                             ),
-//                             SizedBox(
-//                               child: Column(
-//                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                                 crossAxisAlignment: CrossAxisAlignment.end,
-//                                 children: [
-//                                   SizedBox(
-//                                       width: 120,
-//                                       height: 30,
-//                                       child: TextFormField(
-//                                         style:
-//                                         TextStyle(fontSize: textFieldFontSize),
-//                                         textAlign: TextAlign.center,
-//                                         decoration: InputDecoration(
-//                                             hintText: "no",
-//                                             contentPadding:
-//                                             EdgeInsets.symmetric(vertical: 8.0),
-//                                             border: OutlineInputBorder(
-//                                                 borderRadius:
-//                                                 BorderRadius.circular(2))),
-//                                       )),
-//                                   SizedBox(
-//                                       width: 120,
-//                                       height: 30,
-//                                       child: TextFormField(
-//                                         focusNode: focs1,
-//                                         style:
-//                                         TextStyle(fontSize: textFieldFontSize),
-//                                         textAlign: TextAlign.center,
-//                                         onFieldSubmitted: (value) {
-//                                           FocusScope.of(context)
-//                                               .requestFocus(focs2);
-//                                         },
-//                                         decoration: InputDecoration(
-//                                             hintText: "s date",
-//                                             contentPadding:
-//                                             EdgeInsets.symmetric(vertical: 8.0),
-//                                             border: OutlineInputBorder(
-//                                                 borderRadius:
-//                                                 BorderRadius.circular(2))),
-//                                       )),
-//                                   SizedBox(
-//                                       width: 120,
-//                                       height: 30,
-//                                       child: TextFormField(
-//                                         style:
-//                                         TextStyle(fontSize: textFieldFontSize),
-//                                         textAlign: TextAlign.center,
-//                                         decoration: InputDecoration(
-//                                             hintText: "e date",
-//                                             contentPadding:
-//                                             EdgeInsets.symmetric(vertical: 8.0),
-//                                             border: OutlineInputBorder(
-//                                                 borderRadius:
-//                                                 BorderRadius.circular(2))),
-//                                       )),
-//                                 ],
-//                               ),
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   //////////////////////////////////////////////////////////////////////////
-//                   const SizedBox(
-//                     height: 20,
-//                   ),
-//                   Container(
-//                     decoration: BoxDecoration(
-//                       border: Border.all(color: Colors.black),
-//                       color: Colors.white,
-//                     ),
-//                     width: double.infinity,
-//                     height: 450,
-//                     child: Padding(
-//                       padding: const EdgeInsets.fromLTRB(80, 15, 80, 15),
-//                       child: Container(
-//                         color: Colors.grey.shade100,
-//                         child: SingleChildScrollView(
-//                           child: Column(
-//                             children: [
-//                               Table(
-//                                 columnWidths: const {
-//                                   0: FlexColumnWidth(0.5),
-//                                   1: FlexColumnWidth(2),
-//                                   2: FlexColumnWidth(1),
-//                                   3: FlexColumnWidth(1),
-//                                   4: FlexColumnWidth(1),
-//                                   5: FlexColumnWidth(1),
-//                                 },
-//                                 children: [
-//                                   TableRow(
-//                                       decoration: BoxDecoration(
-//                                           border: Border.all(color: Colors.black),
-//                                           borderRadius: BorderRadius.circular(1)),
-//                                       children: [
-//                                         const Center(child: Text("#")),
-//                                         Center(child: Text(AppLocalizations.of(context)!.medicine_name)),
-//                                         Center(child: Text(AppLocalizations.of(context)!.quantity)),
-//                                         Center(child: Text(AppLocalizations.of(context)!.unit_price)),
-//                                         Center(child: Text(AppLocalizations.of(context)!.total_price)),
-//                                         Center(child: Text(AppLocalizations.of(context)!.discount)),
-//                                       ]),
-//                                   for (int i = 0;
-//                                   i < medicineNameController.length;
-//                                   i++)
-//                                     TableRow(children: [
-//                                       SizedBox(
-//                                           height: 30,
-//                                           child: TextFormField(
-//                                             style: TextStyle(
-//                                                 fontSize: textFieldFontSize),
-//                                             textAlign: TextAlign.center,
-//                                             decoration: InputDecoration(
-//                                                 hintText: '${i+1}',
-//                                                 contentPadding:
-//                                                 const EdgeInsets.symmetric(
-//                                                     vertical: 8.0),
-//                                                 border: OutlineInputBorder(
-//                                                     borderRadius:
-//                                                     BorderRadius.circular(2))),
-//                                           )),
-//                                       SizedBox(
-//                                         width: 120,
-//                                         height: 37,
-//                                         child: DropdownButton2<Medicine>(
-//                                           focusNode: focs4,
-//                                           items: medicinesProvider.medicines.map((medicine) {
-//                                             return DropdownMenuItem(
-//                                               value: medicine,
-//                                               child: Text(medicine.name),
-//                                             );
-//                                           }).toList(),
-//                                           onChanged: (value) {
-//                                             // medicinesProvider.selectMedicine(value!);
-//                                           },
-//                                           // hint:  Text(medicinesProvider.selectedMedicine?.name ??""),
-//                                           dropdownSearchData: DropdownSearchData(
-//                                             searchInnerWidgetHeight: 5,
-//                                             searchInnerWidget: Container(
-//                                               height: 60,
-//                                               padding: const EdgeInsets.all(8.0),
-//                                               child: TextFormField(
-//                                                 expands: true,
-//                                                 maxLines: null,
-//                                                 decoration: const InputDecoration(hintText: "Search"),
-//                                                 onFieldSubmitted: (value) {
-//                                                   FocusScope.of(context).requestFocus(focs6);
-//                                                 },
-//                                               ),
-//                                             ),
-//                                           ),
-//                                         ),
-//                                       ),
-//                                       SizedBox(
-//                                           width: 120,
-//                                           height: 30,
-//                                           child: TextFormField(
-//                                             controller: quantityController[i],
-//                                             focusNode: focs5,
-//                                             style: TextStyle(
-//                                                 fontSize: textFieldFontSize),
-//                                             textAlign: TextAlign.center,
-//                                             decoration: InputDecoration(
-//                                                 hintText:
-//                                                 AppLocalizations.of(context)!
-//                                                     .quantity,
-//                                                 contentPadding:
-//                                                 EdgeInsets.symmetric(
-//                                                     vertical: 8.0),
-//                                                 border: OutlineInputBorder(
-//                                                     borderRadius:
-//                                                     BorderRadius.circular(2))),
-//                                           )),
-//                                       SizedBox(
-//                                           width: 120,
-//                                           height: 30,
-//                                           child: TextFormField(
-//                                             controller: feePriceController[i],
-//                                             focusNode: focs6,
-//                                             style: TextStyle(
-//                                                 fontSize: textFieldFontSize),
-//                                             textAlign: TextAlign.center,
-//                                             onFieldSubmitted: (value) {
-//                                               FocusScope.of(context)
-//                                                   .requestFocus(focs7);
-//                                             },
-//                                             decoration: InputDecoration(
-//                                                 hintText:
-//                                                 AppLocalizations.of(context)!
-//                                                     .unit_price,
-//                                                 contentPadding:
-//                                                 const EdgeInsets.symmetric(
-//                                                     vertical: 8.0),
-//                                                 border: OutlineInputBorder(
-//                                                     borderRadius:
-//                                                     BorderRadius.circular(2))),
-//                                           )),
-//                                       SizedBox(
-//                                           width: 120,
-//                                           height: 30,
-//                                           child: TextFormField(
-//                                             controller: totalPriceController[i],
-//                                             focusNode: focs7,
-//                                             style: TextStyle(
-//                                                 fontSize: textFieldFontSize),
-//                                             textAlign: TextAlign.center,
-//                                             onFieldSubmitted: (value) {
-//                                               FocusScope.of(context)
-//                                                   .requestFocus(focs8);
-//                                             },
-//                                             decoration: InputDecoration(
-//                                                 hintText:
-//                                                 AppLocalizations.of(context)!
-//                                                     .total_price,
-//                                                 contentPadding:
-//                                                 const EdgeInsets.symmetric(
-//                                                     vertical: 8.0),
-//                                                 border: OutlineInputBorder(
-//                                                     borderRadius:
-//                                                     BorderRadius.circular(2))),
-//                                           )),
-//                                       SizedBox(
-//                                           width: 120,
-//                                           height: 30,
-//                                           child: TextFormField(
-//                                             controller: discountController[i],
-//                                             focusNode: focs8,
-//                                             style: TextStyle(
-//                                                 fontSize: textFieldFontSize),
-//                                             textAlign: TextAlign.center,
-//                                             onFieldSubmitted: (value) {
-//                                               FocusScope.of(context)
-//                                                   .requestFocus(focs9);
-//                                             },
-//                                             decoration: InputDecoration(
-//                                                 hintText:
-//                                                 AppLocalizations.of(context)!
-//                                                     .discount,
-//                                                 contentPadding:
-//                                                 const EdgeInsets.symmetric(
-//                                                     vertical: 8.0),
-//                                                 border: OutlineInputBorder(
-//                                                     borderRadius:
-//                                                     BorderRadius.circular(2))),
-//                                           )),
-//                                     ])
-//                                 ],
-//                               )
-//                             ],
-//                           ),
-//                         ),
-//                       ),
-//                     ),
-//                   ),
-//                   ///////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//                   const SizedBox(
-//                     height: 20,
-//                   ),
-//                   Container(
-//                     decoration: BoxDecoration(
-//                         color: Colors.grey.shade100,
-//                         border: Border.all(color: Colors.black)),
-//                     width: double.infinity,
-//                     height: 130,
-//                     child: SingleChildScrollView(
-//                       scrollDirection: Axis.horizontal,
-//                       child: Padding(
-//                         padding: const EdgeInsets.all(8.0),
-//                         child: Row(
-//                           children: [
-//                             Column(
-//                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 Text('${AppLocalizations.of(context)!.total_price} :  '),
-//                                 Text('${AppLocalizations.of(context)!.discount} :  '),
-//                                 Text('${AppLocalizations.of(context)!.amount_payable} :  '),
-//                               ],
-//                             ),
-//                             const SizedBox(
-//                               width: 80,
-//                             ),
-//                             Column(
-//                               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-//                               crossAxisAlignment: CrossAxisAlignment.start,
-//                               children: [
-//                                 Row(
-//                                   children: [
-//                                     ElevatedButton(
-//                                       onPressed: () {
-//                                         Navigator.pop(context);
-//                                       },
-//                                       style: ElevatedButton.styleFrom(
-//                                           backgroundColor: Colors.yellowAccent),
-//                                       child:
-//                                       Text(AppLocalizations.of(context)!.save),
-//                                     ),
-//                                     const SizedBox(
-//                                       width: 15,
-//                                     ),
-//                                     ElevatedButton(
-//                                       onPressed: () {
-//                                         Navigator.pop(context);
-//                                       },
-//                                       style: ElevatedButton.styleFrom(
-//                                           backgroundColor: Colors.yellowAccent),
-//                                       child: Text(AppLocalizations.of(context)!
-//                                           .save_and_print),
-//                                     ),
-//                                   ],
-//                                 ),
-//                               ],
-//                             ),
-//                           ],
-//                         ),
-//                       ),
-//                     ),
-//                   )
-//                 ],
-//               ),
-//             ),
-//           );
-//         },
-//       ),
-//     );
-//   }
-// }
-
-//-------------------------------------------------------------------
-//-------------------------------------------------------------------
-//-------------------------------------------------------------------
-import 'package:dropdown_button2/dropdown_button2.dart';
-import 'package:fargard_pharmacy_management_system/models/sales.dart';
-import 'package:fargard_pharmacy_management_system/models/sales_details.dart';
-import 'package:fargard_pharmacy_management_system/providers/crud_for_sales.dart';
-import 'package:fargard_pharmacy_management_system/providers/crud_for_sales_detail.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import '../../models/medicines.dart';
 import '../../models/stocks.dart';
+import '../../models/users.dart';
 import '../../providers/crud_for_medicines.dart';
 import '../../providers/crud_for_stock.dart';
 import '../../utilities/date_time_format.dart';
@@ -548,15 +14,20 @@ class SalesPage extends StatefulWidget {
 }
 
 class _SalesPageState extends State<SalesPage> {
+  final _invoiceNumberController = TextEditingController();
   List<String?> selectedMedicines = [];
   List<Medicine?> selectedMedicineDetails = [];
   final List<TextEditingController> quantityControllers = [];
   final List<TextEditingController> unitPriceControllers = [];
   final List<TextEditingController> discountControllers = [];
   final List<double> totalPriceForEachSelections = [];
+  final List<double> totalDiscountForEachSelections = [];
 
+  Customer? customer;
+  User? user;
   String? date;
   double? saleTotalPrice = 0;
+  double? discountTotalPrice = 0;
   double? discount = 0;
   int indexData = 0;
 
@@ -592,35 +63,70 @@ class _SalesPageState extends State<SalesPage> {
   Widget build(BuildContext context) {
     Future.microtask(() {
       Provider.of<MedicinesProvider>(context, listen: false).fetchMedicines();
+      Provider.of<CustomerProvider>(context, listen: false).fetchCustomers();
+      Provider.of<UserProvider>(context, listen: false).fetchUser();
     });
     return Scaffold(
       appBar: AppBar(
         title: Row(
-          spacing: 5,
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          spacing: 15,
           children: [
-            Text("Sales Page"),
-            Expanded(child: SizedBox()),
-            // Text(
-              // "Supplier",
-              // style: TextStyle(fontSize: 19),
-            // ),
-            // Consumer<SupplierProvider>(
-            //     builder: (context, supplierProvider, child) {
-            //       return DropdownButton2<Supplier>(
-            //         items: supplierProvider.suppliers
-            //             .map(
-            //               (supplier) => DropdownMenuItem<Supplier>(
-            //             value: supplier,
-            //             child: Center(child: Text(supplier.name)),
-            //           ),
-            //         )
-            //             .toList(),
-            //         onChanged: (value) {
-            //           setState(() {
-            //             supplier = value;
-            //           });
-            //         },
-            //         hint: Center(child: Text(supplier?.name ?? 'Supplier Name')),
+            const Text("Sales Page"),
+            const Expanded(child: SizedBox()),
+            Expanded(
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'Please enter the sell price';
+                  }
+                  return null;
+                },
+                selectionHeightStyle: BoxHeightStyle.includeLineSpacingMiddle,
+                controller: _invoiceNumberController,
+                onFieldSubmitted: (value) {
+                  FocusScope.of(context).requestFocus(focs4);
+                },
+                decoration: MyInputDecoration1(labelText: 'Invoice Number', hintText: 'Name Like #123'),
+                style: const TextStyle(
+                  color: Colors.black, // Input text color
+                  fontSize: 18,
+                ),
+              ),
+            ),
+            Consumer<CustomerProvider>(
+                builder: (context, customerProvider, child) {
+                  return DropdownButton2<Customer>(
+                    items: customerProvider.customer
+                        .map(
+                          (customer) => DropdownMenuItem<Customer>(
+                        value: customer,
+                        child: Center(child: Text(customer.name)),
+                      ),
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        customer = value;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      width: 210,
+                      height: 48,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: const Border(top: BorderSide(color: Colors.greenAccent),bottom: BorderSide(color: Colors.greenAccent),right: BorderSide(color: Colors.greenAccent), left: BorderSide(color: Colors.greenAccent)),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.green.shade50, // Dropdown background color
+                      ),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        border: const Border(top: BorderSide(color: Colors.green),bottom: BorderSide(color: Colors.green),right: BorderSide(color: Colors.green), left: BorderSide(color: Colors.green)),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white, // Dropdown background color
+                      ),
+                    ),
+                    hint: Center(child: Text(customer?.name ?? 'Customer Name')),
                     // dropdownSearchData: DropdownSearchData(
                     //   searchController: _searchController,
                     //   searchInnerWidgetHeight: 150,
@@ -634,9 +140,57 @@ class _SalesPageState extends State<SalesPage> {
                     //     },
                     //   ),
                     // ),
-                  // );
-                // }),
-            Text(
+                  );
+                }),
+            Consumer<UserProvider>(
+                builder: (context, userProvider, child) {
+                  return DropdownButton2<User>(
+                    items: userProvider.users
+                        .map(
+                          (customer) => DropdownMenuItem<User>(
+                        value: customer,
+                        child: Center(child: Text(customer.name)),
+                      ),
+                    ).toList(),
+                    onChanged: (value) {
+                      setState(() {
+                        user = value;
+                      });
+                    },
+                    buttonStyleData: ButtonStyleData(
+                      width: 210,
+                      height: 48,
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      decoration: BoxDecoration(
+                        border: const Border(top: BorderSide(color: Colors.greenAccent),bottom: BorderSide(color: Colors.greenAccent),right: BorderSide(color: Colors.greenAccent), left: BorderSide(color: Colors.greenAccent)),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.green.shade50, // Dropdown background color
+                      ),
+                    ),
+                    dropdownStyleData: DropdownStyleData(
+                      decoration: BoxDecoration(
+                        border: const Border(top: BorderSide(color: Colors.green),bottom: BorderSide(color: Colors.green),right: BorderSide(color: Colors.green), left: BorderSide(color: Colors.green)),
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white, // Dropdown background color
+                      ),
+                    ),
+                    hint: Center(child: Text(user?.name ?? 'User Name')),
+                    // dropdownSearchData: DropdownSearchData(
+                    //   searchController: _searchController,
+                    //   searchInnerWidgetHeight: 150,
+                    //   searchInnerWidget: BuildTextFormField(
+                    //     controller: _searchController,
+                    //     hint: 'Search for medicines...',
+                    //     focusNode: null,
+                    //     requestNode: null,
+                    //     onChange: (value) {
+                    //       medicinesProvider.searchMedicines(value);
+                    //     },
+                    //   ),
+                    // ),
+                  );
+                }),
+            const Text(
               "Date",
               style: TextStyle(fontSize: 19),
             ),
@@ -775,7 +329,7 @@ class _SalesPageState extends State<SalesPage> {
                               '${AppLocalizations.of(context)!.total_price} :  $saleTotalPrice AFG'),
                          const SizedBox(width: 15,),
                           Text(
-                              '${AppLocalizations.of(context)!.discount} :  $discount AFG'),
+                              '${AppLocalizations.of(context)!.discount} :  $discountTotalPrice AFG'),
                         ],
                       ),
                       ElevatedButton(
@@ -792,6 +346,13 @@ class _SalesPageState extends State<SalesPage> {
                           Navigator.of(context).pop();
                         },
                         child: Text(AppLocalizations.of(context)!.print),
+                      ),
+                      ElevatedButton(
+                        onPressed: () async {
+                          selectedMedicineDetails.clear();
+                          Navigator.of(context).pop();
+                        },
+                        child: Text(AppLocalizations.of(context)!.cancel),
                       ),
                     ],
                   ),
@@ -838,7 +399,7 @@ class _SalesPageState extends State<SalesPage> {
                       selectedMedicines[index] = value.name;
                       selectedMedicineDetails[index] = value;
                       unitPriceControllers[index].text =
-                          value.pricePerUnit.toString() ?? '';
+                          value.buyPrice.toString() ?? '';
                       _updateTotalPrice(index);
                       indexData = index;
                     });
@@ -930,7 +491,7 @@ class _SalesPageState extends State<SalesPage> {
                         _deleteRow(index);
                       });
                     },
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.delete,
                       color: Colors.red,
                     )),
@@ -949,6 +510,7 @@ class _SalesPageState extends State<SalesPage> {
     unitPriceControllers.add(TextEditingController());
     discountControllers.add(TextEditingController());
     totalPriceForEachSelections.add(0);
+    totalDiscountForEachSelections.add(0);
   }
 
   void _deleteRow(index) {
@@ -965,56 +527,16 @@ class _SalesPageState extends State<SalesPage> {
     final unitPrice = double.tryParse(unitPriceControllers[index].text) ?? 0.0;
     discount = double.tryParse(discountControllers[index].text) ?? 0.0;
     totalPriceForEachSelections[index] = (quantity * unitPrice - discount!);
+    totalDiscountForEachSelections[index] = discount!;
     saleTotalPrice = totalPriceForEachSelections.reduce((x, y) => x + y);
+    discountTotalPrice = totalDiscountForEachSelections.reduce((x, y) => x + y);
   }
-
-  // void _savePurchase(context, List<Medicine?> medicine, int index) async {
-  //   //step #1
-  //   Provider.of<PurchasesProvider>(context, listen: false)
-  //       .addPurchase(Purchase(date, double.tryParse(purchaseTotalPrice.toString()), supplier?.id ?? 0));
-  //
-  //   //step #2
-  //   Provider.of<PurchasesProvider>(context, listen: false)
-  //       .fetchLastInsertedPurchaseId();
-  //   int lastInsertedPurchaseId =
-  //       Provider.of<PurchasesProvider>(context, listen: false)
-  //           .lastInsertedPurchaseId;
-  //
-  //   _updateTotalPrice(index);
-  //
-  //   //step #3
-  //   List<PurchaseDetails> purchaseDetails = [];
-  //   for (int i = 0; i < selectedMedicineDetails.length; i++) {
-  //     {
-  //       purchaseDetails.add(PurchaseDetails(
-  //         selectedMedicineDetails[i]?.id,
-  //         lastInsertedPurchaseId,
-  //         int.tryParse(quantityControllers[i].text),
-  //         double.tryParse(unitPriceControllers[i].text),
-  //       ));
-  //       //totalPriceForEachSelections[i]
-  //     }
-  //     Provider.of<PurchasesDetailProvider>(context, listen: false)
-  //         .addPurchasesDetails(purchaseDetails);
-  //   }
-  //
-  //   //step #4
-  //
-  //   for (int j = 0; j < selectedMedicineDetails.length; j++){
-  //     final addUpdateStock = Stock(selectedMedicineDetails[j]?.id, double.tryParse(unitPriceControllers[j].text), int.tryParse(quantityControllers[j].text));
-  //     Provider.of<StockProvider>(context, listen: false)
-  //         .insertUpdateStocks(addUpdateStock, selectedMedicineDetails[j]!.id ?? 0, int.tryParse(quantityControllers[j].text) ?? 0);
-  //   }
-  //
-  //   //temp
-  //   Navigator.pop(context);
-  // }
 
   void _savePurchase(context, List<Medicine?> medicine, int index) async {
     //step #1
     Provider.of<SalesProvider>(context, listen: false)
         .addSales(Sales(
-      null, null, date, discount, saleTotalPrice,),);
+      customer?.id,_invoiceNumberController.text, user?.id, date, discountTotalPrice, saleTotalPrice,),);
 
     //step #2
     Provider.of<SalesProvider>(context, listen: false).fetchLastInsertedPurchaseId();
@@ -1030,8 +552,8 @@ class _SalesPageState extends State<SalesPage> {
       {
         salesDetailsList.add(
             SalesDetails(
-                null,
-                null,
+                selectedMedicineDetails[i]?.id,
+                lastInsertedSalesId,
                 int.tryParse(quantityControllers[i].text),
                 double.tryParse(unitPriceControllers[i].text),
                 saleTotalPrice));
@@ -1051,11 +573,8 @@ class _SalesPageState extends State<SalesPage> {
       Provider.of<StockProvider>(context, listen: false)
           .updateStocksIfExist(addUpdateStock, selectedMedicineDetails[j]!.id ?? 0, int.tryParse(quantityControllers[j].text) ?? 0);
     }
-
     Navigator.pop(context);
   }
-
-
   void _printPurchase() {}
 }
 
